@@ -1,5 +1,6 @@
-package ru.popkov.composemvi
+package ru.popkov.composemvi.splash
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,33 +10,29 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import dagger.hilt.android.AndroidEntryPoint
-import ru.popkov.android.core.feature.nav.Navigator
-import ru.popkov.android.core.feature.ui.NavProvider
+import ru.popkov.composemvi.MainActivity
 import ru.popkov.composemvi.theme.Theme
-import javax.inject.Inject
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
-
-    @Inject
-    lateinit var navProviders: Set<@JvmSuppressWildcards NavProvider>
-
-    @Inject
-    lateinit var navigator: Navigator
-
+class SplashActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         setContent {
+            WindowCompat.setDecorFitsSystemWindows(window, false)
             Theme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    MainWindow(
-                        navProviders = navProviders,
-                        navigator = navigator,
-                    )
+                    SplashScreen()
+
+                    // navigate to main screen after small delay
+                    Executors.newSingleThreadScheduledExecutor().schedule({
+                        startActivity(Intent(applicationContext, MainActivity::class.java))
+                    }, 2, TimeUnit.SECONDS)
                 }
             }
         }
