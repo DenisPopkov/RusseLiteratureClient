@@ -1,4 +1,35 @@
 <resources>
     <string name="app_name">RusseClips</string>
     <string name="splash_screen_label">Littérature russe\nin clips</string>
+    // Auth screen
+    <string name="auth_title">Авторизация</string>
+    <string name="auth_phone">Номер телефона</string>
+    <string name="auth_password">Пароль</string>
+    <string name="auth_already_have_account">Уже есть аккаунт?</string>
+    <string name="auth_no_account">Нет аккаунта?</string>
+
+    // Search screen
+    <string name="search_field_title">Поиск</string>
+    <string name="search_all_category">Все</string>
+    <string name="search_author_category">Писатели</string>
+    <string name="search_article_category">Статьи</string>
+    <string name="search_poet_category">Поэты</string>
+
+    // Favorite screen
+    <string name="favorite_empty_state_title">Здесь ничего нет</string>
+    <string name="favorite_empty_state_desc">Чтобы добавить сюда статью, писателя, поэму, нажмите на кнопку добавления в закладки</string>
+    <string name="favorite_empty_state_to_main">Перейти на главный</string>
+
+    // Clip screen
+    <string name="clip_title">Clips</string>
+
+    // Quiz screen
+    <string name="quiz_variant_a">A</string>
+    <string name="quiz_variant_b">B</string>
+    <string name="quiz_variant_c">C</string>
+    <string name="quiz_right_answer_title">ПРАВИЛЬНЫЙ ОТВЕТ:</string>
+    <string name="quiz_your_answer_title">ВАШ ОТВЕТ:</string>
+
+    // Error messages
+    <string name="error_no_internet">Нет соединения с интернетом</string>
 </resources>
