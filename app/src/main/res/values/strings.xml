@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RusseClips</string>
+    <string name="splash_screen_label">Littérature russe\nin clips</string>
 </resources>

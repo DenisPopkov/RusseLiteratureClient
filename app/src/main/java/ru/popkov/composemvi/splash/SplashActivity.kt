@@ -32,7 +32,7 @@ class SplashActivity : ComponentActivity() {
                     // navigate to main screen after small delay
                     Executors.newSingleThreadScheduledExecutor().schedule({
                         startActivity(Intent(applicationContext, MainActivity::class.java))
-                    }, 3, TimeUnit.SECONDS)
+                    }, 2, TimeUnit.SECONDS)
                 }
             }
         }

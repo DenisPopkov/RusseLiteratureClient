@@ -18,6 +18,7 @@
         <activity
             android:name="ru.popkov.composemvi.splash.SplashActivity"
             android:exported="true"
+            android:noHistory="true"
             android:theme="@style/Theme.ComposeSample">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

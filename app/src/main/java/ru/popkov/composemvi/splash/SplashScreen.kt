@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import ru.popkov.android.core.feature.ui.UiModePreviews
 import ru.popkov.composemvi.theme.GothicBoldSplash40
 import ru.popkov.composemvi.theme.Theme
@@ -30,7 +31,7 @@ internal fun SplashScreen() {
                 .align(Alignment.BottomStart)
                 .padding(bottom = Theme.size.medium)
                 .padding(start = Theme.size.medium),
-            text = "Littérature russe\nin clips",
+            text = stringResource(id = R.string.splash_screen_label),
             style = GothicBoldSplash40,
         )
     }
