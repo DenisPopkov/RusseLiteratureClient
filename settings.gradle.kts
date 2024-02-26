@@ -18,7 +18,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "JetpackComposeMVI"
+rootProject.name = "RusseLiteratureClient"
 include(
     ":app",
     ":core:feature:nav",
