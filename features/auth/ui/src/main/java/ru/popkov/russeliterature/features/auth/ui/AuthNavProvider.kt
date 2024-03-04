@@ -4,7 +4,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import ru.popkov.android.core.feature.nav.Navigator
-import ru.popkov.android.core.feature.ui.StartNavProvider
+import ru.popkov.android.core.feature.ui.LoginNavProvider
 import ru.popkov.composemvi.features.spotlight.nav.SpotlightDestination
 import ru.popkov.russeliterature.features.auth.nav.AuthDestination
 import se.ansman.dagger.auto.AutoBindIntoSet
@@ -13,9 +13,9 @@ import javax.inject.Inject
 @AutoBindIntoSet
 class AuthNavProvider @Inject constructor(
     private val navigator: Navigator,
-) : StartNavProvider {
+) : LoginNavProvider {
 
-    override val routeItem = StartNavProvider.RouteItem(
+    override val routeItem = LoginNavProvider.RouteItem(
         route = AuthDestination.route,
         isStart = false,
     )

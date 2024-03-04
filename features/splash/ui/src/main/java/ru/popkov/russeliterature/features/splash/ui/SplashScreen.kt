@@ -7,16 +7,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import kotlinx.coroutines.delay
 import ru.popkov.android.core.feature.ui.UiModePreviews
 import ru.popkov.composemvi.theme.GothicBoldSplash40
 import ru.popkov.composemvi.theme.Theme
-import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
 
 @Composable
 internal fun SplashScreen(
@@ -44,9 +44,10 @@ internal fun SplashScreen(
     }
 
     // navigate to main screen after small delay
-    Executors.newSingleThreadScheduledExecutor().schedule({
+    LaunchedEffect(Unit) {
+        delay(2000)
         onDelayHandle.invoke()
-    }, 2, TimeUnit.SECONDS)
+    }
 }
 
 @UiModePreviews

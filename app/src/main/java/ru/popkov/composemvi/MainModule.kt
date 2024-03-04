@@ -14,5 +14,4 @@ class MainModule {
     @Singleton
     @Provides
     fun provideNavigator() = Navigator()
-
 }

@@ -1,6 +1,5 @@
 package ru.popkov.russeliterature.features.splash.ui
 
-import androidx.compose.material3.SnackbarHostState
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import ru.popkov.android.core.feature.nav.Navigator
@@ -17,10 +16,9 @@ class SplashNavProvider @Inject constructor(
 
     override val routeItem = StartNavProvider.RouteItem(
         route = SplashDestination.route,
-        isStart = true,
     )
 
-    override fun graph(builder: NavGraphBuilder, snackbarHostState: SnackbarHostState) =
+    override fun graph(builder: NavGraphBuilder) =
         builder.run {
             composable(
                 route = SplashDestination.route,
