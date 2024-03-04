@@ -1,5 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
+include(":features:splash")
+
+
 pluginManagement {
     includeBuild("gradle-plugins")
 
@@ -31,5 +34,7 @@ include(
     ":features:spotlight:ui",
     ":features:auth:nav",
     ":features:auth:ui",
+    ":features:splash:nav",
+    ":features:splash:ui",
     ":theme",
 )

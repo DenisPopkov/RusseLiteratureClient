@@ -38,6 +38,7 @@ dependencies {
     implementation(project(":features:library:ui"))
     implementation(project(":features:spotlight:ui"))
     implementation(project(":features:auth:ui"))
+    implementation(project(":features:splash:ui"))
     implementation(project(":theme"))
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.espresso.core)

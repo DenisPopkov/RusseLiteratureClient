@@ -3,7 +3,9 @@ package ru.popkov.composemvi.features.spotlight.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -37,6 +39,8 @@ private fun Spotlight(
         verticalArrangement = Arrangement.spacedBy(Theme.size.medium),
         modifier = Modifier
             .fillMaxSize()
+            .systemBarsPadding()
+            .navigationBarsPadding()
             .padding(Theme.size.medium),
     ) {
         Text(

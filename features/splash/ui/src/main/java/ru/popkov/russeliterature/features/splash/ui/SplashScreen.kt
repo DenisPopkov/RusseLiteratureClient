@@ -1,4 +1,4 @@
-package ru.popkov.composemvi.splash
+package ru.popkov.russeliterature.features.splash.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -15,26 +15,38 @@ import androidx.compose.ui.res.stringResource
 import ru.popkov.android.core.feature.ui.UiModePreviews
 import ru.popkov.composemvi.theme.GothicBoldSplash40
 import ru.popkov.composemvi.theme.Theme
-import ru.popkov.composesample.R
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 @Composable
-internal fun SplashScreen() {
-    Box(modifier = Modifier.fillMaxSize()) {
+internal fun SplashScreen(
+    onDelayHandle: () -> Unit = {},
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+    ) {
         Image(
+            modifier = Modifier
+                .fillMaxSize(),
             painter = painterResource(id = R.drawable.ic_splash),
             contentDescription = "Splash screen image",
             contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
         )
         Text(
             modifier = Modifier
-                .align(Alignment.BottomStart)
+                .align(alignment = Alignment.BottomStart)
                 .padding(bottom = Theme.size.medium)
                 .padding(start = Theme.size.medium),
             text = stringResource(id = R.string.splash_screen_label),
             style = GothicBoldSplash40,
         )
     }
+
+    // navigate to main screen after small delay
+    Executors.newSingleThreadScheduledExecutor().schedule({
+        onDelayHandle.invoke()
+    }, 2, TimeUnit.SECONDS)
 }
 
 @UiModePreviews
