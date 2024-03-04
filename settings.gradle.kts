@@ -29,5 +29,7 @@ include(
     ":features:library:ui",
     ":features:spotlight:nav",
     ":features:spotlight:ui",
+    ":features:auth:nav",
+    ":features:auth:ui",
     ":theme",
 )

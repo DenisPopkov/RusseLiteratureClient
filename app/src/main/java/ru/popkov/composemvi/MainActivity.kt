@@ -11,6 +11,7 @@ import androidx.core.view.WindowCompat
 import dagger.hilt.android.AndroidEntryPoint
 import ru.popkov.android.core.feature.nav.Navigator
 import ru.popkov.android.core.feature.ui.NavProvider
+import ru.popkov.android.core.feature.ui.StartNavProvider
 import ru.popkov.composemvi.theme.Theme
 import javax.inject.Inject
 
@@ -19,6 +20,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var navProviders: Set<@JvmSuppressWildcards NavProvider>
+
+    @Inject
+    lateinit var startProviders: Set<@JvmSuppressWildcards StartNavProvider>
 
     @Inject
     lateinit var navigator: Navigator
@@ -33,6 +37,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background,
                 ) {
                     MainWindow(
+                        startNavProviders = startProviders,
                         navProviders = navProviders,
                         navigator = navigator,
                     )
