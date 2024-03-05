@@ -40,6 +40,7 @@ dependencies {
     implementation(project(":features:spotlight:ui"))
     implementation(project(":features:splash:ui"))
     implementation(project(":features:auth:nav"))
+    implementation(project(":features:auth:data"))
     implementation(project(":features:auth:ui"))
     implementation(project(":theme"))
     androidTestImplementation(libs.androidx.test.ext.junit)

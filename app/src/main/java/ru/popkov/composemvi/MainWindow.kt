@@ -7,10 +7,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -21,19 +19,16 @@ import ru.popkov.android.core.feature.nav.Navigator
 import ru.popkov.android.core.feature.ui.NavEntryPointProvider
 import ru.popkov.android.core.feature.ui.NavProvider
 import ru.popkov.russeliterature.features.auth.ui.AuthViewModel
-import timber.log.Timber
 
 @Composable
 fun MainWindow(
     navEntryPointProvider: Set<NavEntryPointProvider>,
     bottomNavProviders: Set<NavProvider>,
     navigator: Navigator,
-    authViewModel: AuthViewModel = hiltViewModel(),
+    authViewModel: AuthViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
-    var isUserAuth by remember {
-        mutableStateOf(false)
-    }
+    val isUserAuth = authViewModel.isUserLogged.collectAsState()
     val entryPointItems = navEntryPointProvider
         .mapNotNull { it.routeItem }
         .sortedBy { it.isStart }
@@ -42,9 +37,8 @@ fun MainWindow(
         .sortedBy { it.index }
     val snackbarHostState = remember { SnackbarHostState() }
 
-    navController.addOnDestinationChangedListener { _, destination, _ ->
-        Timber.tag("efefe").d("destination - %s", destination)
-        isUserAuth = destination.route == "spotlight"
+    navController.addOnDestinationChangedListener { _, _, _ ->
+        authViewModel.checkUser()
     }
 
     NavigationLaunchedEffect(
@@ -56,7 +50,7 @@ fun MainWindow(
         contentWindowInsets = WindowInsets(0.dp, 0.dp, 0.dp, 0.dp),
         snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
-            AnimatedVisibility(visible = isUserAuth) {
+            AnimatedVisibility(visible = isUserAuth.value) {
                 MainNavBar(
                     items = bottomBarItems,
                     navController = navController,

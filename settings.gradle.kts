@@ -34,6 +34,8 @@ include(
     ":features:spotlight:ui",
     ":features:auth:nav",
     ":features:auth:ui",
+    ":features:auth:data",
+    ":features:auth:domain",
     ":features:splash:nav",
     ":features:splash:ui",
     ":theme",

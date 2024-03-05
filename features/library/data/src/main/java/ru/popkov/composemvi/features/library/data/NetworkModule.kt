@@ -4,9 +4,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import ru.popkov.composemvi.features.library.data.remote.api.SongsApi
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import ru.popkov.composemvi.features.library.data.remote.api.SongsApi
 import javax.inject.Singleton
 
 @Module
@@ -17,7 +17,7 @@ class NetworkModule {
     @Provides
     fun retrofit(): Retrofit =
         Retrofit.Builder()
-            .baseUrl("https://mrlem.org/api/")
+            .baseUrl("http://russeliterature/api/")
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
 
