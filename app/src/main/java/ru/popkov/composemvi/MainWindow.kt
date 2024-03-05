@@ -18,16 +18,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import ru.popkov.android.core.feature.nav.NavigationLaunchedEffect
 import ru.popkov.android.core.feature.nav.Navigator
-import ru.popkov.android.core.feature.ui.LoginNavProvider
+import ru.popkov.android.core.feature.ui.NavEntryPointProvider
 import ru.popkov.android.core.feature.ui.NavProvider
-import ru.popkov.android.core.feature.ui.StartNavProvider
 import ru.popkov.russeliterature.features.auth.ui.AuthViewModel
 import timber.log.Timber
 
 @Composable
 fun MainWindow(
-    splashNavProvider: StartNavProvider,
-    authNavProvider: LoginNavProvider,
+    navEntryPointProvider: Set<NavEntryPointProvider>,
     bottomNavProviders: Set<NavProvider>,
     navigator: Navigator,
     authViewModel: AuthViewModel = hiltViewModel(),
@@ -36,6 +34,9 @@ fun MainWindow(
     var isUserAuth by remember {
         mutableStateOf(false)
     }
+    val entryPointItems = navEntryPointProvider
+        .mapNotNull { it.routeItem }
+        .sortedBy { it.isStart }
     val bottomBarItems = bottomNavProviders
         .mapNotNull { it.navBarItem }
         .sortedBy { it.index }
@@ -66,14 +67,15 @@ fun MainWindow(
 
         NavHost(
             navController = navController,
-            startDestination = splashNavProvider.routeItem.route,
+            startDestination = entryPointItems.find { it.isStart }?.route ?: "",
             modifier = Modifier
                 .padding(innerPadding),
         ) {
-            // graph below for bottom bar navigation flow
-            splashNavProvider.graph(this)
-            // graph below for auth navigation flow
-            authNavProvider.graph(this, snackbarHostState)
+            // graph below for entry point navigation flow
+            // like splash and auth screens
+            navEntryPointProvider.forEach { subGraph ->
+                subGraph.graph(this, snackbarHostState)
+            }
             // graph below for bottom bar navigation flow
             bottomNavProviders.forEach { subGraph ->
                 subGraph.graph(this, snackbarHostState)
