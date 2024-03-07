@@ -15,8 +15,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import kotlinx.coroutines.delay
 import ru.popkov.android.core.feature.ui.UiModePreviews
-import ru.popkov.composemvi.theme.GothicBoldSplash40
-import ru.popkov.composemvi.theme.Theme
+import ru.popkov.russeliterature.theme.GothicBoldSplash40
+import ru.popkov.russeliterature.theme.Theme
 
 @Composable
 internal fun SplashScreen(

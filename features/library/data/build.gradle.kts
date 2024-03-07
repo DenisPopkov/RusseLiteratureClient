@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.popkov.composesample.features.library.data"
+    namespace = "ru.popkov.russeliterature.features.library.data"
 }
 
 dependencies {
