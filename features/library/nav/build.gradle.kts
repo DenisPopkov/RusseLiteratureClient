@@ -3,5 +3,5 @@ plugins {
 }
 
 android {
-    namespace = "ru.popkov.composesample.features.library.nav"
+    namespace = "ru.popkov.russeliterature.features.library.nav"
 }

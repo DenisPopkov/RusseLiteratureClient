@@ -5,10 +5,10 @@ plugins {
 }
 
 android {
-    namespace = "ru.popkov.composesample"
+    namespace = "ru.popkov.russeliterature"
 
     defaultConfig {
-        applicationId = "ru.popkov.composesample"
+        applicationId = "ru.popkov.russeliterature"
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"

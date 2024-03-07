@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.popkov.composesample.features.spotlight.ui"
+    namespace = "ru.popkov.russeliterature.features.spotlight.ui"
 }
 
 dependencies {
