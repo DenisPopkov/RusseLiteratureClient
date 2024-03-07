@@ -3,22 +3,21 @@ package ru.popkov.composemvi
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import dagger.hilt.android.AndroidEntryPoint
 import ru.popkov.android.core.feature.nav.Navigator
+import ru.popkov.android.core.feature.ui.NavEntryPointProvider
 import ru.popkov.android.core.feature.ui.NavProvider
-import ru.popkov.composemvi.theme.Theme
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     @Inject
-    lateinit var navProviders: Set<@JvmSuppressWildcards NavProvider>
+    lateinit var bottomNavProviders: Set<@JvmSuppressWildcards NavProvider>
+
+    @Inject
+    lateinit var navEntryPointProvider: Set<@JvmSuppressWildcards NavEntryPointProvider>
 
     @Inject
     lateinit var navigator: Navigator
@@ -27,17 +26,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-            Theme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background,
-                ) {
-                    MainWindow(
-                        navProviders = navProviders,
-                        navigator = navigator,
-                    )
-                }
-            }
+            MainWindow(
+                navEntryPointProvider = navEntryPointProvider,
+                bottomNavProviders = bottomNavProviders,
+                navigator = navigator,
+            )
         }
     }
 
