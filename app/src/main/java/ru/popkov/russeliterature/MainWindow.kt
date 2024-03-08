@@ -50,7 +50,7 @@ fun MainWindow(
         contentWindowInsets = WindowInsets(0.dp, 0.dp, 0.dp, 0.dp),
         snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
-            AnimatedVisibility(visible = isUserAuth.value) {
+            AnimatedVisibility(visible = false) {
                 MainNavBar(
                     items = bottomBarItems,
                     navController = navController,
