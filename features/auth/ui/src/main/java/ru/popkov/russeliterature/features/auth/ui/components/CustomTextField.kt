@@ -1,4 +1,4 @@
-package ru.popkov.russeliterature.features.auth.ui
+package ru.popkov.russeliterature.features.auth.ui.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
@@ -17,6 +17,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ru.popkov.russeliterature.features.auth.ui.R
 import ru.popkov.russeliterature.features.auth.ui.utils.PhoneVisualTransformation
 import ru.popkov.russeliterature.theme.Colors
 import ru.popkov.russeliterature.theme.FormularMedium14
@@ -30,9 +31,9 @@ fun CustomTextField(
     inputFieldColor: Color = Colors.InputFieldColor,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
     @StringRes placeHolderText: Int = R.string.auth_phone,
-    mask: String? = "000 000 00 00",
-    maskNumber: Char? = '0',
-    onPhoneChanged: (String) -> Unit = {},
+    mask: String? = null,
+    maskNumber: Char? = null,
+    onValueChanged: (String) -> Unit = {},
     trailingIcon: @Composable () -> Unit = {},
 ) {
 
@@ -56,6 +57,7 @@ fun CustomTextField(
                 unfocusedContainerColor = inputFieldColor,
                 disabledContainerColor = inputFieldColor,
                 focusedTextColor = inputFieldTextColor,
+                unfocusedTextColor = inputFieldTextColor,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,
@@ -64,7 +66,11 @@ fun CustomTextField(
             ),
             visualTransformation = visualTransformation,
             onValueChange = { value ->
-                if (mask != null) onPhoneChanged(value.take(mask.count { it == maskNumber }))
+                if (mask != null) {
+                    onValueChanged(value.take(mask.count { it == maskNumber }))
+                } else {
+                    onValueChanged(value)
+                }
             },
             shape = RoundedCornerShape(size = 16.dp),
             singleLine = true,

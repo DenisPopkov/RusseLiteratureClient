@@ -10,12 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -23,22 +17,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import ru.popkov.russeliterature.features.auth.ui.utils.CODE_DIGIT
-import ru.popkov.russeliterature.features.auth.ui.utils.MASK_NUMBER
-import ru.popkov.russeliterature.features.auth.ui.utils.PHONE_NUMBER_MASK
+import ru.popkov.russeliterature.features.auth.ui.components.PasswordField
+import ru.popkov.russeliterature.features.auth.ui.components.PhoneNumberField
 import ru.popkov.russeliterature.theme.Colors
 import ru.popkov.russeliterature.theme.FormularRegular14
 import ru.popkov.russeliterature.theme.Grotesk36
@@ -60,8 +49,7 @@ internal fun AuthScreen(
                     is AuthViewEffect.ShowError ->
                         snackbarHostState.showSnackbar(effect.errorMessage)
 
-                    is AuthViewEffect.ChangeAuthToAlreadyHaveAccount -> {}
-                    is AuthViewEffect.ChangeAuthToNoAccount -> {}
+                    AuthViewEffect.GoToMainScreen -> onAuthClick.invoke()
                 }
             }
     }
@@ -75,6 +63,7 @@ internal fun AuthScreen(
             .navigationBarsPadding(),
         onPhoneNumberDone = authViewModel::onAction,
         onPasswordDone = authViewModel::onAction,
+        onCaptionClick = authViewModel::onAction,
     )
 }
 
@@ -84,6 +73,7 @@ private fun Auth(
     modifier: Modifier = Modifier,
     onPhoneNumberDone: (AuthViewAction) -> Unit = {},
     onPasswordDone: (AuthViewAction) -> Unit = {},
+    onCaptionClick: (AuthViewAction) -> Unit = {},
 ) {
     Box(
         modifier = modifier,
@@ -108,44 +98,46 @@ private fun Auth(
                 style = Grotesk36,
             )
 
-            var phoneNumber by rememberSaveable { mutableStateOf("") }
-
-            CustomTextField(
-                modifier = Modifier
-                    .padding(top = 72.dp),
-                value = phoneNumber,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                keyboardActions = KeyboardActions(onDone = {
-                    onPhoneNumberDone.invoke(AuthViewAction.OnApplyPhoneNumberClick(CODE_DIGIT + phoneNumber))
-                }),
-                placeHolderText = R.string.auth_phone,
-                mask = PHONE_NUMBER_MASK,
-                maskNumber = MASK_NUMBER,
-                onPhoneChanged = { phoneNumber = it },
-                trailingIcon = {
-                    if (phoneNumber.isNotEmpty()) {
-                        IconButton(onClick = { phoneNumber = "" }) {
-                            Icon(
-                                imageVector = Icons.Outlined.Close,
-                                contentDescription = null
-                            )
-                        }
-                    }
+            when (state.authGlobalState) {
+                AuthGlobalState.REGISTER_NEW_USER_PHONE_NUMBER -> {
+                    PhoneNumberField(
+                        modifier = Modifier.padding(top = 72.dp),
+                        onPhoneNumberDone = onPhoneNumberDone,
+                    )
                 }
-            )
+                AuthGlobalState.REGISTER_NEW_USER_PASSWORD -> {
+                    PasswordField(
+                        modifier = Modifier.padding(top = 72.dp),
+                        onPasswordDone = onPasswordDone,
+                    )
+                }
+                AuthGlobalState.AUTH -> {
+                    PhoneNumberField(
+                        modifier = Modifier.padding(top = 72.dp),
+                        onPhoneNumberDone = onPhoneNumberDone,
+                    )
+                    PasswordField(
+                        modifier = Modifier.padding(top = 18.dp),
+                        onPasswordDone = onPasswordDone,
+                    )
+                }
+            }
 
-//            CustomTextField(
-//                modifier = Modifier.padding(top = 18.dp),
-//                maxLength = 18,
-//                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-//                placeHolderText = R.string.auth_password,
-//            )
+            val clickAction = when (state.authGlobalState) {
+                AuthGlobalState.REGISTER_NEW_USER_PHONE_NUMBER, AuthGlobalState.REGISTER_NEW_USER_PASSWORD -> AuthViewAction.OnAlreadyHaveAccountClick
+                AuthGlobalState.AUTH -> AuthViewAction.OnNoAccountClick
+            }
 
             Text(
                 modifier = Modifier
                     .padding(top = 12.dp)
-                    .clickable { },
-                text = stringResource(id = R.string.auth_already_have_account),
+                    .clickable { onCaptionClick.invoke(clickAction) },
+                text = stringResource(
+                    id = when (state.authGlobalState) {
+                        AuthGlobalState.REGISTER_NEW_USER_PHONE_NUMBER, AuthGlobalState.REGISTER_NEW_USER_PASSWORD -> R.string.auth_already_have_account
+                        AuthGlobalState.AUTH -> R.string.auth_no_account
+                    }
+                ),
                 style = FormularRegular14,
                 color = Color.White.copy(alpha = 0.9f)
             )

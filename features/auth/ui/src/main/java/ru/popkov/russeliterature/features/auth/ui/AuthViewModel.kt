@@ -1,6 +1,5 @@
 package ru.popkov.russeliterature.features.auth.ui
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,14 +9,15 @@ import ru.popkov.android.core.feature.ui.EffectsProvider
 import ru.popkov.android.core.feature.ui.StateDelegate
 import ru.popkov.android.core.feature.ui.StateProvider
 import ru.popkov.russeliterature.features.auth.domain.repositories.AuthRepository
+import ru.popkov.russeliterature.features.auth.domain.usecase.ValidatePassword
 import ru.popkov.russeliterature.features.auth.domain.usecase.ValidatePhoneNumber
 import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val authRepository: AuthRepository,
     private val validatePhoneNumber: ValidatePhoneNumber,
+    private val validatePassword: ValidatePassword,
 ) : ViewModel(),
     StateProvider<AuthFormState> by StateDelegate(AuthFormState()),
     EffectsProvider<AuthViewEffect> by EffectsDelegate() {
@@ -25,7 +25,9 @@ class AuthViewModel @Inject constructor(
     fun onAction(action: AuthViewAction) {
         when (action) {
             is AuthViewAction.OnAlreadyHaveAccountClick ->
-                viewModelScope.sendEffect(AuthViewEffect.ChangeAuthToAlreadyHaveAccount)
+                viewModelScope.launch {
+                    updateState { copy(authGlobalState = AuthGlobalState.AUTH) }
+                }
 
             is AuthViewAction.OnApplyPhoneNumberClick -> {
                 viewModelScope.launch {
@@ -42,23 +44,51 @@ class AuthViewModel @Inject constructor(
             }
 
             is AuthViewAction.OnNoAccountClick ->
-                viewModelScope.sendEffect(AuthViewEffect.ChangeAuthToNoAccount)
+                viewModelScope.launch {
+                    updateState {
+                        copy(
+                            authGlobalState = if (state.value.authGlobalState == AuthGlobalState.REGISTER_NEW_USER_PHONE_NUMBER) {
+                                AuthGlobalState.REGISTER_NEW_USER_PASSWORD
+                            } else {
+                                AuthGlobalState.REGISTER_NEW_USER_PHONE_NUMBER
+                            }
+                        )
+                    }
+                }
         }
     }
 
     private fun submitData() {
         val phoneNumberResult = validatePhoneNumber.invoke(state.value.phoneNumber)
+        val passwordResult = validatePassword.invoke(state.value.password)
 
-        val hasError = listOf(
-            phoneNumberResult
-        ).any { it.errorMessage != null }
+        viewModelScope.launch {
+            when (state.value.authGlobalState) {
+                AuthGlobalState.REGISTER_NEW_USER_PHONE_NUMBER -> {
+                    if (phoneNumberResult.errorMessage == null) {
+                        updateState { copy(authGlobalState = AuthGlobalState.REGISTER_NEW_USER_PASSWORD) }
+                    } else {
+                        sendEffect(AuthViewEffect.ShowError(phoneNumberResult.errorMessage ?: ""))
+                    }
+                }
 
-        if (hasError) {
-            viewModelScope.sendEffect(
-                AuthViewEffect.ShowError(
-                    errorMessage = phoneNumberResult.errorMessage ?: ""
-                )
-            )
+                AuthGlobalState.REGISTER_NEW_USER_PASSWORD -> {
+                    if (passwordResult.errorMessage == null) {
+                        sendEffect(AuthViewEffect.GoToMainScreen)
+                    } else {
+                        sendEffect(AuthViewEffect.ShowError(passwordResult.errorMessage ?: ""))
+                    }
+                }
+
+                AuthGlobalState.AUTH -> {
+                    if (phoneNumberResult.errorMessage == null && passwordResult.errorMessage == null) {
+                        sendEffect(AuthViewEffect.GoToMainScreen)
+                    } else {
+                        sendEffect(AuthViewEffect.ShowError("Неправильный номер телефона или пароль"))
+                    }
+                }
+
+            }
         }
     }
 
