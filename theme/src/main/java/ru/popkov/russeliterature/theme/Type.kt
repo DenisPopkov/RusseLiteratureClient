@@ -25,3 +25,26 @@ val GothicBoldSplash40 = TextStyle(
     color = Color.White,
     fontFamily = FontFamily(Font(R.font.gothic_bold)),
 )
+
+val Grotesk36 = TextStyle(
+    fontSize = 36.sp,
+    fontWeight = FontWeight.Bold,
+    lineHeight = 50.sp,
+    color = Color.White,
+    fontFamily = FontFamily(Font(R.font.grotesk_bold)),
+)
+
+val FormularRegular14 = TextStyle(
+    fontSize = 14.sp,
+    fontWeight = FontWeight.Normal,
+    lineHeight = 50.sp,
+    color = Color.White,
+    fontFamily = FontFamily(Font(R.font.formular_regular)),
+)
+
+val FormularMedium14 = TextStyle(
+    fontSize = 14.sp,
+    fontWeight = FontWeight.Medium,
+    lineHeight = 50.sp,
+    fontFamily = FontFamily(Font(R.font.formular_medium)),
+)

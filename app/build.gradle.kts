@@ -34,7 +34,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.hilt.navigation)
     implementation(project(":features:library:data"))
     implementation(project(":features:library:ui"))
     implementation(project(":features:spotlight:ui"))

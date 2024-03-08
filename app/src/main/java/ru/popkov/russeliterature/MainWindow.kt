@@ -2,33 +2,32 @@ package ru.popkov.russeliterature
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import ru.popkov.android.core.feature.nav.NavigationLaunchedEffect
 import ru.popkov.android.core.feature.nav.Navigator
 import ru.popkov.android.core.feature.ui.NavEntryPointProvider
 import ru.popkov.android.core.feature.ui.NavProvider
-import ru.popkov.russeliterature.features.auth.ui.AuthViewModel
 
 @Composable
 fun MainWindow(
     navEntryPointProvider: Set<NavEntryPointProvider>,
     bottomNavProviders: Set<NavProvider>,
     navigator: Navigator,
-    authViewModel: AuthViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
-    val isUserAuth = authViewModel.isUserLogged.collectAsState()
     val entryPointItems = navEntryPointProvider
         .mapNotNull { it.routeItem }
         .sortedBy { it.isStart }
@@ -38,7 +37,7 @@ fun MainWindow(
     val snackbarHostState = remember { SnackbarHostState() }
 
     navController.addOnDestinationChangedListener { _, _, _ ->
-        authViewModel.checkUser()
+        // TODO() add logic to hide/show bottom nav bar
     }
 
     NavigationLaunchedEffect(
@@ -48,9 +47,21 @@ fun MainWindow(
 
     Scaffold(
         contentWindowInsets = WindowInsets(0.dp, 0.dp, 0.dp, 0.dp),
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = {
+            SnackbarHost(
+                snackbarHostState,
+                modifier = Modifier
+                    .padding(bottom = 16.dp)
+                    .padding(paddingValues = WindowInsets.ime.asPaddingValues()),
+            ) {
+                Snackbar(
+                    containerColor = Color.Red,
+                    snackbarData = it,
+                )
+            }
+        },
         bottomBar = {
-            AnimatedVisibility(visible = isUserAuth.value) {
+            AnimatedVisibility(visible = false) {
                 MainNavBar(
                     items = bottomBarItems,
                     navController = navController,

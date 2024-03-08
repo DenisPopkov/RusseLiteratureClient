@@ -1,5 +1,6 @@
 package ru.popkov.russeliterature.features.auth.data.repositories
 
+import kotlinx.coroutines.coroutineScope
 import ru.popkov.russeliterature.features.auth.data.local.daos.UserDao
 import ru.popkov.russeliterature.features.auth.data.remote.api.UserApi
 import ru.popkov.russeliterature.features.auth.domain.repositories.AuthRepository
@@ -15,12 +16,10 @@ class DefaultUserRepository @Inject constructor(
     private val userApi: UserApi,
 ) : AuthRepository {
 
-    override suspend fun loginUser(): Boolean {
-//        val result = withContext(Dispatchers.IO) {
-//            userApi.loginUser()
-//        }
+    override suspend fun loginUser(): Boolean = coroutineScope {
+//        val result = async { userApi.loginUser() }
         userDao.add(UserEntity(id = 10L))
-        return true
+        true
     }
 
     override suspend fun isUserLogged(id: Long): Long {
