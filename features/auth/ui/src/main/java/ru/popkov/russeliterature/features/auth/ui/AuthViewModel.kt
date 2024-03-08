@@ -1,28 +1,37 @@
 package ru.popkov.russeliterature.features.auth.ui
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.runBlocking
+import ru.popkov.android.core.feature.ui.EffectsDelegate
+import ru.popkov.android.core.feature.ui.EffectsProvider
+import ru.popkov.android.core.feature.ui.StateDelegate
+import ru.popkov.android.core.feature.ui.StateProvider
 import ru.popkov.russeliterature.features.auth.domain.repositories.AuthRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val authRepository: AuthRepository,
-) : ViewModel() {
+) : ViewModel(),
+    StateProvider<AuthFormState> by StateDelegate(AuthFormState()),
+    EffectsProvider<AuthViewEffect> by EffectsDelegate() {
 
-    private val _isUserLogged = MutableStateFlow(false)
-    val isUserLogged = _isUserLogged
+    fun onAction(action: AuthViewAction) {
+        when (action) {
+            is AuthViewAction.OnAlreadyHaveAccountClick ->
+                viewModelScope.sendEffect(AuthViewEffect.ChangeAuthToAlreadyHaveAccount)
 
-    fun checkUser() {
-        runBlocking { _isUserLogged.value = authRepository.isUserLogged(10L) == 10L }
-    }
+            is AuthViewAction.OnApplyPasswordClick ->
+                viewModelScope.sendEffect(AuthViewEffect.ValidateField)
 
-    fun loginUser() {
-        runBlocking {
-            val result = authRepository.loginUser()
-            _isUserLogged.value = result
+            is AuthViewAction.OnApplyPhoneNumberClick ->
+                viewModelScope.sendEffect(AuthViewEffect.ValidateField)
+
+            is AuthViewAction.OnNoAccountClick ->
+                viewModelScope.sendEffect(AuthViewEffect.ChangeAuthToNoAccount)
         }
     }
 

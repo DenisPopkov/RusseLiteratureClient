@@ -7,28 +7,23 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import ru.popkov.android.core.feature.nav.NavigationLaunchedEffect
 import ru.popkov.android.core.feature.nav.Navigator
 import ru.popkov.android.core.feature.ui.NavEntryPointProvider
 import ru.popkov.android.core.feature.ui.NavProvider
-import ru.popkov.russeliterature.features.auth.ui.AuthViewModel
 
 @Composable
 fun MainWindow(
     navEntryPointProvider: Set<NavEntryPointProvider>,
     bottomNavProviders: Set<NavProvider>,
     navigator: Navigator,
-    authViewModel: AuthViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
-    val isUserAuth = authViewModel.isUserLogged.collectAsState()
     val entryPointItems = navEntryPointProvider
         .mapNotNull { it.routeItem }
         .sortedBy { it.isStart }
@@ -38,7 +33,7 @@ fun MainWindow(
     val snackbarHostState = remember { SnackbarHostState() }
 
     navController.addOnDestinationChangedListener { _, _, _ ->
-        authViewModel.checkUser()
+        // TODO() add logic to hide/show bottom nav bar
     }
 
     NavigationLaunchedEffect(

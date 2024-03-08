@@ -13,19 +13,26 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ru.popkov.russeliterature.theme.Colors
-import ru.popkov.russeliterature.theme.FormularRegular12
+import ru.popkov.russeliterature.theme.FormularRegular14
 import ru.popkov.russeliterature.theme.Grotesk36
+import ru.popkov.russeliterature.theme.Theme
 
 @ExperimentalMaterial3Api
 @Composable
@@ -34,12 +41,41 @@ internal fun AuthScreen(
     authViewModel: AuthViewModel = hiltViewModel(),
     onAuthClick: () -> Unit,
 ) {
-    Box(
+
+    val state by authViewModel.state.collectAsState()
+
+    LaunchedEffect(Unit) {
+        authViewModel.effects
+            .collect { effect ->
+                when (effect) {
+                    is AuthViewEffect.ShowError ->
+                        snackbarHostState.showSnackbar("Validation failed")
+                    is AuthViewEffect.ChangeAuthToAlreadyHaveAccount -> {}
+                    is AuthViewEffect.ChangeAuthToNoAccount -> {}
+                    is AuthViewEffect.ValidateField -> {}
+                }
+            }
+    }
+
+    Auth(
+        state = state,
         modifier = Modifier
             .fillMaxSize()
             .background(color = Colors.BackgroundColor)
             .statusBarsPadding()
             .navigationBarsPadding(),
+        onAuthClick = authViewModel::onAction,
+    )
+}
+
+@Composable
+private fun Auth(
+    state: AuthFormState,
+    modifier: Modifier = Modifier,
+    onAuthClick: (AuthViewAction) -> Unit = {},
+) {
+    Box(
+        modifier = modifier,
         contentAlignment = Alignment.TopStart,
     ) {
         Image(
@@ -56,12 +92,7 @@ internal fun AuthScreen(
         ) {
             Text(
                 modifier = Modifier
-                    .padding(top = 42.dp)
-                    .clickable {
-                        authViewModel
-                            .loginUser()
-                            .also { onAuthClick.invoke() }
-                    },
+                    .padding(top = 42.dp),
                 text = stringResource(id = R.string.auth_title),
                 style = Grotesk36,
             )
@@ -85,8 +116,19 @@ internal fun AuthScreen(
                     .padding(top = 12.dp)
                     .clickable { },
                 text = stringResource(id = R.string.auth_already_have_account),
-                style = FormularRegular12,
+                style = FormularRegular14,
+                color = Color.White.copy(alpha = 0.9f)
             )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    Theme {
+        Surface {
+            Auth(state = AuthFormState())
         }
     }
 }
