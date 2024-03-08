@@ -1,6 +1,8 @@
 package ru.popkov.russeliterature
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.ime
@@ -10,7 +12,10 @@ import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -36,8 +41,13 @@ fun MainWindow(
         .sortedBy { it.index }
     val snackbarHostState = remember { SnackbarHostState() }
 
-    navController.addOnDestinationChangedListener { _, _, _ ->
-        // TODO() add logic to hide/show bottom nav bar
+    var showBottomNavBar by remember {
+        mutableStateOf(false)
+    }
+
+    navController.addOnDestinationChangedListener { _, destination, _ ->
+        showBottomNavBar =
+            destination.route == "home" || destination.route == "search" || destination.route == "fave"
     }
 
     NavigationLaunchedEffect(
@@ -61,7 +71,7 @@ fun MainWindow(
             }
         },
         bottomBar = {
-            AnimatedVisibility(visible = false) {
+            AnimatedVisibility(visible = showBottomNavBar) {
                 MainNavBar(
                     items = bottomBarItems,
                     navController = navController,
@@ -71,10 +81,12 @@ fun MainWindow(
     ) { innerPadding ->
 
         NavHost(
-            navController = navController,
-            startDestination = entryPointItems.find { it.isStart }?.route ?: "",
             modifier = Modifier
                 .padding(innerPadding),
+            navController = navController,
+            startDestination = entryPointItems.find { it.isStart }?.route ?: "",
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None },
         ) {
             // graph below for entry point navigation flow
             // like splash and auth screens

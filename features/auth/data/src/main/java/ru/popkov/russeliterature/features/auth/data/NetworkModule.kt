@@ -11,8 +11,8 @@ import ru.popkov.russeliterature.features.auth.data.remote.api.UserApi
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
 
+
     @Provides
     fun userApi(retrofit: Retrofit): UserApi =
         retrofit.create(UserApi::class.java)
-
 }
