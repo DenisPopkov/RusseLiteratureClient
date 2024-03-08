@@ -2,13 +2,17 @@ package ru.popkov.russeliterature
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -43,7 +47,19 @@ fun MainWindow(
 
     Scaffold(
         contentWindowInsets = WindowInsets(0.dp, 0.dp, 0.dp, 0.dp),
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = {
+            SnackbarHost(
+                snackbarHostState,
+                modifier = Modifier
+                    .padding(bottom = 16.dp)
+                    .padding(paddingValues = WindowInsets.ime.asPaddingValues()),
+            ) {
+                Snackbar(
+                    containerColor = Color.Red,
+                    snackbarData = it,
+                )
+            }
+        },
         bottomBar = {
             AnimatedVisibility(visible = false) {
                 MainNavBar(

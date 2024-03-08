@@ -10,8 +10,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -19,6 +23,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,12 +36,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import ru.popkov.russeliterature.features.auth.ui.utils.CODE_DIGIT
+import ru.popkov.russeliterature.features.auth.ui.utils.MASK_NUMBER
+import ru.popkov.russeliterature.features.auth.ui.utils.PHONE_NUMBER_MASK
 import ru.popkov.russeliterature.theme.Colors
 import ru.popkov.russeliterature.theme.FormularRegular14
 import ru.popkov.russeliterature.theme.Grotesk36
 import ru.popkov.russeliterature.theme.Theme
 
-@ExperimentalMaterial3Api
 @Composable
 internal fun AuthScreen(
     snackbarHostState: SnackbarHostState,
@@ -49,10 +58,10 @@ internal fun AuthScreen(
             .collect { effect ->
                 when (effect) {
                     is AuthViewEffect.ShowError ->
-                        snackbarHostState.showSnackbar("Validation failed")
+                        snackbarHostState.showSnackbar(effect.errorMessage)
+
                     is AuthViewEffect.ChangeAuthToAlreadyHaveAccount -> {}
                     is AuthViewEffect.ChangeAuthToNoAccount -> {}
-                    is AuthViewEffect.ValidateField -> {}
                 }
             }
     }
@@ -64,7 +73,8 @@ internal fun AuthScreen(
             .background(color = Colors.BackgroundColor)
             .statusBarsPadding()
             .navigationBarsPadding(),
-        onAuthClick = authViewModel::onAction,
+        onPhoneNumberDone = authViewModel::onAction,
+        onPasswordDone = authViewModel::onAction,
     )
 }
 
@@ -72,7 +82,8 @@ internal fun AuthScreen(
 private fun Auth(
     state: AuthFormState,
     modifier: Modifier = Modifier,
-    onAuthClick: (AuthViewAction) -> Unit = {},
+    onPhoneNumberDone: (AuthViewAction) -> Unit = {},
+    onPasswordDone: (AuthViewAction) -> Unit = {},
 ) {
     Box(
         modifier = modifier,
@@ -97,19 +108,38 @@ private fun Auth(
                 style = Grotesk36,
             )
 
-            CustomTextField(
-                modifier = Modifier.padding(top = 72.dp),
-                maxLength = 11,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                placeHolderText = R.string.auth_phone,
-            )
+            var phoneNumber by rememberSaveable { mutableStateOf("") }
 
             CustomTextField(
-                modifier = Modifier.padding(top = 18.dp),
-                maxLength = 18,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                placeHolderText = R.string.auth_password,
+                modifier = Modifier
+                    .padding(top = 72.dp),
+                value = phoneNumber,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                keyboardActions = KeyboardActions(onDone = {
+                    onPhoneNumberDone.invoke(AuthViewAction.OnApplyPhoneNumberClick(CODE_DIGIT + phoneNumber))
+                }),
+                placeHolderText = R.string.auth_phone,
+                mask = PHONE_NUMBER_MASK,
+                maskNumber = MASK_NUMBER,
+                onPhoneChanged = { phoneNumber = it },
+                trailingIcon = {
+                    if (phoneNumber.isNotEmpty()) {
+                        IconButton(onClick = { phoneNumber = "" }) {
+                            Icon(
+                                imageVector = Icons.Outlined.Close,
+                                contentDescription = null
+                            )
+                        }
+                    }
+                }
             )
+
+//            CustomTextField(
+//                modifier = Modifier.padding(top = 18.dp),
+//                maxLength = 18,
+//                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+//                placeHolderText = R.string.auth_password,
+//            )
 
             Text(
                 modifier = Modifier
