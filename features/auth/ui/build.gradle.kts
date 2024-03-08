@@ -9,6 +9,6 @@ android {
 dependencies {
     implementation(project(":features:auth:nav"))
     implementation(project(":features:auth:domain"))
-    implementation(project(":features:spotlight:nav"))
+    implementation(project(":features:home:nav"))
     implementation(project(":theme"))
 }

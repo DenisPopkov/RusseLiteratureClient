@@ -13,6 +13,10 @@ object Colors {
     val Pink40 = Color(0xFF7D5260)
 
     val BackgroundColor = Color(0xFF141414)
+
     val InputFieldColor = Color(0xFF2F2F2F)
     val InputFieldTextColor = Color(0xFF868686)
+
+    val SelectedTabTint = Color(0xFFFDD528)
+    val UnselectedTabTint = Color(0xFF888888)
 }

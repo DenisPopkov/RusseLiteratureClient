@@ -34,9 +34,12 @@ android {
 }
 
 dependencies {
-    implementation(project(":features:library:data"))
-    implementation(project(":features:library:ui"))
-    implementation(project(":features:spotlight:ui"))
+    implementation(project(":features:home:data"))
+    implementation(project(":features:home:ui"))
+    implementation(project(":features:search:data"))
+    implementation(project(":features:search:ui"))
+    implementation(project(":features:fave:data"))
+    implementation(project(":features:fave:ui"))
     implementation(project(":features:splash:ui"))
     implementation(project(":features:auth:nav"))
     implementation(project(":features:auth:data"))

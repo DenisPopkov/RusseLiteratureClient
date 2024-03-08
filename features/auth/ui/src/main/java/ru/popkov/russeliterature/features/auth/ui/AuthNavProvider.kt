@@ -5,8 +5,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import ru.popkov.android.core.feature.nav.Navigator
 import ru.popkov.android.core.feature.ui.NavEntryPointProvider
-import ru.popkov.russeliterature.features.spotlight.nav.SpotlightDestination
 import ru.popkov.russeliterature.features.auth.nav.AuthDestination
+import ru.popkov.russeliterature.features.home.nav.HomeDestination
 import se.ansman.dagger.auto.AutoBindIntoSet
 import javax.inject.Inject
 
@@ -28,7 +28,7 @@ class AuthNavProvider @Inject constructor(
                 AuthScreen(
                     snackbarHostState = snackbarHostState,
                     onAuthClick = {
-                        navigator.navigate(SpotlightDestination) {
+                        navigator.navigate(HomeDestination) {
                             launchSingleTop = true
                             popUpTo(0)
                         }
