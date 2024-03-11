@@ -2,7 +2,11 @@ package ru.popkov.russeliterature.features.auth.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import auth.AuthOuterClass
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import ru.popkov.android.core.feature.ui.EffectsDelegate
 import ru.popkov.android.core.feature.ui.EffectsProvider
@@ -74,7 +78,7 @@ class AuthViewModel @Inject constructor(
 
                 AuthGlobalState.REGISTER_NEW_USER_PASSWORD -> {
                     if (passwordResult.errorMessage == null) {
-                        sendEffect(AuthViewEffect.GoToMainScreen)
+                        registerAndNavigateToMain()
                     } else {
                         sendEffect(AuthViewEffect.ShowError(passwordResult.errorMessage ?: ""))
                     }
@@ -82,7 +86,7 @@ class AuthViewModel @Inject constructor(
 
                 AuthGlobalState.AUTH -> {
                     if (phoneNumberResult.errorMessage == null && passwordResult.errorMessage == null) {
-                        sendEffect(AuthViewEffect.GoToMainScreen)
+                        loginUserAndNavigateToMain()
                     } else {
                         sendEffect(AuthViewEffect.ShowError("Неправильный номер телефона или пароль"))
                     }
@@ -90,6 +94,51 @@ class AuthViewModel @Inject constructor(
 
             }
         }
+    }
+
+    private suspend fun registerAndNavigateToMain() = coroutineScope {
+        registerNewUser(
+            phoneNumber = state.value.phoneNumber,
+            password = state.value.password
+        ).invokeOnCompletion {
+            sendEffect(AuthViewEffect.GoToMainScreen)
+        }
+    }
+
+    private suspend fun loginUserAndNavigateToMain() = coroutineScope {
+        loginUser(
+            phoneNumber = state.value.phoneNumber,
+            password = state.value.password,
+            appId = 1
+        ).invokeOnCompletion {
+            sendEffect(AuthViewEffect.GoToMainScreen)
+        }
+    }
+
+    private suspend fun registerNewUser(
+        phoneNumber: String,
+        password: String
+    ): Deferred<AuthOuterClass.RegisterResponse> = coroutineScope {
+        val request = AuthOuterClass.RegisterRequest
+            .newBuilder()
+            .setPhone(phoneNumber)
+            .setPassword(password)
+            .build()
+        return@coroutineScope async { authRepository.registerUser(request) }
+    }
+
+    private suspend fun loginUser(
+        phoneNumber: String,
+        password: String,
+        appId: Int,
+    ): Deferred<AuthOuterClass.LoginResponse> = coroutineScope {
+        val request = AuthOuterClass.LoginRequest
+            .newBuilder()
+            .setPhone(phoneNumber)
+            .setPassword(password)
+            .setAppId(appId)
+            .build()
+        return@coroutineScope async { authRepository.loginUser(request) }
     }
 
 }
