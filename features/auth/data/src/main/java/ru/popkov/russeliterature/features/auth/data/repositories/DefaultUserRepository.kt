@@ -1,28 +1,32 @@
 package ru.popkov.russeliterature.features.auth.data.repositories
 
-import kotlinx.coroutines.coroutineScope
+import auth.AuthGrpc
+import auth.AuthOuterClass
+import auth.AuthOuterClass.LoginRequest
+import io.grpc.ManagedChannelBuilder
 import ru.popkov.russeliterature.features.auth.data.local.daos.UserDao
-import ru.popkov.russeliterature.features.auth.data.remote.api.UserApi
 import ru.popkov.russeliterature.features.auth.domain.repositories.AuthRepository
 import se.ansman.dagger.auto.AutoBind
 import javax.inject.Inject
 import javax.inject.Singleton
-import ru.popkov.russeliterature.features.auth.data.local.entities.User as UserEntity
 
 @AutoBind
 @Singleton
 class DefaultUserRepository @Inject constructor(
     private val userDao: UserDao,
-    private val userApi: UserApi,
 ) : AuthRepository {
 
-    override suspend fun loginUser(): Boolean = coroutineScope {
-//        val result = async { userApi.loginUser() }
-        userDao.add(UserEntity(id = 10L))
-        true
+    override suspend fun registerUser(registerRequest: AuthOuterClass.RegisterRequest): AuthOuterClass.RegisterResponse {
+        val channel = ManagedChannelBuilder.forAddress("192.168.88.112", 8085).usePlaintext().build()
+        val client = AuthGrpc.newBlockingStub(channel)
+        return client.register(registerRequest)
     }
 
-    override suspend fun isUserLogged(id: Long): Long {
-        return userDao.findUser(id)
+    // for adb is 10.0.2.2
+    // for real device is 192.168.88.112 (office network on laptop)
+    override suspend fun loginUser(loginRequest: LoginRequest): AuthOuterClass.LoginResponse {
+        val channel = ManagedChannelBuilder.forAddress("192.168.88.112", 8085).usePlaintext().build()
+        val client = AuthGrpc.newBlockingStub(channel)
+        return client.login(loginRequest)
     }
 }

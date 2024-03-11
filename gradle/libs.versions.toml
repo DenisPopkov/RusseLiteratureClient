@@ -10,14 +10,20 @@ androidx-compose-bom = "2024.02.01"
 androidx-navigation = "2.7.7"
 androidx-room = "2.6.1"
 autodagger = "1.0.0"
-hilt = "2.50"
+hilt = "2.51"
 javax-inject = "1"
 junit = "4.13.2"
 kotlin = "1.9.22"
 kotlin-coroutines = "1.8.0"
-ksp = "1.9.22-1.0.17"
+ksp = "1.9.22-1.0.18"
+protobufGradlePlugin = "0.9.4"
 retrofit = "2.9.0"
 timber = "5.0.1"
+protobuf = "3.25.2"
+protobufPlugin = "0.9.4"
+kotlinxSerializationJson = "1.6.0"
+grpc = "1.62.2"
+annotationApi = "6.0.53"
 
 # used directly in gradle plugins
 androidx-compose-compiler = "1.5.10"
@@ -40,10 +46,22 @@ activity = { module = "androidx.activity:activity-ktx", version.ref = "androidx-
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
-kotlin-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref="kotlin-coroutines" }
+kotlin-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
 androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigation" }
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
-retrofit-moshi = { group = "com.squareup.retrofit2", name="converter-moshi", version.ref = "retrofit" }
+retrofit-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+
+# gRPC
+grpc-okhttp = { module = "io.grpc:grpc-okhttp", version.ref = "grpc" }
+annotations-api = { module = "org.apache.tomcat:annotations-api", version.ref = "annotationApi" }
+grpc-protoc-gen-java = { module = "io.grpc:protoc-gen-grpc-java", version.ref = "grpc" }
+grpc-stub = { module = "io.grpc:grpc-stub", version.ref = "grpc" }
+protobuf-lite = { module = "io.grpc:grpc-protobuf-lite", version.ref = "grpc" }
+
+# Protobuf
+protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
+protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 
 # used directly in gradle plugins
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidx-compose-bom" }
@@ -63,6 +81,7 @@ javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "j
 autodagger-android = { group = "se.ansman.dagger.auto", name = "android", version.ref = "autodagger" }
 autodagger-compiler = { group = "se.ansman.dagger.auto", name = "compiler", version.ref = "autodagger" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+kotlinx-serialization = { group = "kotlinx-serialization", name = "serialization", version.ref = "kotlinxSerializationJson" }
 
 # project internal convention plugin
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
@@ -71,7 +90,17 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [bundles]
-retrofit = [ "retrofit-core", "retrofit-moshi" ]
+retrofit = [
+    "retrofit-core",
+    "retrofit-moshi",
+]
+grpc = [
+    "grpc-stub",
+    "grpc-okhttp",
+    "grpc-protoc-gen-java",
+    "annotations-api",
+    "protobuf-lite",
+]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -79,6 +108,9 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
+protobuf-classpath = { id = "com.google.protobuf", version.ref = "protobufGradlePlugin" }
 
 # project internal convention plugins
 app-android-application = { id = "app.android.application", version = "unspecified" }

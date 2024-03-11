@@ -16,7 +16,7 @@ class NetworkModule {
     @Provides
     fun retrofit(): Retrofit =
         Retrofit.Builder()
-            .baseUrl("http://russeliterature/api/")
+            .baseUrl("http://10.0.2.2:8080/")
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
 }
