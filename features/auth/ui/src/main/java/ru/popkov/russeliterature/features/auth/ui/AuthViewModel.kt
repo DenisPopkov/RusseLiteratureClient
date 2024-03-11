@@ -109,7 +109,6 @@ class AuthViewModel @Inject constructor(
         loginUser(
             phoneNumber = state.value.phoneNumber,
             password = state.value.password,
-            appId = 1
         ).invokeOnCompletion {
             sendEffect(AuthViewEffect.GoToMainScreen)
         }
@@ -130,13 +129,11 @@ class AuthViewModel @Inject constructor(
     private suspend fun loginUser(
         phoneNumber: String,
         password: String,
-        appId: Int,
     ): Deferred<AuthOuterClass.LoginResponse> = coroutineScope {
         val request = AuthOuterClass.LoginRequest
             .newBuilder()
             .setPhone(phoneNumber)
             .setPassword(password)
-            .setAppId(appId)
             .build()
         return@coroutineScope async { authRepository.loginUser(request) }
     }

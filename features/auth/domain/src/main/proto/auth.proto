@@ -21,7 +21,6 @@ message RegisterResponse {
 message LoginRequest {
   string phone = 1; // phone number of the user to register
   string password = 2; // password of the user to register
-  int32  app_id = 3; // ID of the app to login to
 }
 
 message LoginResponse {
