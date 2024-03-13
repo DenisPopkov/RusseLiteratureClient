@@ -11,4 +11,5 @@ dependencies {
     implementation(project(":features:auth:domain"))
     implementation(libs.kotlin.coroutines)
     implementation(libs.bundles.retrofit)
+    implementation(libs.bundles.grpc)
 }
