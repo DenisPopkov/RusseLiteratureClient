@@ -26,7 +26,8 @@ import ru.popkov.russeliterature.theme.Theme
 @Composable
 fun PhoneNumberField(
     modifier: Modifier = Modifier,
-    onPhoneNumberDone: (AuthViewAction) -> Unit = {},
+    onPhoneDone: (AuthViewAction) -> Unit = {},
+    onPhoneNumberChange: (AuthViewAction) -> Unit = {},
 ) {
     var phoneNumber by rememberSaveable { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -36,13 +37,16 @@ fun PhoneNumberField(
         value = phoneNumber,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
         keyboardActions = KeyboardActions(onDone = {
-            onPhoneNumberDone.invoke(AuthViewAction.OnApplyPhoneNumberClick(CODE_DIGIT + phoneNumber))
+            onPhoneDone.invoke(AuthViewAction.OnDone)
             keyboardController?.hide()
         }),
         placeHolderText = R.string.auth_phone,
         mask = PHONE_NUMBER_MASK,
         maskNumber = MASK_NUMBER,
-        onValueChanged = { phoneNumber = it },
+        onValueChanged = {
+            phoneNumber = it.filter { text -> text.isDigit() }
+            onPhoneNumberChange.invoke(AuthViewAction.OnPhoneNumberChange(CODE_DIGIT + phoneNumber))
+        },
         trailingIcon = {
             if (phoneNumber.isNotEmpty()) {
                 IconButton(onClick = { phoneNumber = "" }) {

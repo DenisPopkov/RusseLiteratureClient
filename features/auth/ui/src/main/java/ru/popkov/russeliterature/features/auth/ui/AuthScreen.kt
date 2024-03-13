@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -58,12 +56,11 @@ internal fun AuthScreen(
         state = state,
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Colors.BackgroundColor)
-            .statusBarsPadding()
-            .navigationBarsPadding(),
+            .background(color = Colors.BackgroundColor),
         onPhoneNumberDone = authViewModel::onAction,
         onPasswordDone = authViewModel::onAction,
         onCaptionClick = authViewModel::onAction,
+        onActionDone = authViewModel::onAction,
     )
 }
 
@@ -74,6 +71,7 @@ private fun Auth(
     onPhoneNumberDone: (AuthViewAction) -> Unit = {},
     onPasswordDone: (AuthViewAction) -> Unit = {},
     onCaptionClick: (AuthViewAction) -> Unit = {},
+    onActionDone: (AuthViewAction) -> Unit = {},
 ) {
     Box(
         modifier = modifier,
@@ -93,7 +91,7 @@ private fun Auth(
         ) {
             Text(
                 modifier = Modifier
-                    .padding(top = 42.dp),
+                    .padding(top = 84.dp),
                 text = stringResource(id = R.string.auth_title),
                 style = Grotesk36,
             )
@@ -102,23 +100,29 @@ private fun Auth(
                 AuthGlobalState.REGISTER_NEW_USER_PHONE_NUMBER -> {
                     PhoneNumberField(
                         modifier = Modifier.padding(top = 72.dp),
-                        onPhoneNumberDone = onPhoneNumberDone,
+                        onPhoneDone = onActionDone,
+                        onPhoneNumberChange = onPhoneNumberDone,
                     )
                 }
+
                 AuthGlobalState.REGISTER_NEW_USER_PASSWORD -> {
                     PasswordField(
                         modifier = Modifier.padding(top = 72.dp),
-                        onPasswordDone = onPasswordDone,
+                        onPasswordDone = onActionDone,
+                        onPasswordChange = onPasswordDone,
                     )
                 }
+
                 AuthGlobalState.AUTH -> {
                     PhoneNumberField(
                         modifier = Modifier.padding(top = 72.dp),
-                        onPhoneNumberDone = onPhoneNumberDone,
+                        onPhoneDone = onActionDone,
+                        onPhoneNumberChange = onPhoneNumberDone,
                     )
                     PasswordField(
                         modifier = Modifier.padding(top = 18.dp),
-                        onPasswordDone = onPasswordDone,
+                        onPasswordDone = onActionDone,
+                        onPasswordChange = onPasswordDone,
                     )
                 }
             }
@@ -130,7 +134,7 @@ private fun Auth(
 
             Text(
                 modifier = Modifier
-                    .padding(top = 12.dp)
+                    .padding(top = 12.dp, start = 2.dp)
                     .clickable { onCaptionClick.invoke(clickAction) },
                 text = stringResource(
                     id = when (state.authGlobalState) {

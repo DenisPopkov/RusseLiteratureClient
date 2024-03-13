@@ -33,18 +33,16 @@ class AuthViewModel @Inject constructor(
                     updateState { copy(authGlobalState = AuthGlobalState.AUTH) }
                 }
 
-            is AuthViewAction.OnApplyPhoneNumberClick -> {
+            is AuthViewAction.OnPhoneNumberChange -> {
                 viewModelScope.launch {
                     updateState { copy(phoneNumber = action.phoneNumber) }
                 }
-                submitData()
             }
 
-            is AuthViewAction.OnApplyPasswordClick -> {
+            is AuthViewAction.OnPasswordChange -> {
                 viewModelScope.launch {
                     updateState { copy(password = action.password) }
                 }
-                submitData()
             }
 
             is AuthViewAction.OnNoAccountClick ->
@@ -59,6 +57,8 @@ class AuthViewModel @Inject constructor(
                         )
                     }
                 }
+
+            is AuthViewAction.OnDone -> submitData()
         }
     }
 
