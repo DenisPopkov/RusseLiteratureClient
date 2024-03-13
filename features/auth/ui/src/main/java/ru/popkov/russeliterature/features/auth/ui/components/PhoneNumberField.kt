@@ -42,7 +42,7 @@ fun PhoneNumberField(
         placeHolderText = R.string.auth_phone,
         mask = PHONE_NUMBER_MASK,
         maskNumber = MASK_NUMBER,
-        onValueChanged = { phoneNumber = it },
+        onValueChanged = { phoneNumber = it.filter { text -> text.isDigit() } },
         trailingIcon = {
             if (phoneNumber.isNotEmpty()) {
                 IconButton(onClick = { phoneNumber = "" }) {

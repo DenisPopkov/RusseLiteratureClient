@@ -56,6 +56,7 @@ class SplashNavProvider @Inject constructor(
                     onDelayHandle = {
                         navigator.navigate(AuthDestination) {
                             launchSingleTop = true
+                            popUpTo(0)
                         }
                     },
                 )
