@@ -4,6 +4,7 @@ sealed interface AuthViewAction {
 
     data object OnAlreadyHaveAccountClick : AuthViewAction
     data object OnNoAccountClick : AuthViewAction
-    data class OnApplyPasswordClick(val password: String) : AuthViewAction
-    data class OnApplyPhoneNumberClick(val phoneNumber: String) : AuthViewAction
+    data object OnDone : AuthViewAction
+    data class OnPasswordChange(val password: String) : AuthViewAction
+    data class OnPhoneNumberChange(val phoneNumber: String) : AuthViewAction
 }

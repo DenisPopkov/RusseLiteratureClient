@@ -24,6 +24,7 @@ import ru.popkov.russeliterature.theme.Theme
 fun PasswordField(
     modifier: Modifier = Modifier,
     onPasswordDone: (AuthViewAction) -> Unit = {},
+    onPasswordChange: (AuthViewAction) -> Unit = {},
 ) {
     var password by rememberSaveable { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -33,11 +34,14 @@ fun PasswordField(
         value = password,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         keyboardActions = KeyboardActions(onDone = {
-            onPasswordDone.invoke(AuthViewAction.OnApplyPasswordClick(password))
+            onPasswordDone.invoke(AuthViewAction.OnDone)
             keyboardController?.hide()
         }),
         placeHolderText = R.string.auth_password,
-        onValueChanged = { password = it },
+        onValueChanged = {
+            password = it
+            onPasswordChange.invoke(AuthViewAction.OnPasswordChange(password))
+        },
         trailingIcon = {
             if (password.isNotEmpty()) {
                 IconButton(onClick = { password = "" }) {

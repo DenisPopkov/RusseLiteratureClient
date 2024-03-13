@@ -60,6 +60,7 @@ internal fun AuthScreen(
         onPhoneNumberDone = authViewModel::onAction,
         onPasswordDone = authViewModel::onAction,
         onCaptionClick = authViewModel::onAction,
+        onActionDone = authViewModel::onAction,
     )
 }
 
@@ -70,6 +71,7 @@ private fun Auth(
     onPhoneNumberDone: (AuthViewAction) -> Unit = {},
     onPasswordDone: (AuthViewAction) -> Unit = {},
     onCaptionClick: (AuthViewAction) -> Unit = {},
+    onActionDone: (AuthViewAction) -> Unit = {},
 ) {
     Box(
         modifier = modifier,
@@ -98,23 +100,29 @@ private fun Auth(
                 AuthGlobalState.REGISTER_NEW_USER_PHONE_NUMBER -> {
                     PhoneNumberField(
                         modifier = Modifier.padding(top = 72.dp),
-                        onPhoneNumberDone = onPhoneNumberDone,
+                        onPhoneDone = onActionDone,
+                        onPhoneNumberChange = onPhoneNumberDone,
                     )
                 }
+
                 AuthGlobalState.REGISTER_NEW_USER_PASSWORD -> {
                     PasswordField(
                         modifier = Modifier.padding(top = 72.dp),
-                        onPasswordDone = onPasswordDone,
+                        onPasswordDone = onActionDone,
+                        onPasswordChange = onPasswordDone,
                     )
                 }
+
                 AuthGlobalState.AUTH -> {
                     PhoneNumberField(
                         modifier = Modifier.padding(top = 72.dp),
-                        onPhoneNumberDone = onPhoneNumberDone,
+                        onPhoneDone = onActionDone,
+                        onPhoneNumberChange = onPhoneNumberDone,
                     )
                     PasswordField(
                         modifier = Modifier.padding(top = 18.dp),
-                        onPasswordDone = onPasswordDone,
+                        onPasswordDone = onActionDone,
+                        onPasswordChange = onPasswordDone,
                     )
                 }
             }
