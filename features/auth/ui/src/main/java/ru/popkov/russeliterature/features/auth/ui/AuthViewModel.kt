@@ -101,7 +101,7 @@ class AuthViewModel @Inject constructor(
             phoneNumber = state.value.phoneNumber,
             password = state.value.password
         ).invokeOnCompletion {
-            sendEffect(AuthViewEffect.GoToMainScreen)
+            viewModelScope.launch { loginUserAndNavigateToMain() }
         }
     }
 

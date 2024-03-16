@@ -8,4 +8,14 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 class DatabaseModule {
 
+//    @Singleton
+//    @Provides
+//    fun database(@ApplicationContext context: Context): AppDatabase =
+//        Room
+//            .databaseBuilder(
+//                context,
+//                AppDatabase::class.java, "database-name"
+//            )
+//            .fallbackToDestructiveMigration()
+//            .build()
 }

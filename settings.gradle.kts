@@ -23,6 +23,7 @@ include(
     ":app",
     ":core:feature:nav",
     ":core:feature:ui",
+    ":core:feature:datastore",
     ":features:home:data",
     ":features:home:domain",
     ":features:home:nav",

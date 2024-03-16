@@ -6,7 +6,7 @@ androidx-espresso-core = "3.5.1"
 androidx-lifecycle-runtime-ktx = "2.7.0"
 androidx-activity-compose = "1.8.2"
 androidx-activity = "1.8.2"
-androidx-compose-bom = "2024.02.01"
+androidx-compose-bom = "2024.02.02"
 androidx-navigation = "2.7.7"
 androidx-room = "2.6.1"
 autodagger = "1.0.0"
@@ -21,9 +21,10 @@ retrofit = "2.9.0"
 timber = "5.0.1"
 protobuf = "3.25.2"
 protobufPlugin = "0.9.4"
-kotlinxSerializationJson = "1.6.0"
+kotlinx-serialization = "1.6.3"
 grpc = "1.62.2"
 annotationApi = "6.0.53"
+datastore = "1.0.0"
 
 # used directly in gradle plugins
 androidx-compose-compiler = "1.5.10"
@@ -50,7 +51,7 @@ kotlin-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutine
 androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigation" }
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 
 # gRPC
 grpc-okhttp = { module = "io.grpc:grpc-okhttp", version.ref = "grpc" }
@@ -62,6 +63,12 @@ protobuf-lite = { module = "io.grpc:grpc-protobuf-lite", version.ref = "grpc" }
 # Protobuf
 protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
 protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
+
+# Datastore
+datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastore" }
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore" }
+androidx-datastore = { module = "androidx.datastore: datastore", version.ref = "datastore" }
 
 # used directly in gradle plugins
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidx-compose-bom" }
@@ -81,7 +88,6 @@ javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "j
 autodagger-android = { group = "se.ansman.dagger.auto", name = "android", version.ref = "autodagger" }
 autodagger-compiler = { group = "se.ansman.dagger.auto", name = "compiler", version.ref = "autodagger" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
-kotlinx-serialization = { group = "kotlinx-serialization", name = "serialization", version.ref = "kotlinxSerializationJson" }
 
 # project internal convention plugin
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
@@ -100,6 +106,12 @@ grpc = [
     "grpc-protoc-gen-java",
     "annotations-api",
     "protobuf-lite",
+]
+datastore = [
+    "androidx-datastore",
+    "datastore-core",
+    "datastore-preferences",
+    "datastore-preferences-core",
 ]
 
 [plugins]
@@ -122,3 +134,4 @@ app-feature-ui = { id = "app.feature.ui", version = "unspecified" }
 app-feature-domain = { id = "app.feature.domain", version = "unspecified" }
 app-feature-data = { id = "app.feature.data", version = "unspecified" }
 app-feature-nav = { id = "app.feature.nav", version = "unspecified" }
+app-feature-datastore = { id = "app.feature.datastore", version = "unspecified" }

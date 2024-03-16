@@ -62,5 +62,9 @@ gradlePlugin {
             id = "app.feature.nav"
             implementationClass = "FeatureNavConventionPlugin"
         }
+        register("featureDatastore") {
+            id = "app.feature.datastore"
+            implementationClass = "FeatureDatastoreConventionPlugin"
+        }
     }
 }

@@ -8,6 +8,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -15,13 +16,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import kotlinx.coroutines.delay
 import ru.popkov.android.core.feature.ui.UiModePreviews
+import ru.popkov.datastore.Token
 import ru.popkov.russeliterature.theme.GothicBoldSplash40
 import ru.popkov.russeliterature.theme.Theme
 
 @Composable
 internal fun SplashScreen(
-    onDelayHandle: () -> Unit = {},
+    dataStore: Token? = null,
+    onDelayHandle: (isAuth: Boolean) -> Unit = {},
 ) {
+
+    val jwt = dataStore?.jwt?.collectAsState(initial = null)
+
     Box(
         modifier = Modifier
             .fillMaxSize(),
@@ -46,7 +52,7 @@ internal fun SplashScreen(
     // navigate to main screen after small delay
     LaunchedEffect(Unit) {
         delay(2000)
-        onDelayHandle.invoke()
+        onDelayHandle.invoke(jwt?.value?.token.isNullOrBlank())
     }
 }
 

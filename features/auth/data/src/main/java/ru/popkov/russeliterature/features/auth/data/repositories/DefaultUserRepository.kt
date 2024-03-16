@@ -4,7 +4,7 @@ import auth.AuthGrpc
 import auth.AuthOuterClass
 import auth.AuthOuterClass.LoginRequest
 import io.grpc.ManagedChannelBuilder
-import ru.popkov.russeliterature.features.auth.data.local.daos.UserDao
+import ru.popkov.datastore.Token
 import ru.popkov.russeliterature.features.auth.domain.repositories.AuthRepository
 import se.ansman.dagger.auto.AutoBind
 import javax.inject.Inject
@@ -13,7 +13,7 @@ import javax.inject.Singleton
 @AutoBind
 @Singleton
 class DefaultUserRepository @Inject constructor(
-    private val userDao: UserDao,
+    private val dataStore: Token,
 ) : AuthRepository {
 
     override suspend fun registerUser(registerRequest: AuthOuterClass.RegisterRequest): AuthOuterClass.RegisterResponse {
@@ -27,6 +27,8 @@ class DefaultUserRepository @Inject constructor(
     override suspend fun loginUser(loginRequest: LoginRequest): AuthOuterClass.LoginResponse {
         val channel = ManagedChannelBuilder.forAddress("192.168.88.112", 8085).usePlaintext().build()
         val client = AuthGrpc.newBlockingStub(channel)
-        return client.login(loginRequest)
+        val userJWT = client.login(loginRequest)
+        dataStore.saveToken(userJWT.token)
+        return userJWT
     }
 }

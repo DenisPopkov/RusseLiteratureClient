@@ -12,7 +12,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import ru.popkov.android.core.feature.nav.Navigator
 import ru.popkov.android.core.feature.ui.NavEntryPointProvider
+import ru.popkov.datastore.Token
 import ru.popkov.russeliterature.features.auth.nav.AuthDestination
+import ru.popkov.russeliterature.features.home.nav.HomeDestination
 import ru.popkov.russeliterature.features.splash.nav.SplashDestination
 import se.ansman.dagger.auto.AutoBindIntoSet
 import javax.inject.Inject
@@ -20,6 +22,7 @@ import javax.inject.Inject
 @AutoBindIntoSet
 class SplashNavProvider @Inject constructor(
     private val navigator: Navigator,
+    private val dataStore: Token,
 ) : NavEntryPointProvider {
 
     override val routeItem = NavEntryPointProvider.RouteItem(
@@ -53,10 +56,18 @@ class SplashNavProvider @Inject constructor(
                 },
             ) {
                 SplashScreen(
-                    onDelayHandle = {
-                        navigator.navigate(AuthDestination) {
-                            launchSingleTop = true
-                            popUpTo(0)
+                    dataStore = dataStore,
+                    onDelayHandle = { isShouldAuth ->
+                        if (isShouldAuth) {
+                            navigator.navigate(AuthDestination) {
+                                launchSingleTop = true
+                                popUpTo(0)
+                            }
+                        } else {
+                            navigator.navigate(HomeDestination) {
+                                launchSingleTop = true
+                                popUpTo(0)
+                            }
                         }
                     },
                 )
