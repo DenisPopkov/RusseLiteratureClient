@@ -11,4 +11,5 @@ dependencies {
     implementation(project(":features:auth:domain"))
     implementation(project(":features:home:nav"))
     implementation(project(":theme"))
+    implementation(libs.bundles.datastore)
 }

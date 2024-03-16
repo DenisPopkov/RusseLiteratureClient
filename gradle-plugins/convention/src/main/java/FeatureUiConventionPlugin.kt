@@ -16,6 +16,7 @@ class FeatureUiConventionPlugin : Plugin<Project> {
 
             dependencies {
                 add("implementation", project(":core:feature:ui"))
+                add("implementation", project(":core:feature:datastore"))
                 add("implementation", libs.findLibrary("androidx-lifecycle-viewmodel-compose").get())
                 add("implementation", libs.findLibrary("androidx.hilt.navigation").get())
                 add("implementation", libs.findLibrary("autodagger-android").get())
