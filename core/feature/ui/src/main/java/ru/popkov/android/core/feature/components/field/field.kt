@@ -1,4 +1,4 @@
-package ru.popkov.android.core.feature.components
+package ru.popkov.android.core.feature.components.field
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column

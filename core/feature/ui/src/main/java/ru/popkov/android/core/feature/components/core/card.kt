@@ -1,4 +1,4 @@
-package ru.popkov.android.core.feature.components
+package ru.popkov.android.core.feature.components.core
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image

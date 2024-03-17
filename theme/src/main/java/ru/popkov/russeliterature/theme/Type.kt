@@ -49,3 +49,11 @@ val FormularMedium14 = TextStyle(
     color = Color.White,
     fontFamily = FontFamily(Font(R.font.formular_medium)),
 )
+
+val FormularMedium12 = TextStyle(
+    fontSize = 12.sp,
+    fontWeight = FontWeight.Medium,
+    lineHeight = 22.sp,
+    color = Color.White,
+    fontFamily = FontFamily(Font(R.font.formular_medium)),
+)
