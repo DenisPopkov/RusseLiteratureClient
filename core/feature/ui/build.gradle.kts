@@ -8,6 +8,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":theme"))
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.kotlin.coroutines)
 }
