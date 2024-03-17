@@ -4,9 +4,10 @@ plugins {
 }
 
 android {
-    namespace = "ru.popkov.composesample.theme"
+    namespace = "ru.popkov.russeliterature.theme"
 }
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+    implementation(libs.activity)
 }

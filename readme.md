@@ -1,10 +1,53 @@
-# Compose Sample MVI
+# Мобильное приложение Русская литература в клипах
 
-## MVI diagram
-<img src="https://github.com/DenisPopkov/JetpackComposeMVI/assets/57343209/db67e0f8-490d-46c9-a416-b2cc1bb9a1f7" height="600">
+Курсовая работа по дисциплине: прикладное программирование
 
-## Technical stack
-<img src="https://github.com/DenisPopkov/JetpackComposeMVI/assets/57343209/945cc6ef-be99-4433-b049-9424bb80c728" height="600">
+Клиент-серверное приложение. В качестве клиента Android приложение. Сервер написан на Go, тут смесь
+gRPC+Rest.
+Ссылка на сервер - https://github.com/DenisPopkov/RusseLiteratureServer.
 
-## App structure
-<img src="https://github.com/DenisPopkov/JetpackComposeMVI/assets/57343209/9aed88c1-fb45-4ce8-bdd9-78b3e11ab5fd" height="600">
+## Архитектура в приложении MVI
+
+<img width="468" alt="image" src="https://github.com/DenisPopkov/RusseLiteratureServer/assets/57343209/cb02034e-63e4-4313-93a9-b93fd5e6c80e">
+
+## Стек технологий в проекте
+
+* DI (Hilt)
+* Jetpack Compose Based UI
+* Jetpack Compose Navigation Component
+* Gradle Configuration (Version catalog, gradle convention plugin)
+* Coil
+* Multi-module architecture
+* Coroutines
+* MVI
+* Rest+gRPC via Retrofit+Google grpc library
+
+## Структура проекта
+
+``` text
+├── app.............. Точка входа в мобильное приложение
+│   ├── MainWindow.... Координирует всю навигацию в приложении
+│   └── MainNavBar......... Нижнее навигационное меню
+├── core......... Независимая логика проекта/компонентов
+│   ├── datastore.......... Логика для сохранения мелких локальных файлов
+│   ├── nav....... Логика для навигации
+│   ├── ui
+│   │   ├── components.. Базовые компоненты для всего UI
+│   │   ├── ui.. Логика взаимодействия с состояниями, абстракция для MVI
+├── features....... Все экраны разбиты на модуль-фичи
+│   ├── auth.......... Фича авторизации
+│   ├── home.......... Фича главного экрана
+│   ├── search.......... Фича поиска
+│   ├── fave.......... Фича избранного
+│   ├── splash.......... Фича сплэш экрана
+├── gradle-plugins.......... Convention gradle плагин для проброса зависимостей между модулями
+└── theme............ Тема приложения
+```
+
+## Интерфейс основной части приложения
+
+<img width="800" alt="image" src="https://github.com/DenisPopkov/RusseLiteratureServer/assets/57343209/993b00a8-c1fc-42c7-9f13-cd0d1e82a9d7">
+
+## Интерфейс флоу вертикальных клипов
+
+<img width="800" alt="image" src="https://github.com/DenisPopkov/RusseLiteratureServer/assets/57343209/3916a678-889a-4c73-a284-52392ac4bde7">
