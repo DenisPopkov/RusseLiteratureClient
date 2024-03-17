@@ -21,11 +21,12 @@ import ru.popkov.russeliterature.theme.FormularMedium12
 
 @Composable
 fun Section(
+    modifier: Modifier = Modifier,
     @StringRes sectionText: Int,
     onSectionClick: () -> Unit = {},
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable { onSectionClick.invoke() },
         horizontalArrangement = Arrangement.SpaceBetween,
