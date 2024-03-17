@@ -18,6 +18,14 @@ val Typography = Typography(
     )
 )
 
+val GothicBold44 = TextStyle(
+    fontSize = 44.sp,
+    fontWeight = FontWeight.Bold,
+    lineHeight = 50.sp,
+    color = Color.White,
+    fontFamily = FontFamily(Font(R.font.gothic_bold)),
+)
+
 val GothicBoldSplash40 = TextStyle(
     fontSize = 40.sp,
     fontWeight = FontWeight.Bold,

@@ -2,5 +2,7 @@
 <resources>
     <string name="search_hint">Поиск</string>
     <string name="section_author">ПИСАТЕЛИ</string>
+    <string name="section_articles">СТАТЬИ О ЛИТЕРАТУРЕ</string>
+    <string name="section_poem">ПОЭТИЧЕСКИЕ ЧТЕНИЯ</string>
     <string name="section_title">статьи о литературе</string>
 </resources>

@@ -2,9 +2,6 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="BigCardPreview">
-        <State />
-      </entry>
       <entry key="LargeCardPreview">
         <State />
       </entry>

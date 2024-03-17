@@ -1,6 +1,5 @@
 package ru.popkov.russeliterature
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.WindowInsets
@@ -71,7 +70,7 @@ fun MainWindow(
             }
         },
         bottomBar = {
-            AnimatedVisibility(visible = showBottomNavBar) {
+            if (showBottomNavBar) {
                 MainNavBar(
                     items = bottomBarItems,
                     navController = navController,
