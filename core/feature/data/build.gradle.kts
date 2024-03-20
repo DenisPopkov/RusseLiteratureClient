@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "ru.popkov.russeliterature.features.auth.data"
+    namespace = "ru.popkov.android.core.feature.data"
 }
 
 dependencies {
-    implementation(project(":features:auth:domain"))
+    implementation(project(":core:feature:domain"))
     implementation(project(":core:feature:datastore"))
     implementation(libs.kotlin.coroutines)
     implementation(libs.bundles.retrofit)

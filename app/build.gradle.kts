@@ -34,16 +34,13 @@ android {
 }
 
 dependencies {
-    implementation(project(":features:home:data"))
+    implementation(project(":core:feature:data"))
     implementation(project(":features:home:ui"))
-    implementation(project(":features:search:data"))
     implementation(project(":features:search:ui"))
-    implementation(project(":features:fave:data"))
     implementation(project(":features:fave:ui"))
     implementation(project(":features:splash:ui"))
-    implementation(project(":features:auth:nav"))
-    implementation(project(":features:auth:data"))
     implementation(project(":features:auth:ui"))
+    implementation(project(":features:auth:nav"))
     implementation(project(":theme"))
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.espresso.core)

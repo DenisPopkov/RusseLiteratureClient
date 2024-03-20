@@ -31,7 +31,7 @@ protobuf {
 }
 
 android {
-    namespace = "ru.popkov.russeliterature.features.auth.domain"
+    namespace = "ru.popkov.android.core.feature.domain"
 }
 
 dependencies {
