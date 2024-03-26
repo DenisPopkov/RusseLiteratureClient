@@ -25,7 +25,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
 import ru.popkov.android.core.feature.ui.R
 import ru.popkov.russeliterature.theme.FormularMedium14
 import ru.popkov.russeliterature.theme.FormularRegular14
@@ -58,9 +57,7 @@ fun Card(
             Image(
                 modifier = Modifier
                     .fillMaxSize(),
-                painter = rememberAsyncImagePainter(
-                    model = R.drawable.ic_article
-                ),
+                painter = painterResource(id = R.drawable.ic_article),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
             )

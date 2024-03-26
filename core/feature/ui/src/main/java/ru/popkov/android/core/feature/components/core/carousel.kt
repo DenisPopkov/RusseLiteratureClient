@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.popkov.android.core.feature.ui.R
 import ru.popkov.russeliterature.theme.Colors
-import ru.popkov.russeliterature.theme.FormularRegular14
+import ru.popkov.russeliterature.theme.FormularRegular12
 import ru.popkov.russeliterature.theme.GothicBold44
 
 @Immutable
@@ -65,14 +65,14 @@ fun Carousel(
                     .padding(all = 16.dp),
             ) {
                 Text(
-                    modifier = Modifier.padding(top = 110.dp),
+                    modifier = Modifier.padding(top = 90.dp),
                     text = carouselItems[page].articleTitle,
                     style = GothicBold44
                 )
                 Text(
-                    modifier = Modifier.padding(top = 22.dp),
+                    modifier = Modifier.padding(top = 18.dp),
                     text = carouselItems[page].articleDescription,
-                    style = FormularRegular14
+                    style = FormularRegular12
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Row(
