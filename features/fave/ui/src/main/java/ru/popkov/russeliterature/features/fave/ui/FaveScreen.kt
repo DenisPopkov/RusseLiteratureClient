@@ -1,5 +1,6 @@
 package ru.popkov.russeliterature.features.fave.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -63,7 +64,13 @@ internal fun Fave(
         modifier = modifier,
     ) {
         // Header
+
         // Content
+        AnimatedVisibility(visible = state.faveList.isNullOrEmpty()) {
+            EmptyState(
+                onAction = onFaveClick
+            )
+        }
     }
 }
 
