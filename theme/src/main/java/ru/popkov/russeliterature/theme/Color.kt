@@ -34,4 +34,6 @@ object Colors {
     val OutlineColor = Color(0xFFF4F4F4)
     @Stable
     val GrayTextColor = Color(0x99FFFFFF)
+    @Stable
+    val DotGrayColor = Color(0xB3FFFFFF)
 }

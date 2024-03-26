@@ -21,15 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
-import coil.decode.ImageDecoderDecoder
-import coil.request.ImageRequest
 import ru.popkov.android.core.feature.ui.R
 import ru.popkov.russeliterature.theme.FormularMedium14
 import ru.popkov.russeliterature.theme.FormularRegular14
@@ -59,17 +55,11 @@ fun Card(
                 .clip(shape = RoundedCornerShape(size = 10.dp))
                 .clickable { onClick.invoke() }
         ) {
-            val context = LocalContext.current
-            val imageLoader = ImageLoader.Builder(context)
-                .components { add(ImageDecoderDecoder.Factory()) }.build()
             Image(
                 modifier = Modifier
                     .fillMaxSize(),
                 painter = rememberAsyncImagePainter(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(data = R.drawable.ic_chipi)
-                        .build(),
-                    imageLoader = imageLoader
+                    model = R.drawable.ic_article
                 ),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
