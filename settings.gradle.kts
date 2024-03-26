@@ -32,6 +32,8 @@ include(
     ":features:search:ui",
     ":features:fave:nav",
     ":features:fave:ui",
+    ":features:settings:nav",
+    ":features:settings:ui",
     ":features:auth:nav",
     ":features:auth:ui",
     ":features:splash:nav",
