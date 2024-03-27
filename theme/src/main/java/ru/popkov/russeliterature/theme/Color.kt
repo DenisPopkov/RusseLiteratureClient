@@ -36,4 +36,6 @@ object Colors {
     val GrayTextColor = Color(0x99FFFFFF)
     @Stable
     val DotGrayColor = Color(0xB3FFFFFF)
+    @Stable
+    val BottomNavBarColor = Color(0xFF171717)
 }
