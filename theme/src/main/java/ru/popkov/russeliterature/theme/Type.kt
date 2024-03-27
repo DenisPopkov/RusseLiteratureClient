@@ -58,6 +58,14 @@ val Grotesk14 = TextStyle(
     fontFamily = FontFamily(Font(R.font.grotesk_bold)),
 )
 
+val FormularMedium28 = TextStyle(
+    fontSize = 28.sp,
+    fontWeight = FontWeight.Medium,
+    lineHeight = 36.sp,
+    color = Color.White,
+    fontFamily = FontFamily(Font(R.font.formular_medium)),
+)
+
 val FormularMedium20 = TextStyle(
     fontSize = 20.sp,
     fontWeight = FontWeight.Medium,

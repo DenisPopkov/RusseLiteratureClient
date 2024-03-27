@@ -29,7 +29,9 @@ class SettingsNavProvider @Inject constructor(
             composable(
                 route = SettingsDestination.route,
             ) {
-                SettingsScreen()
+                SettingsScreen(
+                    snackbarHostState,
+                )
             }
         }
 
