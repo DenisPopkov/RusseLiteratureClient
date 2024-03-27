@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.SnackbarHostState
@@ -30,8 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ru.popkov.android.core.feature.ui.R
 import ru.popkov.russeliterature.theme.Colors
-import ru.popkov.russeliterature.theme.FormularRegular12
-import ru.popkov.russeliterature.theme.GothicBold44
+import ru.popkov.russeliterature.theme.FormularRegular14
+import ru.popkov.russeliterature.theme.GothicBold36
 import ru.popkov.russeliterature.theme.Grotesk36
 
 @Composable
@@ -86,7 +87,7 @@ internal fun Clip(
             Image(
                 modifier = Modifier
                     .height(height = 390.dp)
-                    .alpha(alpha = 0.5f),
+                    .alpha(alpha = 0.4f),
                 painter = painterResource(id = R.drawable.ic_article),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
@@ -113,14 +114,14 @@ internal fun Clip(
                     .padding(all = 16.dp),
             ) {
                 Text(
-                    modifier = Modifier.padding(top = 200.dp),
+                    modifier = Modifier.padding(top = 220.dp),
                     text = state.clipItems[page].clipTitle,
-                    style = GothicBold44
+                    style = GothicBold36,
                 )
                 Text(
                     modifier = Modifier.padding(top = 30.dp),
                     text = state.clipItems[page].clipDescription,
-                    style = FormularRegular12
+                    style = FormularRegular14,
                 )
             }
         }
