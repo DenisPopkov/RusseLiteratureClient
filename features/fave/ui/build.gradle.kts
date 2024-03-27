@@ -9,7 +9,6 @@ android {
 dependencies {
     implementation(project(":core:feature:domain"))
     implementation(project(":features:fave:nav"))
-    implementation(project(":features:settings:nav"))
     implementation(project(":features:home:nav"))
     implementation(project(":theme"))
 }

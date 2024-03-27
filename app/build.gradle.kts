@@ -39,6 +39,7 @@ dependencies {
     implementation(project(":features:search:ui"))
     implementation(project(":features:fave:ui"))
     implementation(project(":features:settings:ui"))
+    implementation(project(":features:clip:ui"))
     implementation(project(":features:splash:ui"))
     implementation(project(":features:auth:ui"))
     implementation(project(":features:auth:nav"))

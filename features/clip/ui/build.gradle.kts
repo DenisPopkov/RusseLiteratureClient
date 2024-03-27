@@ -3,12 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "ru.popkov.russeliterature.features.home.ui"
+    namespace = "ru.popkov.russeliterature.features.clip.ui"
 }
 
 dependencies {
     implementation(project(":core:feature:domain"))
-    implementation(project(":features:home:nav"))
-    implementation(project(":features:clip:ui"))
+    implementation(project(":features:clip:nav"))
     implementation(project(":theme"))
 }
