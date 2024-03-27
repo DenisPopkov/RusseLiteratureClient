@@ -6,14 +6,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ru.popkov.android.core.feature.ui.R
@@ -38,8 +38,7 @@ fun Section(
             color = Color.White.copy(alpha = 0.8f)
         )
         Image(
-            modifier = Modifier.scale(scaleX = -1f, scaleY = -1f),
-            painter = painterResource(id = R.drawable.ic_section_arrow),
+            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
             contentDescription = "To section",
             colorFilter = ColorFilter.tint(color = Color.White.copy(alpha = 0.8f))
         )

@@ -1,67 +1,80 @@
-package ru.popkov.russeliterature.features.home.ui
+package ru.popkov.russeliterature.features.search.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import ru.popkov.android.core.feature.components.core.Card
 import ru.popkov.android.core.feature.components.core.CardType
-import ru.popkov.android.core.feature.components.core.Carousel
-import ru.popkov.android.core.feature.components.core.CarouselItem
 import ru.popkov.android.core.feature.components.core.Section
+import ru.popkov.android.core.feature.components.core.SectionFilter
+import ru.popkov.android.core.feature.components.core.SectionFilterItem
+import ru.popkov.android.core.feature.components.field.SearchField
 import ru.popkov.android.core.feature.ui.R
 import ru.popkov.russeliterature.theme.Colors
-import ru.popkov.russeliterature.theme.Theme
 
 @Composable
-internal fun HomeScreen() {
+internal fun SearchScreen(
+    snackbarHostState: SnackbarHostState,
+    searchViewModel: SearchViewModel = hiltViewModel(),
+) {
+    val state by searchViewModel.state.collectAsState()
+
+    LaunchedEffect(Unit) {
+        searchViewModel.effects
+            .collect { effect ->
+                when (effect) {
+
+                    else -> {}
+                }
+            }
+    }
+
+    Search(
+        state = state,
+    )
+}
+
+@Composable
+internal fun Search(
+    modifier: Modifier = Modifier,
+    state: SearchState,
+) {
 
     val scrollState = rememberScrollState()
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(color = Colors.BackgroundColor)
             .verticalScroll(scrollState)
-            .padding(bottom = 20.dp),
+            .statusBarsPadding()
+            .padding(vertical = 30.dp)
+            .padding(horizontal = 16.dp),
     ) {
-        val headerArticles = remember {
-            listOf(
-                CarouselItem(
-                    id = 0,
-                    articleTitle = "реализм в\nлитературе",
-                    articleDescription = "В СТАТЬЕ РАССКАЗЫВАЕМ ПРО АВТОРОВ И\nКЛЮЧЕВЫЕ ПРОИЗВЕДЕНИЯ В ЭТОМ\nНАПРАВЛЕНИИ",
-                ),
-                CarouselItem(
-                    id = 1,
-                    articleTitle = "реализм в\nлитературе (2)",
-                    articleDescription = "В СТАТЬЕ РАССКАЗЫВАЕМ ПРО АВТОРОВ И\nКЛЮЧЕВЫЕ ПРОИЗВЕДЕНИЯ В ЭТОМ\nНАПРАВЛЕНИИ",
-                ),
-                CarouselItem(
-                    id = 2,
-                    articleTitle = "реализм в\nлитературе (3)",
-                    articleDescription = "В СТАТЬЕ РАССКАЗЫВАЕМ ПРО АВТОРОВ И\nКЛЮЧЕВЫЕ ПРОИЗВЕДЕНИЯ В ЭТОМ\nНАПРАВЛЕНИИ",
-                ),
-                CarouselItem(
-                    id = 3,
-                    articleTitle = "реализм в\nлитературе (4)",
-                    articleDescription = "В СТАТЬЕ РАССКАЗЫВАЕМ ПРО АВТОРОВ И\nКЛЮЧЕВЫЕ ПРОИЗВЕДЕНИЯ В ЭТОМ\nНАПРАВЛЕНИИ",
-                ),
-                CarouselItem(
-                    id = 4,
-                    articleTitle = "реализм в\nлитературе (5)",
-                    articleDescription = "В СТАТЬЕ РАССКАЗЫВАЕМ ПРО АВТОРОВ И\nКЛЮЧЕВЫЕ ПРОИЗВЕДЕНИЯ В ЭТОМ\nНАПРАВЛЕНИИ",
-                ),
+
+        val filterList = remember {
+            mutableListOf(
+                SectionFilterItem(sectionName = "все", isSectionSelected = true),
+                SectionFilterItem(sectionName = "писатели"),
+                SectionFilterItem(sectionName = "статьи"),
+                SectionFilterItem(sectionName = "поэты"),
             )
         }
 
@@ -88,20 +101,21 @@ internal fun HomeScreen() {
             )
         }
 
-        Carousel(
-            carouselItems = headerArticles
-        )
+        SectionFilter(sectionFilterListener = filterList)
+        SearchField(
+            modifier = Modifier.padding(top = 40.dp),
+            onChange = {
 
+            }
+        )
         Section(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
                 .padding(top = 30.dp),
             sectionText = R.string.section_author
         )
         LazyRow(
             modifier = Modifier
-                .padding(top = 18.dp)
-                .padding(horizontal = 16.dp),
+                .padding(top = 18.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             items(authors) {
@@ -111,14 +125,12 @@ internal fun HomeScreen() {
 
         Section(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
                 .padding(top = 36.dp),
             sectionText = R.string.section_articles
         )
         LazyRow(
             modifier = Modifier
-                .padding(top = 18.dp)
-                .padding(horizontal = 16.dp),
+                .padding(top = 18.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             items(articles) {
@@ -128,14 +140,12 @@ internal fun HomeScreen() {
 
         Section(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
                 .padding(top = 36.dp),
             sectionText = R.string.section_poem
         )
         LazyRow(
             modifier = Modifier
-                .padding(top = 18.dp)
-                .padding(horizontal = 16.dp),
+                .padding(top = 18.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             items(poems) {
@@ -147,8 +157,8 @@ internal fun HomeScreen() {
 
 @Preview(showBackground = true)
 @Composable
-private fun Preview() {
-    Theme {
-        HomeScreen()
-    }
+private fun SearchScreenPreview() {
+    Search(
+        state = SearchState(),
+    )
 }

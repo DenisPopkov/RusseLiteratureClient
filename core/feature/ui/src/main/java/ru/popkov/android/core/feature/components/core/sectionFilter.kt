@@ -1,5 +1,6 @@
 package ru.popkov.android.core.feature.components.core
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -46,13 +47,15 @@ fun SectionFilter(
                     color = if (it.isSectionSelected) Color.White else Colors.GrayTextColor,
                 )
 
-                HorizontalDivider(
-                    modifier = Modifier
-                        .padding(top = 8.dp)
-                        .width(width = it.sectionName.calculateUnderLineWidth()),
-                    thickness = 1.dp,
-                    color = Color.White,
-                )
+                AnimatedVisibility(visible = it.isSectionSelected) {
+                    HorizontalDivider(
+                        modifier = Modifier
+                            .padding(top = 8.dp)
+                            .width(width = it.sectionName.calculateUnderLineWidth()),
+                        thickness = 1.dp,
+                        color = Color.White,
+                    )
+                }
             }
         }
     }
