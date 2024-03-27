@@ -3,6 +3,7 @@ package ru.popkov.russeliterature.features.clip.ui
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,13 +11,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -46,7 +45,6 @@ fun ClipScreen(
         clipViewModel.effects
             .collect { effect ->
                 when (effect) {
-
                     else -> {}
                 }
             }
@@ -54,14 +52,15 @@ fun ClipScreen(
 
     Clip(
         state = state,
+        onFaveClick = clipViewModel::onAction
     )
 }
 
-@Immutable
 data class ClipItem(
     val id: Int = 0,
     val clipTitle: String,
     val clipDescription: String,
+    var isFave: Boolean = false,
 )
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -69,61 +68,71 @@ data class ClipItem(
 internal fun Clip(
     modifier: Modifier = Modifier,
     state: ClipState,
+    onFaveClick: (ClipViewAction) -> Unit = {},
 ) {
     val pagerState = rememberPagerState(pageCount = {
         state.clipItems.size
     })
 
-    VerticalPager(
-        state = pagerState,
-        modifier = modifier
-            .fillMaxSize(),
-    ) { page ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = Colors.BackgroundColor)
-        ) {
-            Image(
+    Box {
+        VerticalPager(
+            state = pagerState,
+            modifier = modifier
+                .fillMaxSize(),
+        ) { page ->
+            Box(
                 modifier = Modifier
-                    .height(height = 390.dp)
-                    .alpha(alpha = 0.4f),
-                painter = painterResource(id = R.drawable.ic_article),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-            )
-            Row(
-                modifier = Modifier
-                    .padding(top = 42.dp)
-                    .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
+                    .fillMaxSize()
+                    .background(color = Colors.BackgroundColor)
             ) {
-                Text(
-                    text = stringResource(id = ru.popkov.russeliterature.features.clip.ui.R.string.clip_title),
-                    style = Grotesk36,
-                )
-                Spacer(modifier = Modifier.weight(1f))
                 Image(
-                    painter = painterResource(id = R.drawable.ic_fave),
+                    modifier = Modifier
+                        .height(height = 390.dp)
+                        .alpha(alpha = 0.4f),
+                    painter = painterResource(id = R.drawable.ic_article),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                 )
+                Column(
+                    modifier = Modifier
+                        .padding(all = 16.dp),
+                ) {
+                    Text(
+                        modifier = Modifier.padding(top = 220.dp),
+                        text = state.clipItems[page].clipTitle,
+                        style = GothicBold36,
+                    )
+                    Text(
+                        modifier = Modifier.padding(top = 30.dp),
+                        text = state.clipItems[page].clipDescription,
+                        style = FormularRegular14,
+                    )
+                }
             }
-            Column(
+        }
+
+        Row(
+            modifier = Modifier
+                .padding(top = 42.dp)
+                .padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = stringResource(id = ru.popkov.russeliterature.features.clip.ui.R.string.clip_title),
+                style = Grotesk36,
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Image(
                 modifier = Modifier
-                    .padding(all = 16.dp),
-            ) {
-                Text(
-                    modifier = Modifier.padding(top = 220.dp),
-                    text = state.clipItems[page].clipTitle,
-                    style = GothicBold36,
-                )
-                Text(
-                    modifier = Modifier.padding(top = 30.dp),
-                    text = state.clipItems[page].clipDescription,
-                    style = FormularRegular14,
-                )
-            }
+                    .clickable { onFaveClick.invoke(ClipViewAction.OnFaveClick) },
+                painter = if (state.clipItems.any { it.isFave }) {
+                    painterResource(id = R.drawable.ic_fave_fill)
+                } else {
+                    painterResource(id = R.drawable.ic_fave)
+                },
+                contentScale = ContentScale.Crop,
+                contentDescription = null,
+            )
         }
     }
 }
