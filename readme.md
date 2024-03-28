@@ -39,14 +39,21 @@ gRPC+Rest.
 │   ├── home.......... Фича главного экрана
 │   ├── search.......... Фича поиска
 │   ├── fave.......... Фича избранного
+│   ├── settings.......... Фича настроек
+│   ├── clip.......... Фича клипов
+│   ├── quiz.......... Фича теста
 │   ├── splash.......... Фича сплэш экрана
 ├── gradle-plugins.......... Convention gradle плагин для проброса зависимостей между модулями
 └── theme............ Тема приложения
 ```
 
+## Интерфейс авторизации
+
+<img width="800" alt="image" src="https://github.com/DenisPopkov/RusseLiteratureClient/assets/57343209/966a4fd2-88d5-4ecd-89b2-b90d371417a0">
+
 ## Интерфейс основной части приложения
 
-<img width="800" alt="image" src="https://github.com/DenisPopkov/RusseLiteratureServer/assets/57343209/993b00a8-c1fc-42c7-9f13-cd0d1e82a9d7">
+<img width="800" alt="image" src="https://github.com/DenisPopkov/RusseLiteratureClient/assets/57343209/2cba2176-16c0-48fe-b745-c7ad7bd39d26">
 
 ## Интерфейс флоу вертикальных клипов
 

@@ -3,6 +3,7 @@ package ru.popkov.android.core.feature.components.field
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -15,12 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import ru.popkov.android.core.feature.ui.R
 
 @Composable
-fun PhoneNumberField(
+fun SearchField(
     modifier: Modifier = Modifier,
     onChange: () -> Unit = {},
 ) {
@@ -50,7 +49,7 @@ fun PhoneNumberField(
         leadingIcon = {
             IconButton(onClick = { search = "" }) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_search),
+                    imageVector = Icons.Filled.Search,
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(color = Color.White.copy(alpha = 0.6f))
                 )
@@ -62,5 +61,5 @@ fun PhoneNumberField(
 @Preview
 @Composable
 private fun Preview() {
-    PhoneNumberField()
+    SearchField()
 }

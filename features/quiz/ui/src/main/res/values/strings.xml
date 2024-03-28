@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="quiz_right">ПРАВИЛЬНЫЙ ОТВЕТ:</string>
+    <string name="quiz_answer">"ВАШ ОТВЕТ:"</string>
+</resources>

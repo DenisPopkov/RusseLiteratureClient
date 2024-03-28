@@ -46,7 +46,7 @@ fun MainWindow(
 
     navController.addOnDestinationChangedListener { _, destination, _ ->
         showBottomNavBar =
-            destination.route == "home" || destination.route == "search" || destination.route == "fave"
+            destination.route == "home" || destination.route == "search" || destination.route == "fave" || destination.route == "settings"
     }
 
     NavigationLaunchedEffect(

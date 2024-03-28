@@ -5,10 +5,15 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.SnackbarHostState
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import ru.popkov.android.core.feature.nav.Navigator
 import ru.popkov.android.core.feature.ui.NavProvider
+import ru.popkov.russeliterature.features.clip.ui.ClipDestination
+import ru.popkov.russeliterature.features.clip.ui.ClipScreen
 import ru.popkov.russeliterature.features.home.nav.HomeDestination
 import ru.popkov.russeliterature.features.home.nav.R
+import ru.popkov.russeliterature.features.quiz.ui.QuizDestination
+import ru.popkov.russeliterature.features.quiz.ui.QuizScreen
 import se.ansman.dagger.auto.AutoBindIntoSet
 import javax.inject.Inject
 
@@ -27,10 +32,40 @@ class HomeNavProvider @Inject constructor(
 
     override fun graph(builder: NavGraphBuilder, snackbarHostState: SnackbarHostState) =
         builder.run {
-            composable(
-                route = HomeDestination.route,
+            navigation(
+                startDestination = HomeDestination.route,
+                route = "clipy",
             ) {
-                HomeScreen()
+                composable(
+                    route = HomeDestination.route,
+                ) {
+                    HomeScreen(
+                        snackbarHostState = snackbarHostState,
+                        onCardClick = {
+                            navigator.navigate(ClipDestination)
+                        }
+                    )
+                }
+                composable(
+                    route = ClipDestination.route,
+                ) {
+                    ClipScreen(
+                        snackbarHostState = snackbarHostState,
+                        onToQuizClick = {
+                            navigator.navigate(QuizDestination)
+                        }
+                    )
+                }
+                composable(
+                    route = QuizDestination.route,
+                ) {
+                    QuizScreen(
+                        snackbarHostState = snackbarHostState,
+                        onCloseClick = {
+                            navigator.navigate(HomeDestination)
+                        }
+                    )
+                }
             }
         }
 

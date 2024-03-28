@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Настройки</string>
+    <string name="settings_description">Настройте под себя</string>
+    <string name="settings_delete_account">Удалить аккаунт?</string>
+</resources>

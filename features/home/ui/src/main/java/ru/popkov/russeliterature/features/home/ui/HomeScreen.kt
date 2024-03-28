@@ -1,87 +1,71 @@
 package ru.popkov.russeliterature.features.home.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.ImageLoader
-import coil.compose.rememberAsyncImagePainter
-import coil.decode.ImageDecoderDecoder
-import coil.request.ImageRequest
 import ru.popkov.android.core.feature.components.core.Card
 import ru.popkov.android.core.feature.components.core.CardType
+import ru.popkov.android.core.feature.components.core.Carousel
+import ru.popkov.android.core.feature.components.core.CarouselItem
 import ru.popkov.android.core.feature.components.core.Section
 import ru.popkov.android.core.feature.ui.R
 import ru.popkov.russeliterature.theme.Colors
-import ru.popkov.russeliterature.theme.FormularRegular14
-import ru.popkov.russeliterature.theme.GothicBold44
-import ru.popkov.russeliterature.theme.Theme
 
 @Composable
-internal fun HomeScreen() {
+internal fun HomeScreen(
+    snackbarHostState: SnackbarHostState,
+    onCardClick: () -> Unit = {},
+) {
 
     val scrollState = rememberScrollState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(color = Colors.BackgroundColor)
             .verticalScroll(scrollState)
-            .background(color = Colors.BackgroundColor),
+            .padding(bottom = 20.dp),
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(height = 390.dp)
-        ) {
-            val context = LocalContext.current
-            val imageLoader = ImageLoader.Builder(context)
-                .components { add(ImageDecoderDecoder.Factory()) }.build()
-            Image(
-                modifier = Modifier
-                    .fillMaxSize(),
-                painter = rememberAsyncImagePainter(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(data = R.drawable.ic_chipi)
-                        .build(),
-                    imageLoader = imageLoader
+        val headerArticles = remember {
+            listOf(
+                CarouselItem(
+                    id = 0,
+                    articleTitle = "реализм в\nлитературе",
+                    articleDescription = "В СТАТЬЕ РАССКАЗЫВАЕМ ПРО АВТОРОВ И\nКЛЮЧЕВЫЕ ПРОИЗВЕДЕНИЯ В ЭТОМ\nНАПРАВЛЕНИИ",
                 ),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
+                CarouselItem(
+                    id = 1,
+                    articleTitle = "реализм в\nлитературе (2)",
+                    articleDescription = "В СТАТЬЕ РАССКАЗЫВАЕМ ПРО АВТОРОВ И\nКЛЮЧЕВЫЕ ПРОИЗВЕДЕНИЯ В ЭТОМ\nНАПРАВЛЕНИИ",
+                ),
+                CarouselItem(
+                    id = 2,
+                    articleTitle = "реализм в\nлитературе (3)",
+                    articleDescription = "В СТАТЬЕ РАССКАЗЫВАЕМ ПРО АВТОРОВ И\nКЛЮЧЕВЫЕ ПРОИЗВЕДЕНИЯ В ЭТОМ\nНАПРАВЛЕНИИ",
+                ),
+                CarouselItem(
+                    id = 3,
+                    articleTitle = "реализм в\nлитературе (4)",
+                    articleDescription = "В СТАТЬЕ РАССКАЗЫВАЕМ ПРО АВТОРОВ И\nКЛЮЧЕВЫЕ ПРОИЗВЕДЕНИЯ В ЭТОМ\nНАПРАВЛЕНИИ",
+                ),
+                CarouselItem(
+                    id = 4,
+                    articleTitle = "реализм в\nлитературе (5)",
+                    articleDescription = "В СТАТЬЕ РАССКАЗЫВАЕМ ПРО АВТОРОВ И\nКЛЮЧЕВЫЕ ПРОИЗВЕДЕНИЯ В ЭТОМ\nНАПРАВЛЕНИИ",
+                ),
             )
-
-            Column(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 16.dp),
-            ) {
-                Text(
-                    modifier = Modifier.padding(top = 110.dp),
-                    text = stringResource(id = ru.popkov.russeliterature.features.home.ui.R.string.header_title),
-                    style = GothicBold44
-                )
-                Text(
-                    modifier = Modifier.padding(top = 22.dp),
-                    text = stringResource(id = ru.popkov.russeliterature.features.home.ui.R.string.header_desc),
-                    style = FormularRegular14
-                )
-            }
         }
 
         val authors = remember {
@@ -107,6 +91,11 @@ internal fun HomeScreen() {
             )
         }
 
+        Carousel(
+            modifier = Modifier.clickable { onCardClick.invoke() },
+            carouselItems = headerArticles
+        )
+
         Section(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
@@ -116,7 +105,7 @@ internal fun HomeScreen() {
         LazyRow(
             modifier = Modifier
                 .padding(top = 18.dp)
-                .padding(horizontal = 6.dp),
+                .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             items(authors) {
@@ -133,7 +122,7 @@ internal fun HomeScreen() {
         LazyRow(
             modifier = Modifier
                 .padding(top = 18.dp)
-                .padding(horizontal = 6.dp),
+                .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             items(articles) {
@@ -150,20 +139,12 @@ internal fun HomeScreen() {
         LazyRow(
             modifier = Modifier
                 .padding(top = 18.dp)
-                .padding(horizontal = 6.dp),
+                .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             items(poems) {
                 Card(cardImageUrl = "", cardText = it, cardType = CardType.MEDIUM)
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun Preview() {
-    Theme {
-        HomeScreen()
     }
 }

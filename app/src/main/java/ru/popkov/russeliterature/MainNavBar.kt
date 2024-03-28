@@ -20,7 +20,7 @@ fun MainNavBar(
     navController: NavController,
 ) {
     NavigationBar(
-        containerColor = Colors.BackgroundColor,
+        containerColor = Colors.BottomNavBarColor,
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
