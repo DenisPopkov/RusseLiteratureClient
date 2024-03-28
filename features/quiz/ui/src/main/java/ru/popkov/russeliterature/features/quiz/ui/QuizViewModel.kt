@@ -1,6 +1,8 @@
 package ru.popkov.russeliterature.features.quiz.ui
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import ru.popkov.android.core.feature.ui.EffectsDelegate
 import ru.popkov.android.core.feature.ui.EffectsProvider
 import ru.popkov.android.core.feature.ui.StateDelegate
@@ -17,6 +19,12 @@ class QuizViewModel @Inject constructor(
         when (action) {
             is QuizViewAction.OnAnswerClick -> {
 
+            }
+
+            QuizViewAction.OnCloseClick -> {
+                viewModelScope.launch {
+                    sendEffect(QuizViewEffect.OnCloseEffect)
+                }
             }
         }
     }

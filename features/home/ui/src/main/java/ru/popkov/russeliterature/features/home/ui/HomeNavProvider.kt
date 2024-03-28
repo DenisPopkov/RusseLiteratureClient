@@ -12,6 +12,8 @@ import ru.popkov.russeliterature.features.clip.ui.ClipDestination
 import ru.popkov.russeliterature.features.clip.ui.ClipScreen
 import ru.popkov.russeliterature.features.home.nav.HomeDestination
 import ru.popkov.russeliterature.features.home.nav.R
+import ru.popkov.russeliterature.features.quiz.ui.QuizDestination
+import ru.popkov.russeliterature.features.quiz.ui.QuizScreen
 import se.ansman.dagger.auto.AutoBindIntoSet
 import javax.inject.Inject
 
@@ -49,6 +51,16 @@ class HomeNavProvider @Inject constructor(
                 ) {
                     ClipScreen(
                         snackbarHostState = snackbarHostState,
+                    )
+                }
+                composable(
+                    route = QuizDestination.route,
+                ) {
+                    QuizScreen(
+                        snackbarHostState = snackbarHostState,
+                        onCloseClick = {
+                            navigator.navigate(HomeDestination)
+                        }
                     )
                 }
             }

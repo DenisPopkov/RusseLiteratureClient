@@ -38,4 +38,10 @@ object Colors {
     val DotGrayColor = Color(0xB3FFFFFF)
     @Stable
     val BottomNavBarColor = Color(0xFF171717)
+    @Stable
+    val ButtonCloseColor = Color(0xFF222222)
+    @Stable
+    val QuizButtonColor = Color(0xFF353535)
+    @Stable
+    val OptionColor = Color(0xFF404040)
 }
