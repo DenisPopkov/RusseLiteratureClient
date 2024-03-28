@@ -1,5 +1,6 @@
 package ru.popkov.russeliterature.features.clip.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -9,10 +10,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ru.popkov.android.core.feature.ui.R
 import ru.popkov.russeliterature.theme.Colors
+import ru.popkov.russeliterature.theme.FormularMedium14
 import ru.popkov.russeliterature.theme.FormularRegular14
 import ru.popkov.russeliterature.theme.GothicBold36
 import ru.popkov.russeliterature.theme.Grotesk36
@@ -38,6 +44,7 @@ import ru.popkov.russeliterature.theme.Grotesk36
 fun ClipScreen(
     snackbarHostState: SnackbarHostState,
     clipViewModel: ClipViewModel = hiltViewModel(),
+    onToQuizClick: () -> Unit,
 ) {
     val state by clipViewModel.state.collectAsState()
 
@@ -45,14 +52,15 @@ fun ClipScreen(
         clipViewModel.effects
             .collect { effect ->
                 when (effect) {
-                    else -> {}
+                    is ClipViewEffect.OnToQuizEffect -> onToQuizClick()
                 }
             }
     }
 
     Clip(
         state = state,
-        onFaveClick = clipViewModel::onAction
+        onFaveClick = clipViewModel::onAction,
+        onToQuizClick = clipViewModel::onAction,
     )
 }
 
@@ -69,6 +77,7 @@ internal fun Clip(
     modifier: Modifier = Modifier,
     state: ClipState,
     onFaveClick: (ClipViewAction) -> Unit = {},
+    onToQuizClick: (ClipViewAction) -> Unit = {},
 ) {
     val pagerState = rememberPagerState(pageCount = {
         state.clipItems.size
@@ -107,6 +116,24 @@ internal fun Clip(
                         text = state.clipItems[page].clipDescription,
                         style = FormularRegular14,
                     )
+                    Spacer(modifier = Modifier.weight(1f))
+                    AnimatedVisibility(visible = pagerState.currentPage == state.clipItems.size - 1) {
+                        Button(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 20.dp),
+                            shape = RoundedCornerShape(size = 12.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = Colors.ButtonCloseColor),
+                            onClick = { onToQuizClick(ClipViewAction.OnToQuizClick) }
+                        ) {
+                            Text(
+                                modifier = Modifier
+                                    .padding(vertical = 10.dp),
+                                text = stringResource(id = ru.popkov.russeliterature.features.clip.ui.R.string.clip_quiz),
+                                style = FormularMedium14,
+                            )
+                        }
+                    }
                 }
             }
         }

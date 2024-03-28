@@ -51,6 +51,9 @@ class HomeNavProvider @Inject constructor(
                 ) {
                     ClipScreen(
                         snackbarHostState = snackbarHostState,
+                        onToQuizClick = {
+                            navigator.navigate(QuizDestination)
+                        }
                     )
                 }
                 composable(

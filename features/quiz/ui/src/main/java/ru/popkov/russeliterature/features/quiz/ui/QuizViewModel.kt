@@ -18,7 +18,9 @@ class QuizViewModel @Inject constructor(
     fun onAction(action: QuizViewAction) {
         when (action) {
             is QuizViewAction.OnAnswerClick -> {
-
+                viewModelScope.launch {
+                    updateState { copy(quiz = Quiz.RESULTS) }
+                }
             }
 
             QuizViewAction.OnCloseClick -> {

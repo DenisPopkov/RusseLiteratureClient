@@ -1,5 +1,6 @@
 package ru.popkov.russeliterature.features.quiz.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,9 +14,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
@@ -57,28 +59,29 @@ fun QuizScreen(
         quizViewModel.effects
             .collect { effect ->
                 when (effect) {
-                    QuizViewEffect.OnCloseEffect -> onCloseClick()
+                    QuizViewEffect.OnCloseEffect -> onCloseClick.invoke()
+                        .also { Log.d("efefe", "click") }
                 }
             }
     }
 
     Quiz(
         state = state,
-        onAnswerClick = quizViewModel::onAction
+        onAction = quizViewModel::onAction,
     )
 }
 
 @Composable
 fun Header(
     modifier: Modifier = Modifier,
-    onCloseClick: (QuizViewAction) -> Unit = {},
+    onCloseClick: () -> Unit = {},
 ) {
     Box(
         modifier = modifier
             .size(30.dp)
             .clip(shape = RoundedCornerShape(size = 8.dp))
             .background(color = Colors.ButtonCloseColor)
-            .clickable { onCloseClick(QuizViewAction.OnCloseClick) },
+            .clickable { onCloseClick.invoke() },
         contentAlignment = Alignment.Center,
     ) {
         Icon(
@@ -147,18 +150,20 @@ fun Question(
 internal fun Quiz(
     modifier: Modifier = Modifier,
     state: QuizState,
-    onAnswerClick: (QuizViewAction) -> Unit = {},
+    onAction: (QuizViewAction) -> Unit = {},
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .statusBarsPadding()
+            .verticalScroll(rememberScrollState())
             .background(Colors.BackgroundColor)
+            .padding(top = 20.dp)
             .padding(all = 16.dp)
     ) {
         Header(
             modifier = Modifier
-                .align(Alignment.End)
+                .align(Alignment.End),
+            onCloseClick = { onAction.invoke(QuizViewAction.OnCloseClick) }
         )
         when (state.quiz) {
             Quiz.QUESTION -> {
@@ -172,7 +177,7 @@ internal fun Quiz(
                 state.item.answers.forEach { answer ->
                     Question(
                         quizAnswer = answer,
-                        onAnswerClick = onAnswerClick,
+                        onAnswerClick = { onAction.invoke(QuizViewAction.OnAnswerClick) },
                     )
                 }
             }
@@ -180,7 +185,7 @@ internal fun Quiz(
             else -> {
                 Result(
                     state = state,
-                    onAnswerClick = onAnswerClick,
+                    onAnswerClick = { onAction.invoke(QuizViewAction.OnAnswerClick) },
                 )
             }
         }
@@ -194,7 +199,7 @@ internal fun ColumnScope.Result(
     onAnswerClick: (QuizViewAction) -> Unit = {},
 ) {
     Image(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(top = 50.dp)
             .height(height = 240.dp)

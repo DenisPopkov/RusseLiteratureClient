@@ -22,6 +22,12 @@ class ClipViewModel @Inject constructor(
                     updateState { copy(clipItems = clipItems.map { it.copy(isFave = !it.isFave) }) }
                 }
             }
+
+            ClipViewAction.OnToQuizClick -> {
+                viewModelScope.launch {
+                    sendEffect(ClipViewEffect.OnToQuizEffect)
+                }
+            }
         }
     }
 }
