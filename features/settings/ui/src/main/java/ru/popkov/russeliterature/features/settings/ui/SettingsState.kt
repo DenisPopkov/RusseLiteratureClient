@@ -4,5 +4,8 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 internal data class SettingsState(
-    val a: Int = 0,
+    val userName: String = "Фёдор Достоевский",
+    val userImage: String = "",
+    val userId: Long = -1L,
+    val isLoading: Boolean = false,
 )

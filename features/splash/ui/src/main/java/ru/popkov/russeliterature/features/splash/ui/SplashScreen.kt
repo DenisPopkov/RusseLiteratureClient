@@ -16,7 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import kotlinx.coroutines.delay
 import ru.popkov.android.core.feature.ui.UiModePreviews
-import ru.popkov.datastore.Token
+import ru.popkov.datastore.token.Token
 import ru.popkov.russeliterature.theme.GothicBoldSplash40
 import ru.popkov.russeliterature.theme.Theme
 

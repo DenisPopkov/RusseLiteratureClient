@@ -1,4 +1,4 @@
-package ru.popkov.datastore
+package ru.popkov.datastore.token
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -21,6 +21,11 @@ class Token @Inject constructor(private val token: DataStore<ProtoToken>) {
     suspend fun saveToken(jwt: String) = token.updateData {
         Timber.d("Saving token: $token")
         it.toBuilder().setToken(jwt).build()
+    }
+
+    suspend fun deleteToken() = token.updateData {
+        Timber.d("Deleting token: $token")
+        it.toBuilder().clearToken().build()
     }
 }
 
