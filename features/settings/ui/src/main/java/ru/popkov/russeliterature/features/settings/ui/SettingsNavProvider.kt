@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import ru.popkov.android.core.feature.nav.Navigator
 import ru.popkov.android.core.feature.ui.NavProvider
 import ru.popkov.datastore.user.User
+import ru.popkov.russeliterature.features.auth.nav.AuthDestination
 import ru.popkov.russeliterature.features.settings.nav.SettingsDestination
 import se.ansman.dagger.auto.AutoBindIntoSet
 import javax.inject.Inject
@@ -32,8 +33,14 @@ class SettingsNavProvider @Inject constructor(
                 route = SettingsDestination.route,
             ) {
                 SettingsScreen(
-                    snackbarHostState,
+                    snackbarHostState = snackbarHostState,
                     userDataStore = userDataStore,
+                    onDeleteAccountClick = {
+                        navigator.navigate(AuthDestination) {
+                            launchSingleTop = true
+                            popUpTo(0)
+                        }
+                    }
                 )
             }
         }

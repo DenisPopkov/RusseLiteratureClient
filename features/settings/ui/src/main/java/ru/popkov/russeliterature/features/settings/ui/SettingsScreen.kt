@@ -44,6 +44,7 @@ internal fun SettingsScreen(
     snackbarHostState: SnackbarHostState,
     userDataStore: User? = null,
     settingsViewModel: SettingsViewModel = hiltViewModel(),
+    onDeleteAccountClick: () -> Unit = {},
 ) {
     val state by settingsViewModel.state.collectAsState()
     val userId = userDataStore?.userId
@@ -57,6 +58,8 @@ internal fun SettingsScreen(
                 when (effect) {
                     is SettingsViewEffect.ShowError ->
                         snackbarHostState.showSnackbar(effect.errorMessage)
+
+                    SettingsViewEffect.OnDeleteAccountClick -> onDeleteAccountClick.invoke()
                 }
             }
     }
@@ -66,6 +69,7 @@ internal fun SettingsScreen(
     ) {
         Settings(
             state = state,
+            onAction = settingsViewModel::onAction,
         )
 
         AnimatedVisibility(visible = state.isLoading) {
@@ -78,6 +82,7 @@ internal fun SettingsScreen(
 internal fun Settings(
     modifier: Modifier = Modifier,
     state: SettingsState,
+    onAction: (SettingsViewAction) -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -120,7 +125,9 @@ internal fun Settings(
                 .padding(top = 16.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Colors.InputFieldColor),
             shape = RoundedCornerShape(size = 8.dp),
-            onClick = { }
+            onClick = {
+                onAction.invoke(SettingsViewAction.OnDeleteAccountClick(state.userId))
+            }
         ) {
             Text(
                 modifier = Modifier

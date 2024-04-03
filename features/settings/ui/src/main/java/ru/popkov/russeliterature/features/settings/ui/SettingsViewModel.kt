@@ -22,8 +22,31 @@ class SettingsViewModel @Inject constructor(
 
     fun onAction(action: SettingsViewAction) {
         when (action) {
+            is SettingsViewAction.OnDeleteAccountClick -> {
+                viewModelScope.launch {
+                    deleteUserAccount(action.userId)
+                }
+            }
+        }
+    }
 
-            else -> {}
+    private suspend fun deleteUserAccount(userId: Long) {
+        val handler = CoroutineExceptionHandler { _, throwable ->
+            Timber.tag("Settings:").d(throwable, "error occurred: %s", 0)
+        }
+
+        viewModelScope.launch(handler) {
+            updateState { copy(isLoading = true) }
+            settingsRepository.deleteUserAccount(userId = userId)
+            updateState { copy(isLoading = false) }
+            sendEffect(SettingsViewEffect.OnDeleteAccountClick)
+        }.invokeOnCompletion {
+            viewModelScope.launch {
+                if (it != null) {
+                    updateState { copy(isLoading = false) }
+                    sendEffect(SettingsViewEffect.ShowError("Произошла ошибка!"))
+                }
+            }
         }
     }
 
@@ -39,6 +62,7 @@ class SettingsViewModel @Inject constructor(
                 copy(
                     userName = settings.name,
                     userImage = settings.image,
+                    userId = userId,
                     isLoading = false,
                 )
             }

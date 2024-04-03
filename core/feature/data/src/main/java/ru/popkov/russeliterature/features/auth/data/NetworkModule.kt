@@ -1,5 +1,7 @@
 package ru.popkov.russeliterature.features.auth.data
 
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,13 +30,17 @@ class NetworkModule {
             .setLevel(HttpLoggingInterceptor.Level.BASIC)
     }
 
+    private val moshi = Moshi.Builder()
+        .addLast(KotlinJsonAdapterFactory())
+        .build()
+
     @Singleton
     @Provides
     fun retrofit(okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
-            .baseUrl("http://192.168.88.112:4041/")
+            .baseUrl("http://192.168.0.119:4041/")
             .client(okHttpClient)
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
 
     @Provides

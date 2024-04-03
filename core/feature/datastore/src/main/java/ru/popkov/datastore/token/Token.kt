@@ -22,6 +22,11 @@ class Token @Inject constructor(private val token: DataStore<ProtoToken>) {
         Timber.d("Saving token: $token")
         it.toBuilder().setToken(jwt).build()
     }
+
+    suspend fun deleteToken() = token.updateData {
+        Timber.d("Deleting token: $token")
+        it.toBuilder().clearToken().build()
+    }
 }
 
 @Module

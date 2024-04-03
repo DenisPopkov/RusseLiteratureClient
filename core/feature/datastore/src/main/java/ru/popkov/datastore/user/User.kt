@@ -24,6 +24,11 @@ class User @Inject constructor(
         Timber.d("Saving id: $id")
         it.toBuilder().setId(userId).build()
     }
+
+    suspend fun deleteUserId() = id.updateData {
+        Timber.d("Deleting id: $id")
+        it.toBuilder().clearId().build()
+    }
 }
 
 @Module

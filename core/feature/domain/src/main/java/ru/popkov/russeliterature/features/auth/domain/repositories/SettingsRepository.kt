@@ -6,4 +6,7 @@ interface SettingsRepository {
     suspend fun getSettings(
         userId: Long,
     ): Settings
+    suspend fun deleteUserAccount(
+        userId: Long,
+    )
 }
