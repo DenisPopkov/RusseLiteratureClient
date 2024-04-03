@@ -1,4 +1,4 @@
-package ru.popkov.datastore
+package ru.popkov.datastore.token
 
 import androidx.datastore.core.Serializer
 import ru.popkov.android.core.feature.datastore.ProtoToken

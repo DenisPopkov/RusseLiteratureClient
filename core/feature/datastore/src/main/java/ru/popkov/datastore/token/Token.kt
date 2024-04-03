@@ -1,4 +1,4 @@
-package ru.popkov.datastore
+package ru.popkov.datastore.token
 
 import android.content.Context
 import androidx.datastore.core.DataStore

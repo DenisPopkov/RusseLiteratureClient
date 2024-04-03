@@ -7,6 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import ru.popkov.android.core.feature.nav.Navigator
 import ru.popkov.android.core.feature.ui.NavProvider
+import ru.popkov.datastore.user.User
 import ru.popkov.russeliterature.features.settings.nav.SettingsDestination
 import se.ansman.dagger.auto.AutoBindIntoSet
 import javax.inject.Inject
@@ -14,6 +15,7 @@ import javax.inject.Inject
 @AutoBindIntoSet
 class SettingsNavProvider @Inject constructor(
     private val navigator: Navigator,
+    private val userDataStore: User,
 ) : NavProvider {
 
     override val navBarItem = NavProvider.BottomBarItem(
@@ -31,6 +33,7 @@ class SettingsNavProvider @Inject constructor(
             ) {
                 SettingsScreen(
                     snackbarHostState,
+                    userDataStore = userDataStore,
                 )
             }
         }

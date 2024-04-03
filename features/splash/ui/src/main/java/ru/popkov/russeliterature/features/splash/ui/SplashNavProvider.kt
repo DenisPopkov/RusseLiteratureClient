@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import ru.popkov.android.core.feature.nav.Navigator
 import ru.popkov.android.core.feature.ui.NavEntryPointProvider
-import ru.popkov.datastore.Token
+import ru.popkov.datastore.token.Token
 import ru.popkov.russeliterature.features.auth.nav.AuthDestination
 import ru.popkov.russeliterature.features.home.nav.HomeDestination
 import ru.popkov.russeliterature.features.splash.nav.SplashDestination

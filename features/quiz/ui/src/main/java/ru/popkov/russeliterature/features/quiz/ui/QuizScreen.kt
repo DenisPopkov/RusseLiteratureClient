@@ -1,6 +1,5 @@
 package ru.popkov.russeliterature.features.quiz.ui
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -60,7 +59,6 @@ fun QuizScreen(
             .collect { effect ->
                 when (effect) {
                     QuizViewEffect.OnCloseEffect -> onCloseClick.invoke()
-                        .also { Log.d("efefe", "click") }
                 }
             }
     }
