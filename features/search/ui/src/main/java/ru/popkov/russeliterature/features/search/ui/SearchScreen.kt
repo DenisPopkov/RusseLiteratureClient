@@ -21,10 +21,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ru.popkov.android.core.feature.components.core.Card
-import ru.popkov.android.core.feature.components.core.CardType
 import ru.popkov.android.core.feature.components.core.Section
 import ru.popkov.android.core.feature.components.core.SectionFilter
-import ru.popkov.android.core.feature.components.core.SectionFilterItem
+import ru.popkov.android.core.feature.components.core.models.CardType
+import ru.popkov.android.core.feature.components.core.models.SectionFilterItem
 import ru.popkov.android.core.feature.components.field.SearchField
 import ru.popkov.android.core.feature.ui.R
 import ru.popkov.russeliterature.theme.Colors

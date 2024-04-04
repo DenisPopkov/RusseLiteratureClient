@@ -10,6 +10,8 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import ru.popkov.russeliterature.features.auth.data.remote.api.FeedApi
+import ru.popkov.russeliterature.features.auth.data.remote.api.QuizApi
 import ru.popkov.russeliterature.features.auth.data.remote.api.SettingsApi
 import javax.inject.Singleton
 
@@ -38,7 +40,7 @@ class NetworkModule {
     @Provides
     fun retrofit(okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
-            .baseUrl("http://192.168.0.119:4041/")
+            .baseUrl("http://192.168.88.112:4041/")
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
@@ -47,4 +49,11 @@ class NetworkModule {
     fun settingsApi(retrofit: Retrofit): SettingsApi =
         retrofit.create(SettingsApi::class.java)
 
+    @Provides
+    fun feedApi(retrofit: Retrofit): FeedApi =
+        retrofit.create(FeedApi::class.java)
+
+    @Provides
+    fun quizApi(retrofit: Retrofit): QuizApi =
+        retrofit.create(QuizApi::class.java)
 }

@@ -17,13 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ru.popkov.android.core.feature.components.core.models.SectionFilterItem
 import ru.popkov.russeliterature.theme.Colors
 import ru.popkov.russeliterature.theme.Grotesk14
-
-data class SectionFilterItem(
-    val sectionName: String,
-    val isSectionSelected: Boolean = false,
-)
 
 @Composable
 fun SectionFilter(
