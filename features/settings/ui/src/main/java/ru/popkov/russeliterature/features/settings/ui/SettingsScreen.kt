@@ -45,6 +45,7 @@ internal fun SettingsScreen(
     userDataStore: User? = null,
     settingsViewModel: SettingsViewModel = hiltViewModel(),
     onDeleteAccountClick: () -> Unit = {},
+    onExitAccountClick: () -> Unit = {},
 ) {
     val state by settingsViewModel.state.collectAsState()
     val userId = userDataStore?.userId
@@ -60,6 +61,7 @@ internal fun SettingsScreen(
                         snackbarHostState.showSnackbar(effect.errorMessage)
 
                     SettingsViewEffect.OnDeleteAccountClick -> onDeleteAccountClick.invoke()
+                    SettingsViewEffect.OnExitAccountClick -> onExitAccountClick.invoke()
                 }
             }
     }
@@ -134,6 +136,25 @@ internal fun Settings(
                     .fillMaxWidth()
                     .padding(vertical = 8.dp),
                 text = stringResource(id = R.string.settings_delete_account),
+                style = FormularMedium14,
+                color = Colors.GrayTextColor,
+            )
+        }
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Colors.InputFieldColor),
+            shape = RoundedCornerShape(size = 8.dp),
+            onClick = {
+                onAction.invoke(SettingsViewAction.OnExitAccountClick)
+            }
+        ) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                text = stringResource(id = R.string.settings_exit_account),
                 style = FormularMedium14,
                 color = Colors.GrayTextColor,
             )

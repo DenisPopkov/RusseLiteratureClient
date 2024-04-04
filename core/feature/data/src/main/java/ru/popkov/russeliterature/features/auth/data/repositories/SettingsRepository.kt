@@ -22,9 +22,9 @@ class SettingsRepository @Inject constructor(
     }
 
     override suspend fun deleteUserAccount(userId: Long) {
+        settingsApi.deleteUserAccount(userId)
         userDataStore.deleteUserId()
         tokenDataStore.deleteToken()
-        settingsApi.deleteUserAccount(userId)
     }
 
 }

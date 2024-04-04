@@ -3,4 +3,5 @@
     <string name="settings_title">Настройки</string>
     <string name="settings_description">Настройте под себя</string>
     <string name="settings_delete_account">Удалить аккаунт?</string>
+    <string name="settings_exit_account">Выйти?</string>
 </resources>
