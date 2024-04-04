@@ -1,8 +1,10 @@
 package ru.popkov.russeliterature.features.home.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,91 +12,91 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.flow.collectLatest
 import ru.popkov.android.core.feature.components.core.Card
-import ru.popkov.android.core.feature.components.core.CardType
 import ru.popkov.android.core.feature.components.core.Carousel
-import ru.popkov.android.core.feature.components.core.CarouselItem
 import ru.popkov.android.core.feature.components.core.Section
+import ru.popkov.android.core.feature.components.core.models.CardType
+import ru.popkov.android.core.feature.components.core.models.Carousel
 import ru.popkov.android.core.feature.ui.R
+import ru.popkov.datastore.user.User
 import ru.popkov.russeliterature.theme.Colors
 
 @Composable
 internal fun HomeScreen(
     snackbarHostState: SnackbarHostState,
+    userDataStore: User? = null,
+    homeViewModel: HomeViewModel = hiltViewModel(),
     onCardClick: () -> Unit = {},
 ) {
 
-    val scrollState = rememberScrollState()
+    val state by homeViewModel.state.collectAsState()
+    val userId = userDataStore?.userId
 
+    LaunchedEffect(Unit) {
+        userId?.collectLatest {
+            homeViewModel.getFeed(userId = it.id)
+        }
+        homeViewModel.effects
+            .collect { effect ->
+                when (effect) {
+                    is HomeViewEffect.ShowError ->
+                        snackbarHostState.showSnackbar(effect.errorMessage)
+                }
+            }
+    }
+
+    Box(
+        contentAlignment = Alignment.Center,
+    ) {
+        Home(
+            state = state,
+            onAction = homeViewModel::onAction,
+        )
+
+        AnimatedVisibility(visible = state.isLoading) {
+            CircularProgressIndicator(color = Color.LightGray)
+        }
+    }
+}
+
+@Composable
+private fun Home(
+    state: HomeState,
+    onAction: (HomeViewAction) -> Unit = {},
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Colors.BackgroundColor)
-            .verticalScroll(scrollState)
+            .verticalScroll(rememberScrollState())
             .padding(bottom = 20.dp),
     ) {
-        val headerArticles = remember {
-            listOf(
-                CarouselItem(
-                    id = 0,
-                    articleTitle = "реализм в\nлитературе",
-                    articleDescription = "В СТАТЬЕ РАССКАЗЫВАЕМ ПРО АВТОРОВ И\nКЛЮЧЕВЫЕ ПРОИЗВЕДЕНИЯ В ЭТОМ\nНАПРАВЛЕНИИ",
-                ),
-                CarouselItem(
-                    id = 1,
-                    articleTitle = "реализм в\nлитературе (2)",
-                    articleDescription = "В СТАТЬЕ РАССКАЗЫВАЕМ ПРО АВТОРОВ И\nКЛЮЧЕВЫЕ ПРОИЗВЕДЕНИЯ В ЭТОМ\nНАПРАВЛЕНИИ",
-                ),
-                CarouselItem(
-                    id = 2,
-                    articleTitle = "реализм в\nлитературе (3)",
-                    articleDescription = "В СТАТЬЕ РАССКАЗЫВАЕМ ПРО АВТОРОВ И\nКЛЮЧЕВЫЕ ПРОИЗВЕДЕНИЯ В ЭТОМ\nНАПРАВЛЕНИИ",
-                ),
-                CarouselItem(
-                    id = 3,
-                    articleTitle = "реализм в\nлитературе (4)",
-                    articleDescription = "В СТАТЬЕ РАССКАЗЫВАЕМ ПРО АВТОРОВ И\nКЛЮЧЕВЫЕ ПРОИЗВЕДЕНИЯ В ЭТОМ\nНАПРАВЛЕНИИ",
-                ),
-                CarouselItem(
-                    id = 4,
-                    articleTitle = "реализм в\nлитературе (5)",
-                    articleDescription = "В СТАТЬЕ РАССКАЗЫВАЕМ ПРО АВТОРОВ И\nКЛЮЧЕВЫЕ ПРОИЗВЕДЕНИЯ В ЭТОМ\nНАПРАВЛЕНИИ",
-                ),
+
+        state.feed?.articles?.map {
+            Carousel(
+                id = it.id,
+                articleTitle = it.name,
+                articleDescription = it.description,
+                articleImage = it.image,
+            )
+        }?.let {
+            Carousel(
+                modifier = Modifier.clickable { },
+                carouselItems = it
             )
         }
-
-        val authors = remember {
-            listOf(
-                "Фёдор\nДостоевский",
-                "Лев Толстой",
-                "Антон Чехов",
-                "Всеволод\nКрестовский",
-            )
-        }
-
-        val articles = remember {
-            listOf(
-                "Как Толстой Войну и\nмир писал",
-                "Реализм в\nлитературе",
-            )
-        }
-
-        val poems = remember {
-            listOf(
-                "Мир Анны\nАхматовой",
-                "Ночь, улица,\nфонарь, аптека...",
-            )
-        }
-
-        Carousel(
-            modifier = Modifier.clickable { onCardClick.invoke() },
-            carouselItems = headerArticles
-        )
 
         Section(
             modifier = Modifier
@@ -108,8 +110,8 @@ internal fun HomeScreen(
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            items(authors) {
-                Card(cardImageUrl = "", cardText = it, cardType = CardType.SMALL)
+            items(state.feed?.authors ?: emptyList()) {
+                Card(cardImageUrl = it.image, cardText = it.name, cardType = CardType.SMALL)
             }
         }
 
@@ -125,8 +127,8 @@ internal fun HomeScreen(
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            items(articles) {
-                Card(cardImageUrl = "", cardText = it, cardType = CardType.LARGE)
+            items(state.feed?.articles ?: emptyList()) {
+                Card(cardImageUrl = it.image, cardText = it.name, cardType = CardType.LARGE)
             }
         }
 
@@ -142,8 +144,8 @@ internal fun HomeScreen(
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            items(poems) {
-                Card(cardImageUrl = "", cardText = it, cardType = CardType.MEDIUM)
+            items(state.feed?.poets ?: emptyList()) {
+                Card(cardImageUrl = it.image, cardText = it.name, cardType = CardType.MEDIUM)
             }
         }
     }

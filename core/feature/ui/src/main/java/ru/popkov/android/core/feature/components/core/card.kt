@@ -1,7 +1,6 @@
 package ru.popkov.android.core.feature.components.core
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,18 +22,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import ru.popkov.android.core.feature.components.core.models.CardType
 import ru.popkov.android.core.feature.ui.R
 import ru.popkov.russeliterature.theme.FormularMedium14
 import ru.popkov.russeliterature.theme.FormularRegular14
-
-enum class CardType(val height: Dp, val width: Dp) {
-    SMALL(height = 100.dp, width = 100.dp),
-    MEDIUM(height = 160.dp, width = 160.dp),
-    LARGE(height = 170.dp, width = 250.dp),
-    ;
-}
 
 @Composable
 fun Card(
@@ -54,10 +47,10 @@ fun Card(
                 .clip(shape = RoundedCornerShape(size = 10.dp))
                 .clickable { onClick.invoke() }
         ) {
-            Image(
+            AsyncImage(
                 modifier = Modifier
                     .fillMaxSize(),
-                painter = painterResource(id = R.drawable.ic_article),
+                model = cardImageUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
             )
