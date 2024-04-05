@@ -1,13 +1,13 @@
-package ru.popkov.russeliterature.features.auth.data.remote.mappers
+package ru.popkov.russeliterature.features.core.data.remote.mappers
 
-import ru.popkov.russeliterature.features.auth.data.remote.dtos.Answer as AnswerDto
-import ru.popkov.russeliterature.features.auth.data.remote.dtos.Article as ArticlesDto
-import ru.popkov.russeliterature.features.auth.data.remote.dtos.Author as AuthorsDto
-import ru.popkov.russeliterature.features.auth.data.remote.dtos.Clip as ClipDto
-import ru.popkov.russeliterature.features.auth.data.remote.dtos.ClipText as ClipTextDto
-import ru.popkov.russeliterature.features.auth.data.remote.dtos.Feed as FeedDto
-import ru.popkov.russeliterature.features.auth.data.remote.dtos.Poet as PoetsDto
-import ru.popkov.russeliterature.features.auth.data.remote.dtos.Quiz as QuizDto
+import ru.popkov.russeliterature.features.core.data.remote.dtos.Answer as AnswerDto
+import ru.popkov.russeliterature.features.core.data.remote.dtos.Article as ArticlesDto
+import ru.popkov.russeliterature.features.core.data.remote.dtos.Author as AuthorsDto
+import ru.popkov.russeliterature.features.core.data.remote.dtos.Clip as ClipDto
+import ru.popkov.russeliterature.features.core.data.remote.dtos.ClipText as ClipTextDto
+import ru.popkov.russeliterature.features.core.data.remote.dtos.Feed as FeedDto
+import ru.popkov.russeliterature.features.core.data.remote.dtos.Poet as PoetsDto
+import ru.popkov.russeliterature.features.core.data.remote.dtos.Quiz as QuizDto
 import ru.popkov.russeliterature.features.auth.domain.model.Answer as AnswerDomain
 import ru.popkov.russeliterature.features.auth.domain.model.Article as ArticlesDomain
 import ru.popkov.russeliterature.features.auth.domain.model.Author as AuthorsDomain
@@ -32,7 +32,7 @@ object FeedMapper {
             name = this.name,
             image = this.image,
             clip = this.clip,
-            isFave = this.isFave,
+            isFave = this.isFave.convertStringBoolean(),
         )
 
     private fun ArticlesDto.toArticlesDomain() =
@@ -42,7 +42,7 @@ object FeedMapper {
             description = this.description,
             image = this.image,
             clip = this.clip,
-            isFave = this.isFave,
+            isFave = this.isFave.convertStringBoolean(),
         )
 
     private fun PoetsDto.toPoetsDomain() =
@@ -51,8 +51,10 @@ object FeedMapper {
             name = this.name,
             image = this.image,
             clip = this.clip,
-            isFave = this.isFave,
+            isFave = this.isFave.convertStringBoolean(),
         )
+
+    private fun String.convertStringBoolean(): Boolean = this == "true"
 
     fun List<AuthorsDto>.toAuthorsDomain(): List<AuthorsDomain> =
         map { it.toAuthorsDomain() }

@@ -1,10 +1,10 @@
-package ru.popkov.russeliterature.features.auth.data.repositories
+package ru.popkov.russeliterature.features.core.data.repositories
 
-import ru.popkov.russeliterature.features.auth.data.remote.api.FeedApi
-import ru.popkov.russeliterature.features.auth.data.remote.mappers.FeedMapper.toArticlesDomain
-import ru.popkov.russeliterature.features.auth.data.remote.mappers.FeedMapper.toAuthorsDomain
-import ru.popkov.russeliterature.features.auth.data.remote.mappers.FeedMapper.toFeedDomain
-import ru.popkov.russeliterature.features.auth.data.remote.mappers.FeedMapper.toPoetsDomain
+import ru.popkov.russeliterature.features.core.data.remote.api.FeedApi
+import ru.popkov.russeliterature.features.core.data.remote.mappers.FeedMapper.toArticlesDomain
+import ru.popkov.russeliterature.features.core.data.remote.mappers.FeedMapper.toAuthorsDomain
+import ru.popkov.russeliterature.features.core.data.remote.mappers.FeedMapper.toFeedDomain
+import ru.popkov.russeliterature.features.core.data.remote.mappers.FeedMapper.toPoetsDomain
 import ru.popkov.russeliterature.features.auth.domain.model.Article
 import ru.popkov.russeliterature.features.auth.domain.model.Author
 import ru.popkov.russeliterature.features.auth.domain.model.Feed

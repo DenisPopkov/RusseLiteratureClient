@@ -1,9 +1,9 @@
-package ru.popkov.russeliterature.features.auth.data.remote.api
+package ru.popkov.russeliterature.features.core.data.remote.api
 
 import retrofit2.http.GET
 import retrofit2.http.Query
-import ru.popkov.russeliterature.features.auth.data.remote.dtos.Clip
-import ru.popkov.russeliterature.features.auth.data.remote.dtos.Quiz
+import ru.popkov.russeliterature.features.core.data.remote.dtos.Clip
+import ru.popkov.russeliterature.features.core.data.remote.dtos.Quiz
 
 interface QuizApi {
     @GET("/quiz")

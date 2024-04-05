@@ -1,4 +1,4 @@
-package ru.popkov.russeliterature.features.auth.data.remote.dtos
+package ru.popkov.russeliterature.features.core.data.remote.dtos
 
 import androidx.annotation.Keep
 import com.squareup.moshi.Json

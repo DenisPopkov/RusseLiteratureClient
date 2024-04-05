@@ -1,4 +1,4 @@
-package ru.popkov.russeliterature.features.auth.data
+package ru.popkov.russeliterature.features.core
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -10,9 +10,9 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import ru.popkov.russeliterature.features.auth.data.remote.api.FeedApi
-import ru.popkov.russeliterature.features.auth.data.remote.api.QuizApi
-import ru.popkov.russeliterature.features.auth.data.remote.api.SettingsApi
+import ru.popkov.russeliterature.features.core.data.remote.api.FeedApi
+import ru.popkov.russeliterature.features.core.data.remote.api.QuizApi
+import ru.popkov.russeliterature.features.core.data.remote.api.SettingsApi
 import javax.inject.Singleton
 
 @Module

@@ -1,12 +1,12 @@
-package ru.popkov.russeliterature.features.auth.data.remote.api
+package ru.popkov.russeliterature.features.core.data.remote.api
 
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.Query
-import ru.popkov.russeliterature.features.auth.data.remote.dtos.Article
-import ru.popkov.russeliterature.features.auth.data.remote.dtos.Author
-import ru.popkov.russeliterature.features.auth.data.remote.dtos.Feed
-import ru.popkov.russeliterature.features.auth.data.remote.dtos.Poet
+import ru.popkov.russeliterature.features.core.data.remote.dtos.Article
+import ru.popkov.russeliterature.features.core.data.remote.dtos.Author
+import ru.popkov.russeliterature.features.core.data.remote.dtos.Feed
+import ru.popkov.russeliterature.features.core.data.remote.dtos.Poet
 
 interface FeedApi {
 

@@ -15,7 +15,7 @@ data class Author(
     val name: String,
     val image: String,
     val clip: Int,
-    val isFave: String
+    val isFave: Boolean
 )
 
 @Keep
@@ -25,7 +25,7 @@ data class Article(
     val description: String,
     val image: String,
     val clip: Int,
-    val isFave: String
+    val isFave: Boolean
 )
 
 @Keep
@@ -34,7 +34,7 @@ data class Poet(
     val name: String,
     val image: String,
     val clip: Int,
-    val isFave: String
+    val isFave: Boolean
 )
 
 @Keep

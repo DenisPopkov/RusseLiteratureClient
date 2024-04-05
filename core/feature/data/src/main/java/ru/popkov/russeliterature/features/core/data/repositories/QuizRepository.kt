@@ -1,8 +1,8 @@
-package ru.popkov.russeliterature.features.auth.data.repositories
+package ru.popkov.russeliterature.features.core.data.repositories
 
-import ru.popkov.russeliterature.features.auth.data.remote.api.QuizApi
-import ru.popkov.russeliterature.features.auth.data.remote.mappers.FeedMapper.toClipDomain
-import ru.popkov.russeliterature.features.auth.data.remote.mappers.FeedMapper.toQuizDomain
+import ru.popkov.russeliterature.features.core.data.remote.api.QuizApi
+import ru.popkov.russeliterature.features.core.data.remote.mappers.FeedMapper.toClipDomain
+import ru.popkov.russeliterature.features.core.data.remote.mappers.FeedMapper.toQuizDomain
 import ru.popkov.russeliterature.features.auth.domain.model.Clip
 import ru.popkov.russeliterature.features.auth.domain.model.Quiz
 import ru.popkov.russeliterature.features.auth.domain.repositories.QuizRepository

@@ -32,7 +32,7 @@ moshi = "1.15.1"
 # used directly in gradle plugins
 androidx-compose-compiler = "1.5.10"
 compile-sdk = "34"
-min-sdk = "29"
+min-sdk = "30"
 target-sdk = "34"
 jvm = "19"
 appcompat = "1.6.1"
