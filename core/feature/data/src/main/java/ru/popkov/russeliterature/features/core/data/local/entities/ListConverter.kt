@@ -3,10 +3,13 @@ package ru.popkov.russeliterature.features.core.data.local.entities
 import androidx.room.TypeConverter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 class ListConverter {
 
-    private val moshi = Moshi.Builder().build()
+    private val moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
 
     @TypeConverter
     fun fromAuthorsList(authors: List<Author>): String {

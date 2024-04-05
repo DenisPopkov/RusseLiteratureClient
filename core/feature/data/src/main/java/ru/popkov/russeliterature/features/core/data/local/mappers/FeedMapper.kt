@@ -98,6 +98,4 @@ object FeedMapper {
 
     private fun List<AnswerEntity>.toAnswerDomain(): List<AnswerDomain> =
         map { it.toAnswerDomain() }
-
-    private fun String.convertStringBoolean(): Boolean = this == "true"
 }
