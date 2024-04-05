@@ -16,7 +16,7 @@ data class Quiz(
 @Entity
 data class Answer(
     @PrimaryKey
-    val id: Int,
+    val id: Long,
     val text: String,
     val isRight: Boolean,
 )
@@ -24,7 +24,7 @@ data class Answer(
 @Entity
 data class ClipText(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Long,
     val title: String,
     val text: String,
 )

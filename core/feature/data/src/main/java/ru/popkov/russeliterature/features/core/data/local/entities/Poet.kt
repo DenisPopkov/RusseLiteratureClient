@@ -6,9 +6,9 @@ import androidx.room.PrimaryKey
 @Entity
 data class Poet(
     @PrimaryKey
-    val id: Int,
+    val id: Long,
     val name: String,
     val image: String,
-    val clip: Int,
+    val clip: Long,
     val isFave: Boolean,
 )

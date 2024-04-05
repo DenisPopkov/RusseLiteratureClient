@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class Clip(
     @PrimaryKey
-    val id: Int,
+    val id: Long,
     val text: List<ClipText>,
-    val quiz: Int // quiz id
+    val quiz: Long // quiz id
 )

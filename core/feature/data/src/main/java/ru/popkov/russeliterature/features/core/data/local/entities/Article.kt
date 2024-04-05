@@ -6,10 +6,10 @@ import androidx.room.PrimaryKey
 @Entity
 data class Article(
     @PrimaryKey
-    val id: Int,
+    val id: Long,
     val name: String,
     val description: String,
     val image: String,
-    val clip: Int,
+    val clip: Long,
     val isFave: Boolean,
 )

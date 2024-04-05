@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class Feed(
     @PrimaryKey
-    val id: Int,
+    val id: Long,
     val authors: List<Author>,
     val articles: List<Article>,
     val poets: List<Poet>,

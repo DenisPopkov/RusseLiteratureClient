@@ -14,7 +14,7 @@ data class Author(
     val id: Long,
     val name: String,
     val image: String,
-    val clip: Int,
+    val clip: Long,
     val isFave: Boolean
 )
 
@@ -24,7 +24,7 @@ data class Article(
     val name: String,
     val description: String,
     val image: String,
-    val clip: Int,
+    val clip: Long,
     val isFave: Boolean
 )
 
@@ -33,7 +33,7 @@ data class Poet(
     val id: Long,
     val name: String,
     val image: String,
-    val clip: Int,
+    val clip: Long,
     val isFave: Boolean
 )
 
@@ -41,7 +41,7 @@ data class Poet(
 data class Clip(
     val id: Long,
     val text: List<ClipText>,
-    val quiz: Quiz
+    val quiz: Long,
 )
 
 @Keep

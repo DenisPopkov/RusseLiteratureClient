@@ -1,15 +1,20 @@
 package ru.popkov.russeliterature.features.core.data.repositories
 
-import ru.popkov.russeliterature.features.core.data.remote.api.FeedApi
-import ru.popkov.russeliterature.features.core.data.remote.mappers.FeedMapper.toArticlesDomain
-import ru.popkov.russeliterature.features.core.data.remote.mappers.FeedMapper.toAuthorsDomain
-import ru.popkov.russeliterature.features.core.data.remote.mappers.FeedMapper.toFeedDomain
-import ru.popkov.russeliterature.features.core.data.remote.mappers.FeedMapper.toPoetsDomain
 import ru.popkov.russeliterature.features.auth.domain.model.Article
 import ru.popkov.russeliterature.features.auth.domain.model.Author
 import ru.popkov.russeliterature.features.auth.domain.model.Feed
 import ru.popkov.russeliterature.features.auth.domain.model.Poet
 import ru.popkov.russeliterature.features.auth.domain.repositories.FeedRepository
+import ru.popkov.russeliterature.features.core.data.local.daos.FeedDao
+import ru.popkov.russeliterature.features.core.data.local.mappers.FeedMapper.toFeedDomain
+import ru.popkov.russeliterature.features.core.data.local.mappers.FeedMapper.toListArticlesDomain
+import ru.popkov.russeliterature.features.core.data.local.mappers.FeedMapper.toListAuthorsDomain
+import ru.popkov.russeliterature.features.core.data.local.mappers.FeedMapper.toListPoetsDomain
+import ru.popkov.russeliterature.features.core.data.remote.api.FeedApi
+import ru.popkov.russeliterature.features.core.data.remote.mappers.FeedMapper.toFeedEntity
+import ru.popkov.russeliterature.features.core.data.remote.mappers.FeedMapper.toListArticleEntity
+import ru.popkov.russeliterature.features.core.data.remote.mappers.FeedMapper.toListAuthorEntity
+import ru.popkov.russeliterature.features.core.data.remote.mappers.FeedMapper.toListPoetEntity
 import se.ansman.dagger.auto.AutoBind
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -18,10 +23,13 @@ import javax.inject.Singleton
 @Singleton
 class FeedRepository @Inject constructor(
     private val feedApi: FeedApi,
+    private val feedDao: FeedDao,
 ) : FeedRepository {
 
     override suspend fun getFeed(userId: Long): Feed {
-        return feedApi.getFeed(userId).toFeedDomain()
+        val feed = feedApi.getFeed(userId)
+        feedDao.addFeed(feed.toFeedEntity())
+        return feedDao.getFeed().toFeedDomain()
     }
 
     override suspend fun addAuthorToFave(
@@ -49,14 +57,20 @@ class FeedRepository @Inject constructor(
     }
 
     override suspend fun getAuthors(userId: Long): List<Author> {
-        return feedApi.getAuthors(userId).toAuthorsDomain()
+        val authors = feedApi.getAuthors(userId)
+        feedDao.addAuthors(*authors.toListAuthorEntity().toTypedArray())
+        return feedDao.getAuthors().toListAuthorsDomain()
     }
 
     override suspend fun getArticles(userId: Long): List<Article> {
-        return feedApi.getArticles(userId).toArticlesDomain()
+        val articles = feedApi.getArticles(userId)
+        feedDao.addArticles(*articles.toListArticleEntity().toTypedArray())
+        return feedDao.getArticles().toListArticlesDomain()
     }
 
     override suspend fun getPoets(userId: Long): List<Poet> {
-        return feedApi.getPoets(userId).toPoetsDomain()
+        val poets = feedApi.getPoets(userId)
+        feedDao.addPoets(*poets.toListPoetEntity().toTypedArray())
+        return feedDao.getPoets().toListPoetsDomain()
     }
 }
