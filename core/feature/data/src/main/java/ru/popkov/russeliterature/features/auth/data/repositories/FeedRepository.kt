@@ -28,24 +28,24 @@ class FeedRepository @Inject constructor(
         userId: Long,
         authorId: Long,
         isFave: String,
-    ): List<Author> {
-        return feedApi.addAuthorToFave(userId, authorId, isFave).toAuthorsDomain()
+    ) {
+        feedApi.addAuthorToFave(userId, authorId, isFave)
     }
 
     override suspend fun addArticleToFave(
         userId: Long,
         articleId: Long,
         isFave: String,
-    ): List<Article> {
-        return feedApi.addArticleToFave(userId, articleId, isFave).toArticlesDomain()
+    ) {
+        feedApi.addArticleToFave(userId, articleId, isFave)
     }
 
     override suspend fun addPoetToFave(
         userId: Long,
         poetId: Long,
         isFave: String,
-    ): List<Poet> {
-        return feedApi.addPoetToFave(userId, poetId, isFave).toPoetsDomain()
+    ) {
+        feedApi.addPoetToFave(userId, poetId, isFave)
     }
 
     override suspend fun getAuthors(userId: Long): List<Author> {

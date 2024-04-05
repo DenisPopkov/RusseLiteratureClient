@@ -14,19 +14,19 @@ interface FeedRepository {
         userId: Long,
         authorId: Long,
         isFave: String,
-    ): List<Author>
+    )
 
     suspend fun addArticleToFave(
         userId: Long,
         articleId: Long,
         isFave: String,
-    ): List<Article>
+    )
 
     suspend fun addPoetToFave(
         userId: Long,
         poetId: Long,
         isFave: String,
-    ): List<Poet>
+    )
 
     suspend fun getAuthors(
         userId: Long,

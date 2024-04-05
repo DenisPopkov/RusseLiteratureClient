@@ -20,21 +20,21 @@ interface FeedApi {
         @Query("userId") userId: Long,
         @Query("authorId") authorId: Long,
         @Query("isFave") isFave: String,
-    ): List<Author>
+    )
 
     @PATCH("/articles")
     suspend fun addArticleToFave(
         @Query("userId") userId: Long,
         @Query("articleId") articleId: Long,
         @Query("isFave") isFave: String,
-    ): List<Article>
+    )
 
     @PATCH("/poets")
     suspend fun addPoetToFave(
         @Query("userId") userId: Long,
         @Query("poetId") poetId: Long,
         @Query("isFave") isFave: String,
-    ): List<Poet>
+    )
 
     @GET("/authors")
     suspend fun getAuthors(
