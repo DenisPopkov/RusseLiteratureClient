@@ -32,4 +32,14 @@ interface FeedRepository {
     suspend fun getPoets(
         userId: Long,
     ): List<Poet>
+
+    suspend fun getAuthorsFromLocal(): List<Author>
+
+    suspend fun getArticlesFromLocal(): List<Article>
+
+    suspend fun getPoetsFromLocal(): List<Poet>
+
+    suspend fun getFaveAuthors(): List<Author>
+    suspend fun getFaveArticles(): List<Article>
+    suspend fun getFavePoets(): List<Poet>
 }

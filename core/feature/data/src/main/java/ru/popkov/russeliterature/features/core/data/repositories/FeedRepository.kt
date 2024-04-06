@@ -70,4 +70,28 @@ class FeedRepository @Inject constructor(
         feedDao.addPoets(*poets.toListPoetEntity().toTypedArray())
         return feedDao.getPoets().toListPoetsDomain()
     }
+
+    override suspend fun getAuthorsFromLocal(): List<Author> {
+        return feedDao.getAuthors().toListAuthorsDomain()
+    }
+
+    override suspend fun getArticlesFromLocal(): List<Article> {
+        return feedDao.getArticles().toListArticlesDomain()
+    }
+
+    override suspend fun getPoetsFromLocal(): List<Poet> {
+        return feedDao.getPoets().toListPoetsDomain()
+    }
+
+    override suspend fun getFaveAuthors(): List<Author> {
+        return feedDao.findFaveAuthors().toListAuthorsDomain()
+    }
+
+    override suspend fun getFaveArticles(): List<Article> {
+        return feedDao.findFaveArticles().toListArticlesDomain()
+    }
+
+    override suspend fun getFavePoets(): List<Poet> {
+        return feedDao.findFavePoets().toListPoetsDomain()
+    }
 }
