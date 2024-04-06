@@ -3,13 +3,6 @@ package ru.popkov.russeliterature.features.auth.domain.model
 import com.google.errorprone.annotations.Keep
 
 @Keep
-data class Feed(
-    val authors: List<Author>,
-    val articles: List<Article>,
-    val poets: List<Poet>,
-)
-
-@Keep
 data class Author(
     val id: Long,
     val name: String,

@@ -24,9 +24,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.flow.collectLatest
-import ru.popkov.android.core.feature.components.core.card.Card
 import ru.popkov.android.core.feature.components.core.Carousel
 import ru.popkov.android.core.feature.components.core.Section
+import ru.popkov.android.core.feature.components.core.card.Card
 import ru.popkov.android.core.feature.components.core.card.CardType
 import ru.popkov.android.core.feature.components.core.models.Carousel
 import ru.popkov.android.core.feature.ui.R
@@ -84,7 +84,7 @@ private fun Home(
             .padding(bottom = 20.dp),
     ) {
 
-        state.feed?.articles?.map {
+        state.articles?.map {
             Carousel(
                 id = it.id,
                 articleTitle = it.name,
@@ -110,19 +110,19 @@ private fun Home(
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            items(state.feed?.authors ?: emptyList()) { author ->
+            items(state.authors ?: emptyList()) { author ->
                 Card(
                     cardId = author.id,
                     cardImageUrl = author.image,
                     cardText = author.name,
                     cardType = CardType.SMALL,
+                    isFave = author.isFave,
                     onAction = {
                         onAction.invoke(
-                            HomeViewAction.OnFaveClick(
+                            HomeViewAction.OnAuthorFaveClick(
                                 userId = state.userId,
-                                cardId = author.id,
-                                isFave = !(state.feed?.authors?.find { it.id == author.id }?.isFave
-                                    ?: true),
+                                authorId = author.id,
+                                isFave = !author.isFave,
                             )
                         )
                     },
@@ -142,20 +142,19 @@ private fun Home(
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            items(state.feed?.articles ?: emptyList()) { article ->
-                val isFave = !(state.feed?.authors?.find { it.id == article.id }?.isFave ?: true)
+            items(state.articles ?: emptyList()) { article ->
                 Card(
                     cardId = article.id,
                     cardImageUrl = article.image,
                     cardText = article.name,
                     cardType = CardType.LARGE,
-                    isFave = isFave,
+                    isFave = article.isFave,
                     onAction = {
                         onAction.invoke(
-                            HomeViewAction.OnFaveClick(
+                            HomeViewAction.OnArticleFaveClick(
                                 userId = state.userId,
-                                cardId = article.id,
-                                isFave = isFave,
+                                articleId = article.id,
+                                isFave = !article.isFave,
                             )
                         )
                     },
@@ -175,19 +174,19 @@ private fun Home(
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            items(state.feed?.poets ?: emptyList()) { poet ->
+            items(state.poets ?: emptyList()) { poet ->
                 Card(
                     cardId = poet.id,
                     cardImageUrl = poet.image,
                     cardText = poet.name,
                     cardType = CardType.MEDIUM,
+                    isFave = poet.isFave,
                     onAction = {
                         onAction.invoke(
-                            HomeViewAction.OnFaveClick(
+                            HomeViewAction.OnPoetFaveClick(
                                 userId = state.userId,
-                                cardId = poet.id,
-                                isFave = !(state.feed?.authors?.find { it.id == poet.id }?.isFave
-                                    ?: true),
+                                poetId = poet.id,
+                                isFave = !poet.isFave,
                             )
                         )
                     },

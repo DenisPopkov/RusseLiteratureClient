@@ -9,17 +9,17 @@ interface FeedRepository {
     suspend fun addAuthorToFave(
         userId: Long,
         authorId: Long,
-    )
+    ): List<Author>
 
     suspend fun addArticleToFave(
         userId: Long,
         articleId: Long,
-    )
+    ): List<Article>
 
     suspend fun addPoetToFave(
         userId: Long,
         poetId: Long,
-    )
+    ): List<Poet>
 
     suspend fun getAuthors(
         userId: Long,

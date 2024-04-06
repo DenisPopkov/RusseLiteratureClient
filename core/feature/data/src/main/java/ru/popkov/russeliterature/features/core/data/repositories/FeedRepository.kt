@@ -1,6 +1,5 @@
 package ru.popkov.russeliterature.features.core.data.repositories
 
-import android.util.Log
 import ru.popkov.russeliterature.features.auth.domain.model.Article
 import ru.popkov.russeliterature.features.auth.domain.model.Author
 import ru.popkov.russeliterature.features.auth.domain.model.Poet
@@ -27,27 +26,35 @@ class FeedRepository @Inject constructor(
     override suspend fun addAuthorToFave(
         userId: Long,
         authorId: Long,
-    ) {
+    ): List<Author> {
         feedApi.addAuthorToFave(userId, authorId)
+        val author = feedDao.findAuthorById(authorId)
+        feedDao.addAuthorToFave(author.copy(isFave = !author.isFave))
+        return feedDao.getAuthors().toListAuthorsDomain()
     }
 
     override suspend fun addArticleToFave(
         userId: Long,
         articleId: Long,
-    ) {
+    ): List<Article> {
         feedApi.addArticleToFave(userId, articleId)
+        val article = feedDao.findArticleById(articleId)
+        feedDao.addArticleToFave(article.copy(isFave = !article.isFave))
+        return feedDao.getArticles().toListArticlesDomain()
     }
 
     override suspend fun addPoetToFave(
         userId: Long,
         poetId: Long,
-    ) {
+    ): List<Poet> {
         feedApi.addPoetToFave(userId, poetId)
+        val poet = feedDao.findPoetById(poetId)
+        feedDao.addPoetToFave(poet.copy(isFave = !poet.isFave))
+        return feedDao.getPoets().toListPoetsDomain()
     }
 
     override suspend fun getAuthors(userId: Long): List<Author> {
         val authors = feedApi.getAuthors(userId)
-        Log.d("efefe", "response - $authors")
         feedDao.addAuthors(*authors.toListAuthorEntity().toTypedArray())
         return feedDao.getAuthors().toListAuthorsDomain()
     }

@@ -1,6 +1,5 @@
 package ru.popkov.russeliterature.features.home.ui
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,7 +9,6 @@ import ru.popkov.android.core.feature.ui.EffectsDelegate
 import ru.popkov.android.core.feature.ui.EffectsProvider
 import ru.popkov.android.core.feature.ui.StateDelegate
 import ru.popkov.android.core.feature.ui.StateProvider
-import ru.popkov.russeliterature.features.auth.domain.model.Feed
 import ru.popkov.russeliterature.features.auth.domain.repositories.FeedRepository
 import timber.log.Timber
 import javax.inject.Inject
@@ -24,12 +22,33 @@ class HomeViewModel @Inject constructor(
 
     fun onAction(action: HomeViewAction) {
         when (action) {
-            is HomeViewAction.OnFaveClick -> {
+            is HomeViewAction.OnAuthorFaveClick -> {
                 viewModelScope.launch {
-                    feedRepository.addAuthorToFave(
+                    val authors = feedRepository.addAuthorToFave(
                         action.userId,
-                        action.cardId,
+                        action.authorId,
                     )
+                    updateState { copy(authors = authors) }
+                }
+            }
+
+            is HomeViewAction.OnArticleFaveClick -> {
+                viewModelScope.launch {
+                    val articles = feedRepository.addArticleToFave(
+                        action.userId,
+                        action.articleId,
+                    )
+                    updateState { copy(articles = articles) }
+                }
+            }
+
+            is HomeViewAction.OnPoetFaveClick -> {
+                viewModelScope.launch {
+                    val poets = feedRepository.addPoetToFave(
+                        action.userId,
+                        action.poetId,
+                    )
+                    updateState { copy(poets = poets) }
                 }
             }
 
@@ -45,13 +64,14 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch(handler) {
             updateState { copy(isLoading = true) }
             val authors = feedRepository.getAuthors(userId = userId)
-            Log.d("efefe", "authors = $authors")
             val articles = feedRepository.getArticles(userId = userId)
             val poets = feedRepository.getPoets(userId = userId)
             updateState {
                 copy(
                     userId = userId,
-                    feed = Feed(authors, articles, poets),
+                    authors = authors,
+                    articles = articles,
+                    poets = poets,
                     isLoading = false,
                 )
             }

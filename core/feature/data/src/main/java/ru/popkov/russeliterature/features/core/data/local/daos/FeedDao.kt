@@ -5,11 +5,10 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import ru.popkov.russeliterature.features.core.data.local.entities.Article
 import ru.popkov.russeliterature.features.core.data.local.entities.Author
-import ru.popkov.russeliterature.features.core.data.local.entities.Clip
 import ru.popkov.russeliterature.features.core.data.local.entities.Poet
-import ru.popkov.russeliterature.features.core.data.local.entities.Quiz
 
 @Dao
 abstract class FeedDao {
@@ -43,4 +42,25 @@ abstract class FeedDao {
     @Transaction
     @Query("SELECT * FROM poet WHERE isFave = true")
     abstract suspend fun findFavePoets(): List<Poet>
+
+    @Transaction
+    @Query("SELECT * FROM author WHERE id = :authorId")
+    abstract suspend fun findAuthorById(authorId: Long): Author
+
+    @Transaction
+    @Query("SELECT * FROM article WHERE id = :articleId")
+    abstract suspend fun findArticleById(articleId: Long): Article
+
+    @Transaction
+    @Query("SELECT * FROM poet WHERE id = :poetId")
+    abstract suspend fun findPoetById(poetId: Long): Poet
+
+    @Update(entity = Author::class)
+    abstract suspend fun addAuthorToFave(author: Author)
+
+    @Update(entity = Article::class)
+    abstract suspend fun addArticleToFave(article: Article)
+
+    @Update(entity = Poet::class)
+    abstract suspend fun addPoetToFave(poet: Poet)
 }
