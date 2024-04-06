@@ -9,5 +9,6 @@ android {
 dependencies {
     implementation(project(":core:feature:domain"))
     implementation(project(":features:search:nav"))
+    implementation(project(":features:home:nav"))
     implementation(project(":theme"))
 }

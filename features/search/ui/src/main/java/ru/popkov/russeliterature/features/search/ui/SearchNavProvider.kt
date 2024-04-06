@@ -7,6 +7,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import ru.popkov.android.core.feature.nav.Navigator
 import ru.popkov.android.core.feature.ui.NavProvider
+import ru.popkov.datastore.user.User
+import ru.popkov.russeliterature.features.home.nav.HomeDestination
 import ru.popkov.russeliterature.features.search.nav.SearchDestination
 import se.ansman.dagger.auto.AutoBindIntoSet
 import javax.inject.Inject
@@ -14,6 +16,7 @@ import javax.inject.Inject
 @AutoBindIntoSet
 class SearchNavProvider @Inject constructor(
     private val navigator: Navigator,
+    private val userDatastore: User,
 ) : NavProvider {
 
     override val navBarItem = NavProvider.BottomBarItem(
@@ -31,6 +34,10 @@ class SearchNavProvider @Inject constructor(
             ) {
                 SearchScreen(
                     snackbarHostState = snackbarHostState,
+                    userDataStore = userDatastore,
+                    onToMainClick = {
+                        navigator.navigate(HomeDestination)
+                    }
                 )
             }
         }

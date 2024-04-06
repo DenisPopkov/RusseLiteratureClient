@@ -1,14 +1,11 @@
 package ru.popkov.android.core.feature.components.core
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,41 +15,35 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.popkov.android.core.feature.components.core.models.SectionFilterItem
+import ru.popkov.android.core.feature.components.core.models.SectionType
 import ru.popkov.russeliterature.theme.Colors
 import ru.popkov.russeliterature.theme.Grotesk14
 
 @Composable
 fun SectionFilter(
     modifier: Modifier = Modifier,
-    sectionFilterListener: List<SectionFilterItem>,
+    sectionItem: SectionFilterItem,
+    onSectionFilterClick: () -> Unit = {},
 ) {
-    LazyRow(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(color = Colors.BackgroundColor),
-        horizontalArrangement = Arrangement.spacedBy(space = 18.dp),
+    Column(
+        modifier = modifier.clickable { onSectionFilterClick.invoke() },
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        items(sectionFilterListener) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Text(
-                    text = it.sectionName,
-                    style = Grotesk14,
-                    color = if (it.isSectionSelected) Color.White else Colors.GrayTextColor,
-                )
+        Text(
+            text = sectionItem.sectionType.sectionName,
+            style = Grotesk14,
+            color = if (sectionItem.isSectionSelected) Color.White else Colors.GrayTextColor,
+        )
 
-                AnimatedVisibility(visible = it.isSectionSelected) {
-                    HorizontalDivider(
-                        modifier = Modifier
-                            .padding(top = 8.dp)
-                            .width(width = it.sectionName.calculateUnderLineWidth()),
-                        thickness = 1.dp,
-                        color = Color.White,
-                    )
-                }
-            }
+        AnimatedVisibility(visible = sectionItem.isSectionSelected) {
+            HorizontalDivider(
+                modifier = Modifier
+                    .padding(top = 8.dp)
+                    .width(width = sectionItem.sectionType.sectionName.calculateUnderLineWidth()),
+                thickness = 1.dp,
+                color = Color.White,
+            )
         }
     }
 }
@@ -63,20 +54,9 @@ private fun String.calculateUnderLineWidth() = (this.length * 8).dp
 @Composable
 private fun Preview() {
     SectionFilter(
-        sectionFilterListener = listOf(
-            SectionFilterItem(
-                sectionName = "все",
-                isSectionSelected = true,
-            ),
-            SectionFilterItem(
-                sectionName = "писатели",
-            ),
-            SectionFilterItem(
-                sectionName = "статьи",
-            ),
-            SectionFilterItem(
-                sectionName = "поэты",
-            ),
-        )
+        sectionItem = SectionFilterItem(
+            sectionType = SectionType.ALL,
+            isSectionSelected = true,
+        ),
     )
 }

@@ -1,53 +1,74 @@
 package ru.popkov.russeliterature.features.search.ui
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import ru.popkov.android.core.feature.components.core.card.Card
+import kotlinx.coroutines.flow.collectLatest
 import ru.popkov.android.core.feature.components.core.Section
 import ru.popkov.android.core.feature.components.core.SectionFilter
+import ru.popkov.android.core.feature.components.core.card.Card
 import ru.popkov.android.core.feature.components.core.card.CardType
-import ru.popkov.android.core.feature.components.core.models.SectionFilterItem
 import ru.popkov.android.core.feature.components.field.SearchField
-import ru.popkov.android.core.feature.ui.R
+import ru.popkov.datastore.user.User
 import ru.popkov.russeliterature.theme.Colors
+import ru.popkov.russeliterature.theme.FormularMedium14
+import ru.popkov.russeliterature.theme.FormularMedium20
+import ru.popkov.russeliterature.theme.FormularRegular12
 
 @Composable
 internal fun SearchScreen(
     snackbarHostState: SnackbarHostState,
     searchViewModel: SearchViewModel = hiltViewModel(),
+    userDataStore: User? = null,
+    onToMainClick: () -> Unit = {},
 ) {
     val state by searchViewModel.state.collectAsState()
+    val userId = userDataStore?.userId
 
     LaunchedEffect(Unit) {
+        userId?.collectLatest {
+            searchViewModel.getAll(userId = it.id)
+        }
         searchViewModel.effects
             .collect { effect ->
                 when (effect) {
-
-                    else -> {}
+                    is SearchViewEffect.ShowError -> snackbarHostState.showSnackbar(effect.errorMessage)
+                    is SearchViewEffect.GoToMainScreen -> onToMainClick.invoke()
                 }
             }
     }
 
     Search(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Colors.BackgroundColor),
         state = state,
+        onFaveClick = searchViewModel::onAction,
+        onAction = searchViewModel::onAction,
     )
 }
 
@@ -55,6 +76,27 @@ internal fun SearchScreen(
 internal fun Search(
     modifier: Modifier = Modifier,
     state: SearchState,
+    onFaveClick: (SearchViewAction) -> Unit = {},
+    onAction: (SearchViewAction) -> Unit = {},
+) {
+    if (state.isEmptyState) {
+        EmptyState(
+            onAction = onFaveClick,
+        )
+    } else {
+        Content(
+            modifier = modifier,
+            state = state,
+            onAction = onAction,
+        )
+    }
+}
+
+@Composable
+internal fun Content(
+    modifier: Modifier = Modifier,
+    state: SearchState,
+    onAction: (SearchViewAction) -> Unit = {},
 ) {
 
     val scrollState = rememberScrollState()
@@ -69,88 +111,165 @@ internal fun Search(
             .padding(horizontal = 16.dp),
     ) {
 
-        val filterList = remember {
-            mutableListOf(
-                SectionFilterItem(sectionName = "все", isSectionSelected = true),
-                SectionFilterItem(sectionName = "писатели"),
-                SectionFilterItem(sectionName = "статьи"),
-                SectionFilterItem(sectionName = "поэты"),
-            )
+        LazyRow(
+            modifier = modifier
+                .fillMaxWidth()
+                .background(color = Colors.BackgroundColor),
+            horizontalArrangement = Arrangement.spacedBy(space = 18.dp),
+        ) {
+            items(state.filterList) {
+                SectionFilter(sectionItem = it, onSectionFilterClick = {
+                    onAction(SearchViewAction.OnSectionItemClick(it.sectionType))
+                })
+            }
         }
-
-        val authors = remember {
-            listOf(
-                "Фёдор\nДостоевский",
-                "Лев Толстой",
-                "Антон Чехов",
-                "Всеволод\nКрестовский",
-            )
-        }
-
-        val articles = remember {
-            listOf(
-                "Как Толстой Войну и\nмир писал",
-                "Реализм в\nлитературе",
-            )
-        }
-
-        val poems = remember {
-            listOf(
-                "Мир Анны\nАхматовой",
-                "Ночь, улица,\nфонарь, аптека...",
-            )
-        }
-
-        SectionFilter(sectionFilterListener = filterList)
         SearchField(
             modifier = Modifier.padding(top = 40.dp),
             onChange = {
-
+                onAction(SearchViewAction.OnSearchChange(it))
             }
         )
-        Section(
-            modifier = Modifier
-                .padding(top = 30.dp),
-            sectionText = R.string.section_author
-        )
-        LazyRow(
-            modifier = Modifier
-                .padding(top = 18.dp),
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-        ) {
-            items(authors) {
-                Card(cardId = 0L, cardImageUrl = "", cardText = it, cardType = CardType.SMALL)
+
+        if (!state.authors.isNullOrEmpty()) {
+            Section(
+                modifier = Modifier
+                    .padding(top = 30.dp),
+                sectionText = ru.popkov.android.core.feature.ui.R.string.section_author
+            )
+            LazyRow(
+                modifier = Modifier
+                    .padding(top = 18.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                items(state.authors) { author ->
+                    Card(
+                        cardId = author.id,
+                        cardImageUrl = author.image,
+                        cardText = author.name,
+                        cardType = CardType.SMALL,
+                        isFave = author.isFave,
+                        onAction = {
+                            onAction.invoke(
+                                SearchViewAction.OnAuthorFaveClick(
+                                    userId = state.userId,
+                                    authorId = author.id,
+                                    isFave = !author.isFave,
+                                )
+                            )
+                        },
+                    )
+                }
             }
         }
 
-        Section(
-            modifier = Modifier
-                .padding(top = 36.dp),
-            sectionText = R.string.section_articles
-        )
-        LazyRow(
-            modifier = Modifier
-                .padding(top = 18.dp),
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-        ) {
-            items(articles) {
-                Card(cardId = 0L, cardImageUrl = "", cardText = it, cardType = CardType.LARGE)
+        if (!state.articles.isNullOrEmpty()) {
+            Section(
+                modifier = Modifier
+                    .padding(top = 36.dp),
+                sectionText = ru.popkov.android.core.feature.ui.R.string.section_articles
+            )
+            LazyRow(
+                modifier = Modifier
+                    .padding(top = 18.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                items(state.articles) { article ->
+                    Card(
+                        cardId = article.id,
+                        cardImageUrl = article.image,
+                        cardText = article.name,
+                        cardType = CardType.LARGE,
+                        isFave = article.isFave,
+                        onAction = {
+                            onAction.invoke(
+                                SearchViewAction.OnArticleFaveClick(
+                                    userId = state.userId,
+                                    articleId = article.id,
+                                    isFave = !article.isFave,
+                                )
+                            )
+                        },
+                    )
+                }
             }
         }
 
-        Section(
-            modifier = Modifier
-                .padding(top = 36.dp),
-            sectionText = R.string.section_poem
-        )
-        LazyRow(
-            modifier = Modifier
-                .padding(top = 18.dp),
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-        ) {
-            items(poems) {
-                Card(cardId = 0L, cardImageUrl = "", cardText = it, cardType = CardType.MEDIUM)
+        if (!state.poets.isNullOrEmpty()) {
+            Section(
+                modifier = Modifier
+                    .padding(top = 36.dp),
+                sectionText = ru.popkov.android.core.feature.ui.R.string.section_poem
+            )
+            LazyRow(
+                modifier = Modifier
+                    .padding(top = 18.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                items(state.poets) { poet ->
+                    Card(
+                        cardId = poet.id,
+                        cardImageUrl = poet.image,
+                        cardText = poet.name,
+                        cardType = CardType.MEDIUM,
+                        isFave = poet.isFave,
+                        onAction = {
+                            onAction.invoke(
+                                SearchViewAction.OnPoetFaveClick(
+                                    userId = state.userId,
+                                    poetId = poet.id,
+                                    isFave = !poet.isFave,
+                                )
+                            )
+                        },
+                    )
+                }
             }
+        }
+    }
+}
+
+@Composable
+internal fun EmptyState(
+    onAction: (SearchViewAction) -> Unit = {},
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Colors.BackgroundColor),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(horizontal = 50.dp),
+            text = stringResource(id = R.string.empty_search_title),
+            style = FormularMedium20,
+        )
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp)
+                .padding(horizontal = 60.dp),
+            textAlign = TextAlign.Center,
+            text = stringResource(id = R.string.empty_search_description),
+            style = FormularRegular12,
+            color = Colors.GrayTextColor,
+        )
+        OutlinedButton(
+            modifier = Modifier
+                .padding(top = 40.dp)
+                .padding(horizontal = 80.dp)
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(size = 24.dp),
+            border = BorderStroke(width = 1.dp, color = Colors.OutlineColor),
+            onClick = { onAction(SearchViewAction.OnMainScreenClick) }
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(vertical = 10.dp),
+                text = stringResource(id = R.string.empty_search_button),
+                style = FormularMedium14,
+            )
         }
     }
 }
