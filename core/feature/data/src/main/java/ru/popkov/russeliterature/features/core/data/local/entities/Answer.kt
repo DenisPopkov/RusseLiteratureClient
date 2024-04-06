@@ -4,11 +4,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class Quiz(
+data class Answer(
     @PrimaryKey
     val id: Long,
-    val question: String,
-    val description: String,
-    val image: String,
-    val answerId: Long,
+    val text: String,
+    val isRight: Boolean,
 )

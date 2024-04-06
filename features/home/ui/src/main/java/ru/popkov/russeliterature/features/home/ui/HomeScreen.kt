@@ -24,10 +24,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.flow.collectLatest
-import ru.popkov.android.core.feature.components.core.Card
+import ru.popkov.android.core.feature.components.core.card.Card
 import ru.popkov.android.core.feature.components.core.Carousel
 import ru.popkov.android.core.feature.components.core.Section
-import ru.popkov.android.core.feature.components.core.models.CardType
+import ru.popkov.android.core.feature.components.core.card.CardType
 import ru.popkov.android.core.feature.components.core.models.Carousel
 import ru.popkov.android.core.feature.ui.R
 import ru.popkov.datastore.user.User
@@ -110,8 +110,23 @@ private fun Home(
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            items(state.feed?.authors ?: emptyList()) {
-                Card(cardImageUrl = it.image, cardText = it.name, cardType = CardType.SMALL)
+            items(state.feed?.authors ?: emptyList()) { author ->
+                Card(
+                    cardId = author.id,
+                    cardImageUrl = author.image,
+                    cardText = author.name,
+                    cardType = CardType.SMALL,
+                    onAction = {
+                        onAction.invoke(
+                            HomeViewAction.OnFaveClick(
+                                userId = state.userId,
+                                cardId = author.id,
+                                isFave = !(state.feed?.authors?.find { it.id == author.id }?.isFave
+                                    ?: true),
+                            )
+                        )
+                    },
+                )
             }
         }
 
@@ -127,8 +142,24 @@ private fun Home(
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            items(state.feed?.articles ?: emptyList()) {
-                Card(cardImageUrl = it.image, cardText = it.name, cardType = CardType.LARGE)
+            items(state.feed?.articles ?: emptyList()) { article ->
+                val isFave = !(state.feed?.authors?.find { it.id == article.id }?.isFave ?: true)
+                Card(
+                    cardId = article.id,
+                    cardImageUrl = article.image,
+                    cardText = article.name,
+                    cardType = CardType.LARGE,
+                    isFave = isFave,
+                    onAction = {
+                        onAction.invoke(
+                            HomeViewAction.OnFaveClick(
+                                userId = state.userId,
+                                cardId = article.id,
+                                isFave = isFave,
+                            )
+                        )
+                    },
+                )
             }
         }
 
@@ -144,8 +175,23 @@ private fun Home(
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            items(state.feed?.poets ?: emptyList()) {
-                Card(cardImageUrl = it.image, cardText = it.name, cardType = CardType.MEDIUM)
+            items(state.feed?.poets ?: emptyList()) { poet ->
+                Card(
+                    cardId = poet.id,
+                    cardImageUrl = poet.image,
+                    cardText = poet.name,
+                    cardType = CardType.MEDIUM,
+                    onAction = {
+                        onAction.invoke(
+                            HomeViewAction.OnFaveClick(
+                                userId = state.userId,
+                                cardId = poet.id,
+                                isFave = !(state.feed?.authors?.find { it.id == poet.id }?.isFave
+                                    ?: true),
+                            )
+                        )
+                    },
+                )
             }
         }
     }

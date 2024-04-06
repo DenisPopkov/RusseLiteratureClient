@@ -27,7 +27,9 @@ import coil.compose.AsyncImage
 import ru.popkov.android.core.feature.components.core.models.Carousel
 import ru.popkov.android.core.feature.ui.R
 import ru.popkov.russeliterature.theme.Colors
+import ru.popkov.russeliterature.theme.FormularMedium20
 import ru.popkov.russeliterature.theme.FormularRegular12
+import ru.popkov.russeliterature.theme.FormularRegular16
 import ru.popkov.russeliterature.theme.GothicBold44
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -66,7 +68,7 @@ fun Carousel(
                 Text(
                     modifier = Modifier.padding(top = 18.dp),
                     text = carouselItems[page].articleDescription,
-                    style = FormularRegular12
+                    style = FormularRegular16
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Row(

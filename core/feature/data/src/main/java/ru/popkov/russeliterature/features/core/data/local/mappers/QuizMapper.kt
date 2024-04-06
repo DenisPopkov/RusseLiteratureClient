@@ -17,7 +17,7 @@ object QuizMapper {
             question = this.question,
             description = this.description,
             image = this.image,
-            answers = this.answers.toAnswerDomain(),
+            answers = this.answerId,
         )
 
     private fun AnswerEntity.toAnswerDomain() =
@@ -33,7 +33,7 @@ object QuizMapper {
     fun ClipEntity.toClipDomain(): ClipDomain =
         ClipDomain(
             id = this.id,
-            text = this.text.toListClipTextDomain(),
+            text = this.text,
             quiz = this.quiz,
         )
 

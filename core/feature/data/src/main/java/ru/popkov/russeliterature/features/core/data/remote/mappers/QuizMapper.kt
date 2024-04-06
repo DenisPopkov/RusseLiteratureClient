@@ -17,7 +17,7 @@ object QuizMapper {
             image = this.image,
             question = this.question,
             description = this.description,
-            answers = this.answers.toListAnswerEntity(),
+            answerId = this.answerId,
         )
 
     fun AnswerDto.toAnswerEntity(): AnswerEntity =
@@ -33,7 +33,7 @@ object QuizMapper {
     fun ClipDto.toClipEntity(): ClipEntity =
         ClipEntity(
             id = this.id,
-            text = this.text.toListClipTextEntity(),
+            text = this.textId,
             quiz = this.quiz,
         )
 

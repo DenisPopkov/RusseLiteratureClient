@@ -21,7 +21,7 @@ class AuthRepository @Inject constructor(
 ) : AuthRepository {
 
     override suspend fun registerUser(registerRequest: AuthOuterClass.RegisterRequest): RegisterResponse {
-        val channel = ManagedChannelBuilder.forAddress("10.0.2.2", 4040).usePlaintext().build()
+        val channel = ManagedChannelBuilder.forAddress("192.168.88.112", 4040).usePlaintext().build()
         val client = AuthGrpc.newBlockingStub(channel)
         val register = client.register(registerRequest)
         userDataStore.saveUserId(register.userId)
@@ -31,7 +31,7 @@ class AuthRepository @Inject constructor(
     // for adb is 10.0.2.2
     // for real device is 192.168.88.112 (office network on laptop)
     override suspend fun loginUser(loginRequest: LoginRequest): LoginResponse {
-        val channel = ManagedChannelBuilder.forAddress("10.0.2.2", 4040).usePlaintext().build()
+        val channel = ManagedChannelBuilder.forAddress("192.168.88.112", 4040).usePlaintext().build()
         val client = AuthGrpc.newBlockingStub(channel)
         val userJWT = client.login(loginRequest)
         dataStore.saveToken(userJWT.token)

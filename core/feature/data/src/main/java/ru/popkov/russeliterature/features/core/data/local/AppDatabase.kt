@@ -2,21 +2,21 @@ package ru.popkov.russeliterature.features.core.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
+import ru.popkov.russeliterature.features.core.data.local.daos.ClipDao
 import ru.popkov.russeliterature.features.core.data.local.daos.FeedDao
+import ru.popkov.russeliterature.features.core.data.local.daos.UserDao
 import ru.popkov.russeliterature.features.core.data.local.entities.Answer
 import ru.popkov.russeliterature.features.core.data.local.entities.Article
 import ru.popkov.russeliterature.features.core.data.local.entities.Author
 import ru.popkov.russeliterature.features.core.data.local.entities.Clip
 import ru.popkov.russeliterature.features.core.data.local.entities.ClipText
-import ru.popkov.russeliterature.features.core.data.local.entities.Feed
-import ru.popkov.russeliterature.features.core.data.local.entities.ListConverter
 import ru.popkov.russeliterature.features.core.data.local.entities.Poet
 import ru.popkov.russeliterature.features.core.data.local.entities.Quiz
+import ru.popkov.russeliterature.features.core.data.local.entities.UserData
 
 @Database(
     entities = [
-        Feed::class,
+        UserData::class,
         Author::class,
         Article::class,
         Poet::class,
@@ -25,11 +25,14 @@ import ru.popkov.russeliterature.features.core.data.local.entities.Quiz
         Quiz::class,
         Answer::class,
     ],
-    version = 1,
+    version = 2,
     exportSchema = false,
 )
-@TypeConverters(ListConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun feedDao(): FeedDao
+
+    abstract fun clipDao(): ClipDao
+
+    abstract fun userDao(): UserDao
 }

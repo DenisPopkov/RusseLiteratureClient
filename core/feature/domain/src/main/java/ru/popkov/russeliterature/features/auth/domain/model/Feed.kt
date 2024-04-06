@@ -40,7 +40,7 @@ data class Poet(
 @Keep
 data class Clip(
     val id: Long,
-    val text: List<ClipText>,
+    val text: Long,
     val quiz: Long,
 )
 
@@ -50,7 +50,7 @@ data class Quiz(
     val question: String,
     val description: String,
     val image: String,
-    val answers: List<Answer>,
+    val answers: Long,
 )
 
 @Keep

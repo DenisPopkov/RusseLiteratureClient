@@ -20,10 +20,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import ru.popkov.android.core.feature.components.core.Card
+import ru.popkov.android.core.feature.components.core.card.Card
 import ru.popkov.android.core.feature.components.core.Section
 import ru.popkov.android.core.feature.components.core.SectionFilter
-import ru.popkov.android.core.feature.components.core.models.CardType
+import ru.popkov.android.core.feature.components.core.card.CardType
 import ru.popkov.android.core.feature.components.core.models.SectionFilterItem
 import ru.popkov.android.core.feature.components.field.SearchField
 import ru.popkov.android.core.feature.ui.R
@@ -119,7 +119,7 @@ internal fun Search(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             items(authors) {
-                Card(cardImageUrl = "", cardText = it, cardType = CardType.SMALL)
+                Card(cardId = 0L, cardImageUrl = "", cardText = it, cardType = CardType.SMALL)
             }
         }
 
@@ -134,7 +134,7 @@ internal fun Search(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             items(articles) {
-                Card(cardImageUrl = "", cardText = it, cardType = CardType.LARGE)
+                Card(cardId = 0L, cardImageUrl = "", cardText = it, cardType = CardType.LARGE)
             }
         }
 
@@ -149,7 +149,7 @@ internal fun Search(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             items(poems) {
-                Card(cardImageUrl = "", cardText = it, cardType = CardType.MEDIUM)
+                Card(cardId = 0L, cardImageUrl = "", cardText = it, cardType = CardType.MEDIUM)
             }
         }
     }

@@ -4,10 +4,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class Feed(
+data class ClipText(
     @PrimaryKey
     val id: Long,
-    val authors: List<Author>,
-    val articles: List<Article>,
-    val poets: List<Poet>,
+    val title: String,
+    val text: String,
 )
