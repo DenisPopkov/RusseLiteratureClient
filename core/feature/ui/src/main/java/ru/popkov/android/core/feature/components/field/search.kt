@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 fun SearchField(
     modifier: Modifier = Modifier,
-    onChange: () -> Unit = {},
+    onChange: (text: String) -> Unit = {},
 ) {
     var search by rememberSaveable { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -34,7 +34,7 @@ fun SearchField(
         }),
         onValueChanged = {
             search = it
-            onChange.invoke()
+            onChange.invoke(it)
         },
         trailingIcon = {
             if (search.isNotEmpty()) {
