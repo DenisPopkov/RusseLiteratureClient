@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -79,38 +80,15 @@ internal fun Search(
     onFaveClick: (SearchViewAction) -> Unit = {},
     onAction: (SearchViewAction) -> Unit = {},
 ) {
-    if (state.isEmptyState) {
-        EmptyState(
-            onAction = onFaveClick,
-        )
-    } else {
-        Content(
-            modifier = modifier,
-            state = state,
-            onAction = onAction,
-        )
-    }
-}
-
-@Composable
-internal fun Content(
-    modifier: Modifier = Modifier,
-    state: SearchState,
-    onAction: (SearchViewAction) -> Unit = {},
-) {
-
-    val scrollState = rememberScrollState()
-
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(color = Colors.BackgroundColor)
-            .verticalScroll(scrollState)
+            .verticalScroll(rememberScrollState())
             .statusBarsPadding()
             .padding(vertical = 30.dp)
             .padding(horizontal = 16.dp),
     ) {
-
         LazyRow(
             modifier = modifier
                 .fillMaxWidth()
@@ -130,6 +108,32 @@ internal fun Content(
             }
         )
 
+        if (state.isEmptyState) {
+            Spacer(modifier = Modifier.weight(1f))
+            EmptyState(
+                onAction = onFaveClick,
+            )
+            Spacer(modifier = Modifier.weight(1f))
+        } else {
+            Content(
+                modifier = modifier,
+                state = state,
+                onAction = onAction,
+            )
+        }
+    }
+}
+
+@Composable
+internal fun Content(
+    modifier: Modifier = Modifier,
+    state: SearchState,
+    onAction: (SearchViewAction) -> Unit = {},
+) {
+
+    Column(
+        modifier = modifier,
+    ) {
         if (!state.authors.isNullOrEmpty()) {
             Section(
                 modifier = Modifier

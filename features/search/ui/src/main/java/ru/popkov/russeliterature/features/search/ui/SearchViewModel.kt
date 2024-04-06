@@ -101,15 +101,15 @@ class SearchViewModel @Inject constructor(
 
         viewModelScope.launch(handler) {
             updateState { copy(isLoading = true) }
-            val authors = feedRepository.getAuthorsFromLocal()
-            val articles = feedRepository.getArticlesFromLocal()
-            val poets = feedRepository.getPoetsFromLocal()
+            val authors = feedRepository.getAuthorsFromLocal().filter { it.name.contains(filter ?: it.name) }
+            val articles = feedRepository.getArticlesFromLocal().filter { it.name.contains((filter ?: it.name)) }
+            val poets = feedRepository.getPoetsFromLocal().filter { it.name.contains((filter ?: it.name)) }
             updateState {
                 copy(
                     userId = userId,
-                    authors = authors.filter { it.name.contains(filter ?: it.name) },
-                    articles = articles.filter { it.name.contains((filter ?: it.name)) },
-                    poets = poets.filter { it.name.contains((filter ?: it.name)) },
+                    authors = authors,
+                    articles = articles,
+                    poets = poets,
                     isEmptyState = authors.isEmpty() && articles.isEmpty() && poets.isEmpty(),
                     isLoading = false,
                 )
