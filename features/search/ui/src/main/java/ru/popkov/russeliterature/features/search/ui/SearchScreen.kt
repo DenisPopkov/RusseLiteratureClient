@@ -130,7 +130,6 @@ internal fun Content(
     state: SearchState,
     onAction: (SearchViewAction) -> Unit = {},
 ) {
-
     Column(
         modifier = modifier,
     ) {

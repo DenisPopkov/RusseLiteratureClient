@@ -15,6 +15,8 @@ import ru.popkov.russeliterature.features.home.nav.HomeDestination
 import ru.popkov.russeliterature.features.home.nav.R
 import ru.popkov.russeliterature.features.quiz.ui.QuizDestination
 import ru.popkov.russeliterature.features.quiz.ui.QuizScreen
+import ru.popkov.russeliterature.features.section.ui.SectionDestination
+import ru.popkov.russeliterature.features.section.ui.SectionScreen
 import se.ansman.dagger.auto.AutoBindIntoSet
 import javax.inject.Inject
 
@@ -46,6 +48,9 @@ class HomeNavProvider @Inject constructor(
                         userDataStore = userDatastore,
                         onCardClick = {
                             navigator.navigate(ClipDestination)
+                        },
+                        onSectionClick = {
+                            navigator.navigate(SectionDestination(it))
                         }
                     )
                 }
@@ -66,6 +71,18 @@ class HomeNavProvider @Inject constructor(
                         snackbarHostState = snackbarHostState,
                         onCloseClick = {
                             navigator.navigate(HomeDestination)
+                        }
+                    )
+                }
+                composable(
+                    route = SectionDestination.route,
+                    arguments = SectionDestination.args
+                ) {
+                    SectionScreen(
+                        snackbarHostState = snackbarHostState,
+                        userDataStore = userDatastore,
+                        onBackClick = {
+                            navigator.onBackClick()
                         }
                     )
                 }

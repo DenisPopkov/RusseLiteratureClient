@@ -52,6 +52,12 @@ class HomeViewModel @Inject constructor(
                 }
             }
 
+            is HomeViewAction.OnSectionClick -> {
+                viewModelScope.launch {
+                    sendEffect(HomeViewEffect.OnSectionClick(action.sectionId))
+                }
+            }
+
             else -> {}
         }
     }
@@ -63,17 +69,34 @@ class HomeViewModel @Inject constructor(
 
         viewModelScope.launch(handler) {
             updateState { copy(isLoading = true) }
-            val authors = feedRepository.getAuthors(userId = userId)
-            val articles = feedRepository.getArticles(userId = userId)
-            val poets = feedRepository.getPoets(userId = userId)
-            updateState {
-                copy(
-                    userId = userId,
-                    authors = authors,
-                    articles = articles,
-                    poets = poets,
-                    isLoading = false,
-                )
+            val authorsFromLocal = feedRepository.getAuthorsFromLocal()
+            val articlesFromLocal = feedRepository.getArticlesFromLocal()
+            val poetsFromLocal = feedRepository.getPoetsFromLocal()
+
+            if (authorsFromLocal.isNotEmpty() && articlesFromLocal.isNotEmpty() && poetsFromLocal.isNotEmpty()) {
+                updateState {
+                    copy(
+                        userId = userId,
+                        authors = authorsFromLocal,
+                        articles = articlesFromLocal,
+                        poets = poetsFromLocal,
+                        isLoading = false,
+                    )
+                }
+            } else {
+                val authors = feedRepository.getAuthors(userId = userId)
+                val articles = feedRepository.getArticles(userId = userId)
+                val poets = feedRepository.getPoets(userId = userId)
+
+                updateState {
+                    copy(
+                        userId = userId,
+                        authors = authors,
+                        articles = articles,
+                        poets = poets,
+                        isLoading = false,
+                    )
+                }
             }
         }.invokeOnCompletion {
             viewModelScope.launch {
