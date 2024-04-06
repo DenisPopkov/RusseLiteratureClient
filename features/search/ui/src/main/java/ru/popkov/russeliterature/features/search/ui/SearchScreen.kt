@@ -176,7 +176,7 @@ internal fun Content(
                     .padding(top = 36.dp),
                 sectionText = ru.popkov.android.core.feature.ui.R.string.section_articles,
                 onSectionClick = {
-                    onAction(SearchViewAction.OnSectionClick(0))
+                    onAction(SearchViewAction.OnSectionClick(1))
                 }
             )
             LazyRow(
@@ -211,7 +211,7 @@ internal fun Content(
                     .padding(top = 36.dp),
                 sectionText = ru.popkov.android.core.feature.ui.R.string.section_poem,
                 onSectionClick = {
-                    onAction(SearchViewAction.OnSectionClick(0))
+                    onAction(SearchViewAction.OnSectionClick(2))
                 }
             )
             LazyRow(

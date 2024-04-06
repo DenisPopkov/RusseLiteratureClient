@@ -57,6 +57,12 @@ class FaveViewModel @Inject constructor(
                     updateState { copy(poets = poets) }
                 }
             }
+
+            is FaveViewAction.OnSectionClick -> {
+                viewModelScope.launch {
+                    sendEffect(FaveViewEffect.OnSectionClick(action.sectionId))
+                }
+            }
         }
     }
 
