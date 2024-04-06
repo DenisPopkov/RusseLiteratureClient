@@ -24,10 +24,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.flow.collectLatest
-import ru.popkov.android.core.feature.components.core.Card
 import ru.popkov.android.core.feature.components.core.Carousel
 import ru.popkov.android.core.feature.components.core.Section
-import ru.popkov.android.core.feature.components.core.models.CardType
+import ru.popkov.android.core.feature.components.core.card.Card
+import ru.popkov.android.core.feature.components.core.card.CardType
 import ru.popkov.android.core.feature.components.core.models.Carousel
 import ru.popkov.android.core.feature.ui.R
 import ru.popkov.datastore.user.User
@@ -84,7 +84,7 @@ private fun Home(
             .padding(bottom = 20.dp),
     ) {
 
-        state.feed?.articles?.map {
+        state.articles?.map {
             Carousel(
                 id = it.id,
                 articleTitle = it.name,
@@ -110,8 +110,23 @@ private fun Home(
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            items(state.feed?.authors ?: emptyList()) {
-                Card(cardImageUrl = it.image, cardText = it.name, cardType = CardType.SMALL)
+            items(state.authors ?: emptyList()) { author ->
+                Card(
+                    cardId = author.id,
+                    cardImageUrl = author.image,
+                    cardText = author.name,
+                    cardType = CardType.SMALL,
+                    isFave = author.isFave,
+                    onAction = {
+                        onAction.invoke(
+                            HomeViewAction.OnAuthorFaveClick(
+                                userId = state.userId,
+                                authorId = author.id,
+                                isFave = !author.isFave,
+                            )
+                        )
+                    },
+                )
             }
         }
 
@@ -127,8 +142,23 @@ private fun Home(
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            items(state.feed?.articles ?: emptyList()) {
-                Card(cardImageUrl = it.image, cardText = it.name, cardType = CardType.LARGE)
+            items(state.articles ?: emptyList()) { article ->
+                Card(
+                    cardId = article.id,
+                    cardImageUrl = article.image,
+                    cardText = article.name,
+                    cardType = CardType.LARGE,
+                    isFave = article.isFave,
+                    onAction = {
+                        onAction.invoke(
+                            HomeViewAction.OnArticleFaveClick(
+                                userId = state.userId,
+                                articleId = article.id,
+                                isFave = !article.isFave,
+                            )
+                        )
+                    },
+                )
             }
         }
 
@@ -144,8 +174,23 @@ private fun Home(
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            items(state.feed?.poets ?: emptyList()) {
-                Card(cardImageUrl = it.image, cardText = it.name, cardType = CardType.MEDIUM)
+            items(state.poets ?: emptyList()) { poet ->
+                Card(
+                    cardId = poet.id,
+                    cardImageUrl = poet.image,
+                    cardText = poet.name,
+                    cardType = CardType.MEDIUM,
+                    isFave = poet.isFave,
+                    onAction = {
+                        onAction.invoke(
+                            HomeViewAction.OnPoetFaveClick(
+                                userId = state.userId,
+                                poetId = poet.id,
+                                isFave = !poet.isFave,
+                            )
+                        )
+                    },
+                )
             }
         }
     }

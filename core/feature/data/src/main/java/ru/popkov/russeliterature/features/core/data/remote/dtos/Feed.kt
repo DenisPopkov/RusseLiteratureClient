@@ -1,16 +1,7 @@
-package ru.popkov.russeliterature.features.auth.data.remote.dtos
+package ru.popkov.russeliterature.features.core.data.remote.dtos
 
 import androidx.annotation.Keep
-import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-
-@Keep
-@JsonClass(generateAdapter = true)
-data class Feed(
-    val authors: List<Author>,
-    val articles: List<Article>,
-    val poets: List<Poet>,
-)
 
 @Keep
 @JsonClass(generateAdapter = true)
@@ -18,9 +9,8 @@ data class Author(
     val id: Long,
     val name: String,
     val image: String,
-    val clip: Int,
-    @Json(name = "is_fave")
-    val isFave: String
+    val clip: Long,
+    val isFave: Boolean,
 )
 
 @Keep
@@ -30,9 +20,8 @@ data class Article(
     val name: String,
     val description: String,
     val image: String,
-    val clip: Int,
-    @Json(name = "is_fave")
-    val isFave: String
+    val clip: Long,
+    val isFave: Boolean,
 )
 
 @Keep
@@ -41,17 +30,16 @@ data class Poet(
     val id: Long,
     val name: String,
     val image: String,
-    val clip: Int,
-    @Json(name = "is_fave")
-    val isFave: String
+    val clip: Long,
+    val isFave: Boolean,
 )
 
 @Keep
 @JsonClass(generateAdapter = true)
 data class Clip(
     val id: Long,
-    val text: List<ClipText>,
-    val quiz: Quiz
+    val textId: Long,
+    val quiz: Long,
 )
 
 @Keep
@@ -61,7 +49,7 @@ data class Quiz(
     val question: String,
     val description: String,
     val image: String,
-    val answers: List<Answer>,
+    val answerId: Long,
 )
 
 @Keep

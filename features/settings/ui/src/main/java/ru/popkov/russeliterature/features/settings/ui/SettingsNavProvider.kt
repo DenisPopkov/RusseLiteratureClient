@@ -40,6 +40,12 @@ class SettingsNavProvider @Inject constructor(
                             launchSingleTop = true
                             popUpTo(0)
                         }
+                    },
+                    onExitAccountClick = {
+                        navigator.navigate(AuthDestination) {
+                            launchSingleTop = true
+                            popUpTo(0)
+                        }
                     }
                 )
             }

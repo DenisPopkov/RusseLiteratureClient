@@ -22,6 +22,35 @@ class HomeViewModel @Inject constructor(
 
     fun onAction(action: HomeViewAction) {
         when (action) {
+            is HomeViewAction.OnAuthorFaveClick -> {
+                viewModelScope.launch {
+                    val authors = feedRepository.addAuthorToFave(
+                        action.userId,
+                        action.authorId,
+                    )
+                    updateState { copy(authors = authors) }
+                }
+            }
+
+            is HomeViewAction.OnArticleFaveClick -> {
+                viewModelScope.launch {
+                    val articles = feedRepository.addArticleToFave(
+                        action.userId,
+                        action.articleId,
+                    )
+                    updateState { copy(articles = articles) }
+                }
+            }
+
+            is HomeViewAction.OnPoetFaveClick -> {
+                viewModelScope.launch {
+                    val poets = feedRepository.addPoetToFave(
+                        action.userId,
+                        action.poetId,
+                    )
+                    updateState { copy(poets = poets) }
+                }
+            }
 
             else -> {}
         }
@@ -34,10 +63,15 @@ class HomeViewModel @Inject constructor(
 
         viewModelScope.launch(handler) {
             updateState { copy(isLoading = true) }
-            val feed = feedRepository.getFeed(userId = userId)
+            val authors = feedRepository.getAuthors(userId = userId)
+            val articles = feedRepository.getArticles(userId = userId)
+            val poets = feedRepository.getPoets(userId = userId)
             updateState {
                 copy(
-                    feed = feed,
+                    userId = userId,
+                    authors = authors,
+                    articles = articles,
+                    poets = poets,
                     isLoading = false,
                 )
             }

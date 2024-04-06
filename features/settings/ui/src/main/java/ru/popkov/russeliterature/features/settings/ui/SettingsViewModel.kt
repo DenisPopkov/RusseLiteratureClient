@@ -9,6 +9,8 @@ import ru.popkov.android.core.feature.ui.EffectsDelegate
 import ru.popkov.android.core.feature.ui.EffectsProvider
 import ru.popkov.android.core.feature.ui.StateDelegate
 import ru.popkov.android.core.feature.ui.StateProvider
+import ru.popkov.datastore.token.Token
+import ru.popkov.datastore.user.User
 import ru.popkov.russeliterature.features.auth.domain.repositories.SettingsRepository
 import timber.log.Timber
 import javax.inject.Inject
@@ -16,6 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
+    private val userDataStore: User,
+    private val tokenDatastore: Token,
 ) : ViewModel(),
     StateProvider<SettingsState> by StateDelegate(SettingsState()),
     EffectsProvider<SettingsViewEffect> by EffectsDelegate() {
@@ -25,6 +29,14 @@ class SettingsViewModel @Inject constructor(
             is SettingsViewAction.OnDeleteAccountClick -> {
                 viewModelScope.launch {
                     deleteUserAccount(action.userId)
+                }
+            }
+
+            is SettingsViewAction.OnExitAccountClick -> {
+                viewModelScope.launch {
+                    userDataStore.deleteUserId()
+                    tokenDatastore.deleteToken()
+                    sendEffect(SettingsViewEffect.OnExitAccountClick)
                 }
             }
         }

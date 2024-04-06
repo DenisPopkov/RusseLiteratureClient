@@ -7,6 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import ru.popkov.android.core.feature.nav.Navigator
 import ru.popkov.android.core.feature.ui.NavProvider
+import ru.popkov.datastore.user.User
 import ru.popkov.russeliterature.features.fave.nav.FaveDestination
 import ru.popkov.russeliterature.features.home.nav.HomeDestination
 import se.ansman.dagger.auto.AutoBindIntoSet
@@ -15,6 +16,7 @@ import javax.inject.Inject
 @AutoBindIntoSet
 class FaveNavProvider @Inject constructor(
     private val navigator: Navigator,
+    private val userDataStore: User,
 ) : NavProvider {
 
     override val navBarItem = NavProvider.BottomBarItem(
@@ -31,6 +33,8 @@ class FaveNavProvider @Inject constructor(
                 route = FaveDestination.route,
             ) {
                 FaveScreen(
+                    snackbarHostState = snackbarHostState,
+                    userDataStore = userDataStore,
                     onGoMainScreen = {
                         navigator.navigate(HomeDestination) {
                             launchSingleTop = true
