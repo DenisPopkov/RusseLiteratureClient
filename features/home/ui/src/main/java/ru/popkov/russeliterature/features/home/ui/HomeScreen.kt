@@ -39,6 +39,7 @@ internal fun HomeScreen(
     userDataStore: User? = null,
     homeViewModel: HomeViewModel = hiltViewModel(),
     onCardClick: () -> Unit = {},
+    onSectionClick: (sectionId: Int) -> Unit = {},
 ) {
 
     val state by homeViewModel.state.collectAsState()
@@ -53,6 +54,8 @@ internal fun HomeScreen(
                 when (effect) {
                     is HomeViewEffect.ShowError ->
                         snackbarHostState.showSnackbar(effect.errorMessage)
+
+                    is HomeViewEffect.OnSectionClick -> onSectionClick.invoke(effect.sectionId)
                 }
             }
     }
@@ -102,7 +105,10 @@ private fun Home(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .padding(top = 30.dp),
-            sectionText = R.string.section_author
+            sectionText = R.string.section_author,
+            onSectionClick = {
+                onAction(HomeViewAction.OnSectionClick(0))
+            }
         )
         LazyRow(
             modifier = Modifier
@@ -134,7 +140,10 @@ private fun Home(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .padding(top = 36.dp),
-            sectionText = R.string.section_articles
+            sectionText = R.string.section_articles,
+            onSectionClick = {
+                onAction(HomeViewAction.OnSectionClick(1))
+            }
         )
         LazyRow(
             modifier = Modifier
@@ -166,7 +175,10 @@ private fun Home(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .padding(top = 36.dp),
-            sectionText = R.string.section_poem
+            sectionText = R.string.section_poem,
+            onSectionClick = {
+                onAction(HomeViewAction.OnSectionClick(2))
+            }
         )
         LazyRow(
             modifier = Modifier

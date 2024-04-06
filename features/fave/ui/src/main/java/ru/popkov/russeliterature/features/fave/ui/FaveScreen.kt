@@ -42,6 +42,7 @@ internal fun FaveScreen(
     faveViewModel: FaveViewModel = hiltViewModel(),
     userDataStore: User? = null,
     onGoMainScreen: () -> Unit = {},
+    onSectionClick: (sectionId: Int) -> Unit = {},
 ) {
 
     val state by faveViewModel.state.collectAsState()
@@ -56,6 +57,7 @@ internal fun FaveScreen(
                 when (effect) {
                     is FaveViewEffect.GoToMainScreen -> onGoMainScreen.invoke()
                     is FaveViewEffect.ShowError -> snackbarHostState.showSnackbar(effect.errorMessage)
+                    is FaveViewEffect.OnSectionClick -> onSectionClick.invoke(effect.sectionId)
                 }
             }
     }
@@ -85,6 +87,7 @@ internal fun Fave(
         } else {
             Content(
                 state = state,
+                onAction = onFaveClick,
             )
         }
     }
@@ -110,7 +113,10 @@ internal fun Content(
             Section(
                 modifier = Modifier
                     .padding(top = 30.dp),
-                sectionText = ru.popkov.android.core.feature.ui.R.string.section_author
+                sectionText = ru.popkov.android.core.feature.ui.R.string.section_author,
+                onSectionClick = {
+                    onAction(FaveViewAction.OnSectionClick(0))
+                }
             )
             LazyRow(
                 modifier = Modifier
@@ -142,7 +148,10 @@ internal fun Content(
             Section(
                 modifier = Modifier
                     .padding(top = 36.dp),
-                sectionText = ru.popkov.android.core.feature.ui.R.string.section_articles
+                sectionText = ru.popkov.android.core.feature.ui.R.string.section_articles,
+                onSectionClick = {
+                    onAction(FaveViewAction.OnSectionClick(1))
+                }
             )
             LazyRow(
                 modifier = Modifier
@@ -174,7 +183,10 @@ internal fun Content(
             Section(
                 modifier = Modifier
                     .padding(top = 36.dp),
-                sectionText = ru.popkov.android.core.feature.ui.R.string.section_poem
+                sectionText = ru.popkov.android.core.feature.ui.R.string.section_poem,
+                onSectionClick = {
+                    onAction(FaveViewAction.OnSectionClick(2))
+                }
             )
             LazyRow(
                 modifier = Modifier

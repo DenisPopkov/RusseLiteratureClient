@@ -10,6 +10,7 @@ import ru.popkov.android.core.feature.ui.NavProvider
 import ru.popkov.datastore.user.User
 import ru.popkov.russeliterature.features.fave.nav.FaveDestination
 import ru.popkov.russeliterature.features.home.nav.HomeDestination
+import ru.popkov.russeliterature.features.section.ui.SectionDestination
 import se.ansman.dagger.auto.AutoBindIntoSet
 import javax.inject.Inject
 
@@ -40,6 +41,9 @@ class FaveNavProvider @Inject constructor(
                             launchSingleTop = true
                             popUpTo(0)
                         }
+                    },
+                    onSectionClick = {
+                        navigator.navigate(SectionDestination(it))
                     }
                 )
             }

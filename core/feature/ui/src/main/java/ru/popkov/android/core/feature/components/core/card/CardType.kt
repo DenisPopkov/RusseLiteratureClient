@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.dp
 enum class CardType(val height: Dp, val width: Dp) {
     SMALL(height = 100.dp, width = 100.dp),
     MEDIUM(height = 160.dp, width = 160.dp),
+    SECTION(height = 184.dp, width = 184.dp),
     LARGE(height = 170.dp, width = 300.dp),
     ;
 }

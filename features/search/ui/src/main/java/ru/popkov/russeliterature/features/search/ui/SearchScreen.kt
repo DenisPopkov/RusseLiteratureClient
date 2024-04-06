@@ -46,6 +46,7 @@ internal fun SearchScreen(
     searchViewModel: SearchViewModel = hiltViewModel(),
     userDataStore: User? = null,
     onToMainClick: () -> Unit = {},
+    onSectionClick: (sectionId: Int) -> Unit = {},
 ) {
     val state by searchViewModel.state.collectAsState()
     val userId = userDataStore?.userId
@@ -59,6 +60,7 @@ internal fun SearchScreen(
                 when (effect) {
                     is SearchViewEffect.ShowError -> snackbarHostState.showSnackbar(effect.errorMessage)
                     is SearchViewEffect.GoToMainScreen -> onToMainClick.invoke()
+                    is SearchViewEffect.OnSectionClick -> onSectionClick.invoke(effect.sectionId)
                 }
             }
     }
@@ -130,7 +132,6 @@ internal fun Content(
     state: SearchState,
     onAction: (SearchViewAction) -> Unit = {},
 ) {
-
     Column(
         modifier = modifier,
     ) {
@@ -138,7 +139,10 @@ internal fun Content(
             Section(
                 modifier = Modifier
                     .padding(top = 30.dp),
-                sectionText = ru.popkov.android.core.feature.ui.R.string.section_author
+                sectionText = ru.popkov.android.core.feature.ui.R.string.section_author,
+                onSectionClick = {
+                    onAction(SearchViewAction.OnSectionClick(0))
+                }
             )
             LazyRow(
                 modifier = Modifier
@@ -170,7 +174,10 @@ internal fun Content(
             Section(
                 modifier = Modifier
                     .padding(top = 36.dp),
-                sectionText = ru.popkov.android.core.feature.ui.R.string.section_articles
+                sectionText = ru.popkov.android.core.feature.ui.R.string.section_articles,
+                onSectionClick = {
+                    onAction(SearchViewAction.OnSectionClick(1))
+                }
             )
             LazyRow(
                 modifier = Modifier
@@ -202,7 +209,10 @@ internal fun Content(
             Section(
                 modifier = Modifier
                     .padding(top = 36.dp),
-                sectionText = ru.popkov.android.core.feature.ui.R.string.section_poem
+                sectionText = ru.popkov.android.core.feature.ui.R.string.section_poem,
+                onSectionClick = {
+                    onAction(SearchViewAction.OnSectionClick(2))
+                }
             )
             LazyRow(
                 modifier = Modifier

@@ -38,6 +38,8 @@ include(
     ":features:clip:ui",
     ":features:quiz:nav",
     ":features:quiz:ui",
+    ":features:section:nav",
+    ":features:section:ui",
     ":features:auth:nav",
     ":features:auth:ui",
     ":features:splash:nav",

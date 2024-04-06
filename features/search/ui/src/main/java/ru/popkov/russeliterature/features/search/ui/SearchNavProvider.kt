@@ -10,6 +10,7 @@ import ru.popkov.android.core.feature.ui.NavProvider
 import ru.popkov.datastore.user.User
 import ru.popkov.russeliterature.features.home.nav.HomeDestination
 import ru.popkov.russeliterature.features.search.nav.SearchDestination
+import ru.popkov.russeliterature.features.section.ui.SectionDestination
 import se.ansman.dagger.auto.AutoBindIntoSet
 import javax.inject.Inject
 
@@ -37,6 +38,9 @@ class SearchNavProvider @Inject constructor(
                     userDataStore = userDatastore,
                     onToMainClick = {
                         navigator.navigate(HomeDestination)
+                    },
+                    onSectionClick = {
+                        navigator.navigate(SectionDestination(it))
                     }
                 )
             }
