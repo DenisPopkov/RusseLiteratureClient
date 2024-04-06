@@ -74,6 +74,12 @@ class SearchViewModel @Inject constructor(
                     getAll(userId = state.value.userId, filter = action.searchText)
                 }
             }
+
+            is SearchViewAction.OnSectionClick -> {
+                viewModelScope.launch {
+                    sendEffect(SearchViewEffect.OnSectionClick(action.sectionId))
+                }
+            }
         }
     }
 
