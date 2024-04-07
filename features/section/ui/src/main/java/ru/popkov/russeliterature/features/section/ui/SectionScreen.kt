@@ -102,12 +102,11 @@ internal fun SectionDescription(
             ) {
                 state.authors.forEach { author ->
                     Card(
-                        cardId = author.id,
                         cardImageUrl = author.image,
                         cardText = author.name,
                         cardType = CardType.SECTION,
                         isFave = author.isFave,
-                        onAction = {
+                        onFaveActionClick = {
                             onAction.invoke(
                                 SectionViewAction.OnAuthorFaveClick(
                                     userId = state.userId,
@@ -131,12 +130,11 @@ internal fun SectionDescription(
             ) {
                 state.articles.forEach { article ->
                     Card(
-                        cardId = article.id,
                         cardImageUrl = article.image,
                         cardText = article.name,
                         cardType = CardType.SECTION,
                         isFave = article.isFave,
-                        onAction = {
+                        onFaveActionClick = {
                             onAction.invoke(
                                 SectionViewAction.OnArticleFaveClick(
                                     userId = state.userId,
@@ -160,12 +158,11 @@ internal fun SectionDescription(
             ) {
                 state.poets.forEach { poet ->
                     Card(
-                        cardId = poet.id,
                         cardImageUrl = poet.image,
                         cardText = poet.name,
                         cardType = CardType.SECTION,
                         isFave = poet.isFave,
-                        onAction = {
+                        onFaveActionClick = {
                             onAction.invoke(
                                 SectionViewAction.OnPoetFaveClick(
                                     userId = state.userId,

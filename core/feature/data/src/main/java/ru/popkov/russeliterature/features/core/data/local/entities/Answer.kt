@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class Answer(
     @PrimaryKey
-    val id: Long,
+    val answerId: Long,
     val text: String,
-    val isRight: Boolean,
+//    val isRight: Boolean,
 )

@@ -58,7 +58,12 @@ class HomeViewModel @Inject constructor(
                 }
             }
 
-            else -> {}
+            is HomeViewAction.OnCardClick -> {
+                viewModelScope.launch {
+                    sendEffect(HomeViewEffect.OnCardClick(action.cardId))
+                }
+            }
+
         }
     }
 

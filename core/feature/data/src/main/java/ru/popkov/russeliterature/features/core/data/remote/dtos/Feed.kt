@@ -1,6 +1,7 @@
 package ru.popkov.russeliterature.features.core.data.remote.dtos
 
 import androidx.annotation.Keep
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @Keep
@@ -38,8 +39,10 @@ data class Poet(
 @JsonClass(generateAdapter = true)
 data class Clip(
     val id: Long,
-    val textId: Long,
-    val quiz: Long,
+    @Json(name = "text")
+    val clipTexts: List<ClipText>,
+    val quiz: Quiz,
+    val image: String,
 )
 
 @Keep
@@ -49,7 +52,7 @@ data class Quiz(
     val question: String,
     val description: String,
     val image: String,
-    val answerId: Long,
+    val answers: List<Answer>,
 )
 
 @Keep
@@ -57,7 +60,8 @@ data class Quiz(
 data class Answer(
     val id: Long,
     val text: String,
-    val isRight: Boolean,
+//    @Json(name = "isRight")
+//    val isRight: Boolean,
 )
 
 @Keep

@@ -32,25 +32,26 @@ data class Poet(
 
 @Keep
 data class Clip(
-    val id: Long,
-    val text: Long,
-    val quiz: Long,
+    val clipId: Long,
+    val text: List<ClipText>,
+    val quiz: Quiz,
+    val image: String,
 )
 
 @Keep
 data class Quiz(
-    val id: Long,
+    val quizId: Long,
     val question: String,
     val description: String,
     val image: String,
-    val answers: Long,
+    val answers: List<Answer>,
 )
 
 @Keep
 data class Answer(
-    val id: Long,
+    val answerId: Long,
     val text: String,
-    val isRight: Boolean,
+//    val isRight: Boolean,
 )
 
 @Keep
