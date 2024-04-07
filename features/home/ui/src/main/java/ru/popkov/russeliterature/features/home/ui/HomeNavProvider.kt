@@ -62,12 +62,13 @@ class HomeNavProvider @Inject constructor(
                         snackbarHostState = snackbarHostState,
                         userDataStore = userDatastore,
                         onToQuizClick = {
-                            navigator.navigate(QuizDestination)
+                            navigator.navigate(QuizDestination(it))
                         }
                     )
                 }
                 composable(
                     route = QuizDestination.route,
+                    arguments = QuizDestination.args,
                 ) {
                     QuizScreen(
                         snackbarHostState = snackbarHostState,

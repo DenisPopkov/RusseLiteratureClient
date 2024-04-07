@@ -1,6 +1,5 @@
 package ru.popkov.russeliterature.features.quiz.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,12 +35,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
+import ru.popkov.russeliterature.features.auth.domain.model.Answer
 import ru.popkov.russeliterature.theme.Colors
 import ru.popkov.russeliterature.theme.FormularRegular12
 import ru.popkov.russeliterature.theme.FormularRegular14
@@ -55,10 +56,12 @@ fun QuizScreen(
     val state by quizViewModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
+        quizViewModel.getQuiz()
         quizViewModel.effects
             .collect { effect ->
                 when (effect) {
-                    QuizViewEffect.OnCloseEffect -> onCloseClick.invoke()
+                    is QuizViewEffect.OnCloseEffect -> onCloseClick.invoke()
+                    is QuizViewEffect.ShowError -> snackbarHostState.showSnackbar(effect.errorMessage)
                 }
             }
     }
@@ -94,8 +97,9 @@ fun Header(
 
 @Composable
 fun Question(
-    quizAnswer: QuizAnswer,
+    quizAnswer: Answer,
     onAnswerClick: (QuizViewAction) -> Unit = {},
+    index: Int,
     icon: ImageVector? = null,
 ) {
     Button(
@@ -129,7 +133,7 @@ fun Question(
                     )
                 } else {
                     Text(
-                        text = ('A'..'Z').toList()[quizAnswer.id].toString(),
+                        text = ('A'..'Z').toList()[index].toString(),
                         style = FormularRegular16,
                     )
                 }
@@ -137,7 +141,7 @@ fun Question(
             Text(
                 modifier = Modifier
                     .padding(horizontal = 14.dp, vertical = 4.dp),
-                text = quizAnswer.answer,
+                text = quizAnswer.text,
                 style = FormularRegular16,
             )
         }
@@ -155,6 +159,7 @@ internal fun Quiz(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .background(Colors.BackgroundColor)
+            .statusBarsPadding()
             .padding(top = 20.dp)
             .padding(all = 16.dp)
     ) {
@@ -163,19 +168,20 @@ internal fun Quiz(
                 .align(Alignment.End),
             onCloseClick = { onAction.invoke(QuizViewAction.OnCloseClick) }
         )
-        when (state.quiz) {
-            Quiz.QUESTION -> {
+        when (state.quizState) {
+            QuizScreenState.QUESTION -> {
                 Text(
                     modifier = Modifier
                         .padding(vertical = 100.dp),
-                    text = state.item.quizQuestion,
+                    text = state.quiz?.question ?: "",
                     textAlign = TextAlign.Center,
                     style = FormularRegular16,
                 )
-                state.item.answers.forEach { answer ->
+                state.quiz?.answers?.forEachIndexed { index, answer ->
                     Question(
                         quizAnswer = answer,
                         onAnswerClick = { onAction.invoke(QuizViewAction.OnAnswerClick) },
+                        index = index,
                     )
                 }
             }
@@ -196,13 +202,13 @@ internal fun ColumnScope.Result(
     state: QuizState,
     onAnswerClick: (QuizViewAction) -> Unit = {},
 ) {
-    Image(
+    AsyncImage(
         modifier = modifier
             .fillMaxWidth()
             .padding(top = 50.dp)
             .height(height = 240.dp)
             .clip(shape = RoundedCornerShape(size = 16.dp)),
-        painter = painterResource(id = ru.popkov.android.core.feature.ui.R.drawable.ic_article),
+        model = state.quiz?.image,
         contentDescription = null,
         contentScale = ContentScale.Crop,
     )
@@ -214,11 +220,14 @@ internal fun ColumnScope.Result(
         style = FormularRegular12,
         color = Color.White.copy(alpha = 0.7f),
     )
-    Question(
-        quizAnswer = state.item.answers.find { it.isCorrect }!!,
-        onAnswerClick = onAnswerClick,
-        icon = Icons.Filled.Check,
-    )
+    state.quiz?.answers?.find { it.isRight }?.let {
+        Question(
+            quizAnswer = it,
+            onAnswerClick = onAnswerClick,
+            icon = Icons.Filled.Check,
+            index = 0,
+        )
+    }
     Text(
         modifier = Modifier
             .padding(top = 10.dp, bottom = 6.dp)
@@ -227,15 +236,18 @@ internal fun ColumnScope.Result(
         style = FormularRegular12,
         color = Color.White.copy(alpha = 0.7f),
     )
-    Question(
-        quizAnswer = state.item.answers.find { !it.isCorrect }!!,
-        onAnswerClick = onAnswerClick,
-        icon = Icons.Filled.Close,
-    )
+    state.quiz?.answers?.find { !it.isRight }?.let {
+        Question(
+            quizAnswer = it,
+            onAnswerClick = onAnswerClick,
+            icon = Icons.Filled.Close,
+            index = 1,
+        )
+    }
     Text(
         modifier = Modifier
             .padding(vertical = 16.dp),
-        text = state.item.quizAnswer,
+        text = state.quiz?.description ?: "",
         style = FormularRegular14,
     )
 }
@@ -252,7 +264,7 @@ private fun QuizScreenPreview() {
 @Composable
 private fun ResultScreenPreview() {
     Quiz(
-        state = QuizState(quiz = Quiz.RESULTS),
+        state = QuizState(quizState = QuizScreenState.RESULTS),
     )
 }
 
@@ -266,10 +278,11 @@ private fun HeaderPreview() {
 @Composable
 private fun AnswerPreview() {
     Question(
-        quizAnswer = QuizAnswer(
-            id = 0,
-            answer = "Признались в краже соли",
-            isCorrect = false,
-        )
+        quizAnswer = Answer(
+            answerId = 0,
+            text = "Признались в краже соли",
+            isRight = false,
+        ),
+        index = 0,
     )
 }

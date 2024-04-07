@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Answer(
-    @PrimaryKey
-    val answerId: Long,
+    @PrimaryKey(autoGenerate = true)
+    val answerId: Int,
     val text: String,
-//    val isRight: Boolean,
+    val isRight: Boolean,
 )

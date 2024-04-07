@@ -44,7 +44,7 @@ fun ClipScreen(
     snackbarHostState: SnackbarHostState,
     clipViewModel: ClipViewModel = hiltViewModel(),
     userDataStore: User? = null,
-    onToQuizClick: () -> Unit,
+    onToQuizClick: (quizId: Long) -> Unit,
 ) {
     val state by clipViewModel.state.collectAsState()
     val userId = userDataStore?.userId
@@ -56,7 +56,7 @@ fun ClipScreen(
         clipViewModel.effects
             .collect { effect ->
                 when (effect) {
-                    is ClipViewEffect.OnToQuizEffect -> onToQuizClick()
+                    is ClipViewEffect.OnToQuizEffect -> onToQuizClick(effect.quizId)
                     is ClipViewEffect.ShowError -> snackbarHostState.showSnackbar(effect.errorMessage)
                 }
             }
@@ -120,7 +120,7 @@ internal fun Clip(
                                 .padding(bottom = 20.dp),
                             shape = RoundedCornerShape(size = 12.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = Colors.ButtonCloseColor),
-                            onClick = { onToQuizClick(ClipViewAction.OnToQuizClick) }
+                            onClick = { onToQuizClick(ClipViewAction.OnToQuizClick(state.clip.clipId)) }
                         ) {
                             Text(
                                 modifier = Modifier
