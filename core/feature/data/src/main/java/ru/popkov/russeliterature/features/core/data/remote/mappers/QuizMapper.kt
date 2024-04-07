@@ -26,7 +26,7 @@ object QuizMapper {
         AnswerEntity(
             answerId = this.id,
             text = this.text,
-//            isRight = this.isRight,
+            isRight = this.isRight,
         )
 
     fun List<AnswerDto>.toListAnswerEntity(): List<AnswerEntity> =

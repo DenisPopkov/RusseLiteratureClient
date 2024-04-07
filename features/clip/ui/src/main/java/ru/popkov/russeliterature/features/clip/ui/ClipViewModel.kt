@@ -26,9 +26,9 @@ class ClipViewModel @Inject constructor(
 
     fun onAction(action: ClipViewAction) {
         when (action) {
-            ClipViewAction.OnToQuizClick -> {
+            is ClipViewAction.OnToQuizClick -> {
                 viewModelScope.launch {
-                    sendEffect(ClipViewEffect.OnToQuizEffect)
+                    sendEffect(ClipViewEffect.OnToQuizEffect(action.quizId))
                 }
             }
         }

@@ -58,10 +58,9 @@ data class Quiz(
 @Keep
 @JsonClass(generateAdapter = true)
 data class Answer(
-    val id: Long,
+    val id: Int,
     val text: String,
-//    @Json(name = "isRight")
-//    val isRight: Boolean,
+    val isRight: Boolean,
 )
 
 @Keep

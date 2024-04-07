@@ -24,11 +24,8 @@ object QuizMapper {
         AnswerDomain(
             answerId = this.answerId,
             text = this.text,
-//            isRight = this.isRight,
+            isRight = this.isRight,
         )
-
-    private fun List<AnswerEntity>.toAnswerDomain(): List<AnswerDomain> =
-        map { it.toAnswerDomain() }
 
     fun ClipEntity.toClipDomain(): ClipDomain =
         ClipDomain(

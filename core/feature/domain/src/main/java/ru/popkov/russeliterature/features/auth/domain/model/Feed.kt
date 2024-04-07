@@ -49,9 +49,9 @@ data class Quiz(
 
 @Keep
 data class Answer(
-    val answerId: Long,
+    val answerId: Int,
     val text: String,
-//    val isRight: Boolean,
+    val isRight: Boolean,
 )
 
 @Keep
