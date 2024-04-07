@@ -31,6 +31,8 @@ gRPC+Rest.
 ├── core......... Независимая логика проекта/компонентов
 │   ├── datastore.......... Логика для сохранения мелких локальных файлов
 │   ├── nav....... Логика для навигации
+│   ├── data....... Бизнес логика
+│   ├── domain....... Прослойка между UI и бизнес логикой для упрощения взаимодействия
 │   ├── ui
 │   │   ├── components.. Базовые компоненты для всего UI
 │   │   ├── ui.. Логика взаимодействия с состояниями, абстракция для MVI
@@ -57,4 +59,4 @@ gRPC+Rest.
 
 ## Интерфейс флоу вертикальных клипов
 
-<img width="800" alt="image" src="https://github.com/DenisPopkov/RusseLiteratureClient/assets/57343209/2fc12e43-9c6b-480f-98d4-d17dc4178a7a">
+<img width="800" alt="image" src="https://github.com/DenisPopkov/RusseLiteratureClient/assets/57343209/df06b4dc-21e6-4df2-a97e-830ca71c16ed">
