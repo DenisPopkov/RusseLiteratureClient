@@ -57,4 +57,4 @@ gRPC+Rest.
 
 ## Интерфейс флоу вертикальных клипов
 
-<img width="800" alt="image" src="https://github.com/DenisPopkov/RusseLiteratureServer/assets/57343209/3916a678-889a-4c73-a284-52392ac4bde7">
+<img width="800" alt="image" src="https://github.com/DenisPopkov/RusseLiteratureClient/assets/57343209/2fc12e43-9c6b-480f-98d4-d17dc4178a7a">
