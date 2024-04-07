@@ -8,7 +8,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.popkov.russeliterature.features.core.data.local.AppDatabase
+import ru.popkov.russeliterature.features.core.data.local.daos.ClipDao
 import ru.popkov.russeliterature.features.core.data.local.daos.FeedDao
+import ru.popkov.russeliterature.features.core.data.local.daos.UserDao
 import javax.inject.Singleton
 
 @Module
@@ -29,4 +31,12 @@ class DatabaseModule {
     @Provides
     fun feedDao(database: AppDatabase): FeedDao =
         database.feedDao()
+
+    @Provides
+    fun clipDao(database: AppDatabase): ClipDao =
+        database.clipDao()
+
+    @Provides
+    fun userDao(database: AppDatabase): UserDao =
+        database.userDao()
 }

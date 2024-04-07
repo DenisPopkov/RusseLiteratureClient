@@ -2,9 +2,7 @@ package ru.popkov.russeliterature.features.clip.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,12 +26,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import ru.popkov.android.core.feature.ui.R
+import coil.compose.AsyncImage
+import kotlinx.coroutines.flow.collectLatest
+import ru.popkov.datastore.user.User
 import ru.popkov.russeliterature.theme.Colors
 import ru.popkov.russeliterature.theme.FormularMedium14
 import ru.popkov.russeliterature.theme.FormularRegular14
@@ -44,43 +43,40 @@ import ru.popkov.russeliterature.theme.Grotesk36
 fun ClipScreen(
     snackbarHostState: SnackbarHostState,
     clipViewModel: ClipViewModel = hiltViewModel(),
+    userDataStore: User? = null,
     onToQuizClick: () -> Unit,
 ) {
     val state by clipViewModel.state.collectAsState()
+    val userId = userDataStore?.userId
 
     LaunchedEffect(Unit) {
+        userId?.collectLatest {
+            clipViewModel.getClip(it.id)
+        }
         clipViewModel.effects
             .collect { effect ->
                 when (effect) {
                     is ClipViewEffect.OnToQuizEffect -> onToQuizClick()
+                    is ClipViewEffect.ShowError -> snackbarHostState.showSnackbar(effect.errorMessage)
                 }
             }
     }
 
     Clip(
         state = state,
-        onFaveClick = clipViewModel::onAction,
         onToQuizClick = clipViewModel::onAction,
     )
 }
-
-data class ClipItem(
-    val id: Int = 0,
-    val clipTitle: String,
-    val clipDescription: String,
-    var isFave: Boolean = false,
-)
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun Clip(
     modifier: Modifier = Modifier,
     state: ClipState,
-    onFaveClick: (ClipViewAction) -> Unit = {},
     onToQuizClick: (ClipViewAction) -> Unit = {},
 ) {
     val pagerState = rememberPagerState(pageCount = {
-        state.clipItems.size
+        state.clip.text.size
     })
 
     Box {
@@ -94,11 +90,11 @@ internal fun Clip(
                     .fillMaxSize()
                     .background(color = Colors.BackgroundColor)
             ) {
-                Image(
+                AsyncImage(
                     modifier = Modifier
                         .height(height = 390.dp)
                         .alpha(alpha = 0.4f),
-                    painter = painterResource(id = R.drawable.ic_article),
+                    model = state.clip.image,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                 )
@@ -108,16 +104,16 @@ internal fun Clip(
                 ) {
                     Text(
                         modifier = Modifier.padding(top = 220.dp),
-                        text = state.clipItems[page].clipTitle,
+                        text = state.clip.text[page].title,
                         style = GothicBold36,
                     )
                     Text(
                         modifier = Modifier.padding(top = 30.dp),
-                        text = state.clipItems[page].clipDescription,
+                        text = state.clip.text[page].text,
                         style = FormularRegular14,
                     )
                     Spacer(modifier = Modifier.weight(1f))
-                    AnimatedVisibility(visible = pagerState.currentPage == state.clipItems.size - 1) {
+                    AnimatedVisibility(visible = pagerState.currentPage == state.clip.text.size - 1) {
                         Button(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -129,7 +125,7 @@ internal fun Clip(
                             Text(
                                 modifier = Modifier
                                     .padding(vertical = 10.dp),
-                                text = stringResource(id = ru.popkov.russeliterature.features.clip.ui.R.string.clip_quiz),
+                                text = stringResource(id = R.string.clip_quiz),
                                 style = FormularMedium14,
                             )
                         }
@@ -140,25 +136,13 @@ internal fun Clip(
 
         Row(
             modifier = Modifier
-                .padding(top = 42.dp)
+                .padding(top = 52.dp)
                 .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = stringResource(id = ru.popkov.russeliterature.features.clip.ui.R.string.clip_title),
+                text = stringResource(id = R.string.clip_title),
                 style = Grotesk36,
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            Image(
-                modifier = Modifier
-                    .clickable { onFaveClick.invoke(ClipViewAction.OnFaveClick) },
-                painter = if (state.clipItems.any { it.isFave }) {
-                    painterResource(id = R.drawable.ic_fave_fill)
-                } else {
-                    painterResource(id = R.drawable.ic_fave)
-                },
-                contentScale = ContentScale.Crop,
-                contentDescription = null,
             )
         }
     }

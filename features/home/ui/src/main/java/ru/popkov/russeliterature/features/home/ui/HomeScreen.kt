@@ -38,10 +38,9 @@ internal fun HomeScreen(
     snackbarHostState: SnackbarHostState,
     userDataStore: User? = null,
     homeViewModel: HomeViewModel = hiltViewModel(),
-    onCardClick: () -> Unit = {},
+    onCardClick: (cardId: Long) -> Unit = {},
     onSectionClick: (sectionId: Int) -> Unit = {},
 ) {
-
     val state by homeViewModel.state.collectAsState()
     val userId = userDataStore?.userId
 
@@ -54,6 +53,8 @@ internal fun HomeScreen(
                 when (effect) {
                     is HomeViewEffect.ShowError ->
                         snackbarHostState.showSnackbar(effect.errorMessage)
+
+                    is HomeViewEffect.OnCardClick -> onCardClick.invoke(effect.cardId)
 
                     is HomeViewEffect.OnSectionClick -> onSectionClick.invoke(effect.sectionId)
                 }
@@ -118,12 +119,16 @@ private fun Home(
         ) {
             items(state.authors ?: emptyList()) { author ->
                 Card(
-                    cardId = author.id,
                     cardImageUrl = author.image,
                     cardText = author.name,
                     cardType = CardType.SMALL,
                     isFave = author.isFave,
-                    onAction = {
+                    onCardActionClick = {
+                        onAction.invoke(
+                            HomeViewAction.OnCardClick(author.id)
+                        )
+                    },
+                    onFaveActionClick = {
                         onAction.invoke(
                             HomeViewAction.OnAuthorFaveClick(
                                 userId = state.userId,
@@ -153,12 +158,16 @@ private fun Home(
         ) {
             items(state.articles ?: emptyList()) { article ->
                 Card(
-                    cardId = article.id,
                     cardImageUrl = article.image,
                     cardText = article.name,
                     cardType = CardType.LARGE,
                     isFave = article.isFave,
-                    onAction = {
+                    onCardActionClick = {
+                        onAction.invoke(
+                            HomeViewAction.OnCardClick(article.id)
+                        )
+                    },
+                    onFaveActionClick = {
                         onAction.invoke(
                             HomeViewAction.OnArticleFaveClick(
                                 userId = state.userId,
@@ -188,12 +197,16 @@ private fun Home(
         ) {
             items(state.poets ?: emptyList()) { poet ->
                 Card(
-                    cardId = poet.id,
                     cardImageUrl = poet.image,
                     cardText = poet.name,
                     cardType = CardType.MEDIUM,
                     isFave = poet.isFave,
-                    onAction = {
+                    onCardActionClick = {
+                        onAction.invoke(
+                            HomeViewAction.OnCardClick(poet.id)
+                        )
+                    },
+                    onFaveActionClick = {
                         onAction.invoke(
                             HomeViewAction.OnPoetFaveClick(
                                 userId = state.userId,

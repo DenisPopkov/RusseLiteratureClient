@@ -125,12 +125,11 @@ internal fun Content(
             ) {
                 items(state.authors) { author ->
                     Card(
-                        cardId = author.id,
                         cardImageUrl = author.image,
                         cardText = author.name,
                         cardType = CardType.SMALL,
                         isFave = author.isFave,
-                        onAction = {
+                        onFaveActionClick = {
                             onAction.invoke(
                                 FaveViewAction.OnAuthorFaveClick(
                                     userId = state.userId,
@@ -160,12 +159,11 @@ internal fun Content(
             ) {
                 items(state.articles) { article ->
                     Card(
-                        cardId = article.id,
                         cardImageUrl = article.image,
                         cardText = article.name,
                         cardType = CardType.LARGE,
                         isFave = article.isFave,
-                        onAction = {
+                        onFaveActionClick = {
                             onAction.invoke(
                                 FaveViewAction.OnArticleFaveClick(
                                     userId = state.userId,
@@ -195,12 +193,11 @@ internal fun Content(
             ) {
                 items(state.poets) { poet ->
                     Card(
-                        cardId = poet.id,
                         cardImageUrl = poet.image,
                         cardText = poet.name,
                         cardType = CardType.MEDIUM,
                         isFave = poet.isFave,
-                        onAction = {
+                        onFaveActionClick = {
                             onAction.invoke(
                                 FaveViewAction.OnPoetFaveClick(
                                     userId = state.userId,

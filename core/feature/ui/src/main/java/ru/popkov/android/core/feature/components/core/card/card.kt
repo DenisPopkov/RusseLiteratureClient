@@ -30,12 +30,12 @@ import ru.popkov.russeliterature.theme.FormularRegular14
 
 @Composable
 fun Card(
-    cardId: Long,
     cardImageUrl: String,
     cardText: String,
     cardType: CardType = CardType.SMALL,
     isFave: Boolean = false,
-    onAction: (CardAction) -> Unit = {},
+    onCardActionClick: () -> Unit = {},
+    onFaveActionClick: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -45,7 +45,7 @@ fun Card(
             modifier = Modifier
                 .size(height = cardType.height, width = cardType.width)
                 .clip(shape = RoundedCornerShape(size = 10.dp))
-                .clickable { onAction.invoke(CardAction.OnCardClick(cardId)) },
+                .clickable { onCardActionClick.invoke() },
         ) {
             AsyncImage(
                 modifier = Modifier
@@ -66,7 +66,7 @@ fun Card(
                 Spacer(modifier = Modifier.weight(1f))
                 Icon(
                     modifier = Modifier
-                        .clickable { onAction.invoke(CardAction.OnFaveClick(cardId)) },
+                        .clickable { onFaveActionClick.invoke() },
                     painter = painterResource(id = if (isFave) R.drawable.ic_fave_fill else R.drawable.ic_fave),
                     tint = Color.White,
                     contentDescription = "Fave icon"
@@ -90,7 +90,6 @@ fun Card(
 @Composable
 private fun SmallCardPreview() {
     Card(
-        cardId = 0L,
         cardImageUrl = "",
         cardText = "Фёдор\nДостоевский",
         cardType = CardType.SMALL,
@@ -101,7 +100,6 @@ private fun SmallCardPreview() {
 @Composable
 private fun MediumCardPreview() {
     Card(
-        cardId = 0L,
         cardImageUrl = "",
         cardText = "Фёдор\nДостоевский",
         cardType = CardType.MEDIUM,
@@ -112,7 +110,6 @@ private fun MediumCardPreview() {
 @Composable
 private fun LargeCardPreview() {
     Card(
-        cardId = 0L,
         cardImageUrl = "",
         cardText = "Как Толстой Войну и мир писал",
         cardType = CardType.LARGE,

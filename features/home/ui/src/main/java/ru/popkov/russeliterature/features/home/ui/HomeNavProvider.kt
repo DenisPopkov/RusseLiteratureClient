@@ -47,7 +47,7 @@ class HomeNavProvider @Inject constructor(
                         snackbarHostState = snackbarHostState,
                         userDataStore = userDatastore,
                         onCardClick = {
-                            navigator.navigate(ClipDestination)
+                            navigator.navigate(ClipDestination(it))
                         },
                         onSectionClick = {
                             navigator.navigate(SectionDestination(it))
@@ -56,9 +56,11 @@ class HomeNavProvider @Inject constructor(
                 }
                 composable(
                     route = ClipDestination.route,
+                    arguments = ClipDestination.args,
                 ) {
                     ClipScreen(
                         snackbarHostState = snackbarHostState,
+                        userDataStore = userDatastore,
                         onToQuizClick = {
                             navigator.navigate(QuizDestination)
                         }
