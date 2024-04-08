@@ -8,7 +8,7 @@ android {
 
 dependencies {
     implementation(project(":features:auth:nav"))
-    implementation(project(":features:auth:domain"))
+    implementation(project(":core:feature:domain"))
     implementation(project(":features:home:nav"))
     implementation(project(":theme"))
     implementation(libs.bundles.datastore)

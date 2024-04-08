@@ -1,6 +1,5 @@
 package ru.popkov.russeliterature
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.WindowInsets
@@ -47,7 +46,7 @@ fun MainWindow(
 
     navController.addOnDestinationChangedListener { _, destination, _ ->
         showBottomNavBar =
-            destination.route == "home" || destination.route == "search" || destination.route == "fave"
+            destination.route == "home" || destination.route == "search" || destination.route == "fave" || destination.route == "settings"
     }
 
     NavigationLaunchedEffect(
@@ -71,7 +70,7 @@ fun MainWindow(
             }
         },
         bottomBar = {
-            AnimatedVisibility(visible = showBottomNavBar) {
+            if (showBottomNavBar) {
                 MainNavBar(
                     items = bottomBarItems,
                     navController = navController,

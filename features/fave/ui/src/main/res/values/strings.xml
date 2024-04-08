@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="empty_fave_title">Здесь ничего нет</string>
+    <string name="empty_fave_description">Чтобы добавить сюда статью, писателя, поэму, нажмите на кнопку добавления в закладки</string>
+    <string name="empty_fave_button">Перейти на главный</string>
+    <string name="fave_title">Избранное</string>
+</resources>

@@ -1,18 +1,15 @@
 package ru.popkov.russeliterature.features.fave.ui
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import ru.popkov.android.core.feature.nav.Navigator
 import ru.popkov.android.core.feature.ui.NavProvider
 import ru.popkov.russeliterature.features.fave.nav.FaveDestination
-import ru.popkov.russeliterature.theme.Colors
+import ru.popkov.russeliterature.features.home.nav.HomeDestination
+import ru.popkov.russeliterature.features.section.ui.SectionDestination
 import se.ansman.dagger.auto.AutoBindIntoSet
 import javax.inject.Inject
 
@@ -34,13 +31,18 @@ class FaveNavProvider @Inject constructor(
             composable(
                 route = FaveDestination.route,
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(color = Colors.BackgroundColor),
-                ) {
-
-                }
+                FaveScreen(
+                    snackbarHostState = snackbarHostState,
+                    onGoMainScreen = {
+                        navigator.navigate(HomeDestination) {
+                            launchSingleTop = true
+                            popUpTo(0)
+                        }
+                    },
+                    onSectionClick = {
+                        navigator.navigate(SectionDestination(it))
+                    }
+                )
             }
         }
 

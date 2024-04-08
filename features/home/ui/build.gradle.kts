@@ -7,7 +7,10 @@ android {
 }
 
 dependencies {
-    implementation(project(":features:home:domain"))
+    implementation(project(":core:feature:domain"))
     implementation(project(":features:home:nav"))
+    implementation(project(":features:clip:ui"))
+    implementation(project(":features:quiz:ui"))
+    implementation(project(":features:section:ui"))
     implementation(project(":theme"))
 }

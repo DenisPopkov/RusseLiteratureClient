@@ -22,6 +22,9 @@ class Navigator {
     private val _operations = MutableSharedFlow<Operation>(extraBufferCapacity = 3)
     val operations: Flow<Operation> = _operations
 
+    private val _backPressEvents = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+    val backPressEvents: Flow<Unit> = _backPressEvents
+
     fun navigate(destination: Destination, builder: (NavOptionsBuilder.() -> Unit)? = null) {
         val operation = Operation(
             destination = destination,
@@ -30,6 +33,9 @@ class Navigator {
         _operations.tryEmit(operation)
     }
 
+    fun onBackClick() {
+        _backPressEvents.tryEmit(Unit)
+    }
 }
 
 @Composable
@@ -43,6 +49,14 @@ fun NavigationLaunchedEffect(
             .filter { it.destination.target == target }
             .onEach { (destination, navOptions) ->
                 navController.navigate(destination.toString(), navOptions)
+            }
+            .launchIn(this)
+    }
+
+    LaunchedEffect(Unit) {
+        navigator.backPressEvents
+            .onEach {
+                navController.popBackStack()
             }
             .launchIn(this)
     }

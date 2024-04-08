@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="empty_search_title">Здесь ничего нет</string>
+    <string name="empty_search_description">По вашему запросу ничего не найдено</string>
+    <string name="empty_search_button">Перейти на главный</string>
+</resources>
