@@ -34,7 +34,7 @@ class ClipViewModel @Inject constructor(
         }
     }
 
-    suspend fun getClip(userId: Long) {
+    suspend fun getClip() {
         val handler = CoroutineExceptionHandler { _, throwable ->
             Timber.tag("Clip:").d(throwable, "error occurred: %s", 0)
         }
@@ -44,7 +44,6 @@ class ClipViewModel @Inject constructor(
             val clip = quizRepository.getClip(clipId ?: -1L)
             updateState {
                 copy(
-                    userId = userId,
                     clip = clip,
                     isLoading = false,
                 )

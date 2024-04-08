@@ -50,7 +50,6 @@ class QuizViewModel @Inject constructor(
             val quiz = quizRepository.getQuiz(quizId ?: -1L)
             updateState {
                 copy(
-                    userId = userId,
                     quizState = QuizScreenState.QUESTION,
                     quiz = quiz,
                     isLoading = false,

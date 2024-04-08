@@ -31,7 +31,6 @@ class FaveViewModel @Inject constructor(
             is FaveViewAction.OnAuthorFaveClick -> {
                 viewModelScope.launch {
                     val authors = feedRepository.addAuthorToFave(
-                        action.userId,
                         action.authorId,
                     )
                     updateState { copy(authors = authors) }
@@ -41,7 +40,6 @@ class FaveViewModel @Inject constructor(
             is FaveViewAction.OnArticleFaveClick -> {
                 viewModelScope.launch {
                     val articles = feedRepository.addArticleToFave(
-                        action.userId,
                         action.articleId,
                     )
                     updateState { copy(articles = articles) }
@@ -51,7 +49,6 @@ class FaveViewModel @Inject constructor(
             is FaveViewAction.OnPoetFaveClick -> {
                 viewModelScope.launch {
                     val poets = feedRepository.addPoetToFave(
-                        action.userId,
                         action.poetId,
                     )
                     updateState { copy(poets = poets) }
@@ -66,7 +63,7 @@ class FaveViewModel @Inject constructor(
         }
     }
 
-    suspend fun getFave(userId: Long) {
+    suspend fun getFave() {
         val handler = CoroutineExceptionHandler { _, throwable ->
             Timber.tag("Fave:").d(throwable, "error occurred: %s", 0)
         }
@@ -78,7 +75,6 @@ class FaveViewModel @Inject constructor(
             val poets = feedRepository.getFavePoets()
             updateState {
                 copy(
-                    userId = userId,
                     authors = authors,
                     articles = articles,
                     poets = poets,

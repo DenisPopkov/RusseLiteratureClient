@@ -19,32 +19,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import kotlinx.coroutines.flow.collectLatest
 import ru.popkov.android.core.feature.components.core.SectionHeader
 import ru.popkov.android.core.feature.components.core.card.Card
 import ru.popkov.android.core.feature.components.core.card.CardType
 import ru.popkov.android.core.feature.components.core.models.SectionType
-import ru.popkov.datastore.user.User
 import ru.popkov.russeliterature.theme.Colors
 
 @Composable
 fun SectionScreen(
     snackbarHostState: SnackbarHostState,
     sectionViewModel: SectionViewModel = hiltViewModel(),
-    userDataStore: User? = null,
+
     onBackClick: () -> Unit,
 ) {
     val state by sectionViewModel.state.collectAsState()
-    val userId = userDataStore?.userId
 
     LaunchedEffect(Unit) {
-        userId?.collectLatest {
-            when (sectionViewModel.sectionType) {
-                SectionType.AUTHOR -> sectionViewModel.getAuthors(it.id)
-                SectionType.ARTICLE -> sectionViewModel.getArticles(it.id)
-                SectionType.POET -> sectionViewModel.getPoets(it.id)
-                else -> {}
-            }
+        when (sectionViewModel.sectionType) {
+            SectionType.AUTHOR -> sectionViewModel.getAuthors()
+            SectionType.ARTICLE -> sectionViewModel.getArticles()
+            SectionType.POET -> sectionViewModel.getPoets()
+            else -> {}
         }
         sectionViewModel.effects
             .collect { effect ->
@@ -109,7 +104,6 @@ internal fun SectionDescription(
                         onFaveActionClick = {
                             onAction.invoke(
                                 SectionViewAction.OnAuthorFaveClick(
-                                    userId = state.userId,
                                     authorId = author.id,
                                     isFave = !author.isFave,
                                 )
@@ -137,7 +131,6 @@ internal fun SectionDescription(
                         onFaveActionClick = {
                             onAction.invoke(
                                 SectionViewAction.OnArticleFaveClick(
-                                    userId = state.userId,
                                     articleId = article.id,
                                     isFave = !article.isFave,
                                 )
@@ -165,7 +158,6 @@ internal fun SectionDescription(
                         onFaveActionClick = {
                             onAction.invoke(
                                 SectionViewAction.OnPoetFaveClick(
-                                    userId = state.userId,
                                     poetId = poet.id,
                                     isFave = !poet.isFave,
                                 )

@@ -25,7 +25,6 @@ class HomeViewModel @Inject constructor(
             is HomeViewAction.OnAuthorFaveClick -> {
                 viewModelScope.launch {
                     val authors = feedRepository.addAuthorToFave(
-                        action.userId,
                         action.authorId,
                     )
                     updateState { copy(authors = authors) }
@@ -35,7 +34,6 @@ class HomeViewModel @Inject constructor(
             is HomeViewAction.OnArticleFaveClick -> {
                 viewModelScope.launch {
                     val articles = feedRepository.addArticleToFave(
-                        action.userId,
                         action.articleId,
                     )
                     updateState { copy(articles = articles) }
@@ -45,7 +43,6 @@ class HomeViewModel @Inject constructor(
             is HomeViewAction.OnPoetFaveClick -> {
                 viewModelScope.launch {
                     val poets = feedRepository.addPoetToFave(
-                        action.userId,
                         action.poetId,
                     )
                     updateState { copy(poets = poets) }
@@ -67,7 +64,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    suspend fun getFeed(userId: Long) {
+    suspend fun getFeed() {
         val handler = CoroutineExceptionHandler { _, throwable ->
             Timber.tag("Home:").d(throwable, "error occurred: %s", 0)
         }
@@ -81,7 +78,6 @@ class HomeViewModel @Inject constructor(
             if (authorsFromLocal.isNotEmpty() && articlesFromLocal.isNotEmpty() && poetsFromLocal.isNotEmpty()) {
                 updateState {
                     copy(
-                        userId = userId,
                         authors = authorsFromLocal,
                         articles = articlesFromLocal,
                         poets = poetsFromLocal,
@@ -89,13 +85,12 @@ class HomeViewModel @Inject constructor(
                     )
                 }
             } else {
-                val authors = feedRepository.getAuthors(userId = userId)
-                val articles = feedRepository.getArticles(userId = userId)
-                val poets = feedRepository.getPoets(userId = userId)
+                val authors = feedRepository.getAuthors()
+                val articles = feedRepository.getArticles()
+                val poets = feedRepository.getPoets()
 
                 updateState {
                     copy(
-                        userId = userId,
                         authors = authors,
                         articles = articles,
                         poets = poets,

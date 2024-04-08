@@ -11,7 +11,7 @@ enum class QuizScreenState {
 
 @Immutable
 internal data class QuizState(
-    val userId: Long = -1L,
+
     val quizState: QuizScreenState = QuizScreenState.QUESTION,
     val quiz: Quiz? = null,
     val isLoading: Boolean = false,

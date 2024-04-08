@@ -28,13 +28,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import kotlinx.coroutines.flow.collectLatest
 import ru.popkov.android.core.feature.components.core.Section
 import ru.popkov.android.core.feature.components.core.SectionFilter
 import ru.popkov.android.core.feature.components.core.card.Card
 import ru.popkov.android.core.feature.components.core.card.CardType
 import ru.popkov.android.core.feature.components.field.SearchField
-import ru.popkov.datastore.user.User
 import ru.popkov.russeliterature.theme.Colors
 import ru.popkov.russeliterature.theme.FormularMedium14
 import ru.popkov.russeliterature.theme.FormularMedium20
@@ -44,17 +42,13 @@ import ru.popkov.russeliterature.theme.FormularRegular12
 internal fun SearchScreen(
     snackbarHostState: SnackbarHostState,
     searchViewModel: SearchViewModel = hiltViewModel(),
-    userDataStore: User? = null,
     onToMainClick: () -> Unit = {},
     onSectionClick: (sectionId: Int) -> Unit = {},
 ) {
     val state by searchViewModel.state.collectAsState()
-    val userId = userDataStore?.userId
 
     LaunchedEffect(Unit) {
-        userId?.collectLatest {
-            searchViewModel.getAll(userId = it.id)
-        }
+        searchViewModel.getAll()
         searchViewModel.effects
             .collect { effect ->
                 when (effect) {
@@ -158,7 +152,6 @@ internal fun Content(
                         onFaveActionClick = {
                             onAction.invoke(
                                 SearchViewAction.OnAuthorFaveClick(
-                                    userId = state.userId,
                                     authorId = author.id,
                                     isFave = !author.isFave,
                                 )
@@ -192,7 +185,6 @@ internal fun Content(
                         onFaveActionClick = {
                             onAction.invoke(
                                 SearchViewAction.OnArticleFaveClick(
-                                    userId = state.userId,
                                     articleId = article.id,
                                     isFave = !article.isFave,
                                 )
@@ -226,7 +218,6 @@ internal fun Content(
                         onFaveActionClick = {
                             onAction.invoke(
                                 SearchViewAction.OnPoetFaveClick(
-                                    userId = state.userId,
                                     poetId = poet.id,
                                     isFave = !poet.isFave,
                                 )

@@ -32,8 +32,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import kotlinx.coroutines.flow.collectLatest
-import ru.popkov.datastore.user.User
 import ru.popkov.russeliterature.theme.Colors
 import ru.popkov.russeliterature.theme.FormularMedium14
 import ru.popkov.russeliterature.theme.FormularMedium28
@@ -42,18 +40,15 @@ import ru.popkov.russeliterature.theme.Grotesk36
 @Composable
 internal fun SettingsScreen(
     snackbarHostState: SnackbarHostState,
-    userDataStore: User? = null,
+
     settingsViewModel: SettingsViewModel = hiltViewModel(),
     onDeleteAccountClick: () -> Unit = {},
     onExitAccountClick: () -> Unit = {},
 ) {
     val state by settingsViewModel.state.collectAsState()
-    val userId = userDataStore?.userId
 
     LaunchedEffect(Unit) {
-        userId?.collectLatest {
-            settingsViewModel.getSettings(userId = it.id)
-        }
+        settingsViewModel.getSettings()
         settingsViewModel.effects
             .collect { effect ->
                 when (effect) {
@@ -128,7 +123,7 @@ internal fun Settings(
             colors = ButtonDefaults.buttonColors(containerColor = Colors.InputFieldColor),
             shape = RoundedCornerShape(size = 8.dp),
             onClick = {
-                onAction.invoke(SettingsViewAction.OnDeleteAccountClick(state.userId))
+                onAction.invoke(SettingsViewAction.OnDeleteAccountClick)
             }
         ) {
             Text(

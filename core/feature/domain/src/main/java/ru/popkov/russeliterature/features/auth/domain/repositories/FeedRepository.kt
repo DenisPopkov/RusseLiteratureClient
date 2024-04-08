@@ -7,31 +7,23 @@ import ru.popkov.russeliterature.features.auth.domain.model.Poet
 interface FeedRepository {
 
     suspend fun addAuthorToFave(
-        userId: Long,
+
         authorId: Long,
     ): List<Author>
 
     suspend fun addArticleToFave(
-        userId: Long,
         articleId: Long,
     ): List<Article>
 
     suspend fun addPoetToFave(
-        userId: Long,
         poetId: Long,
     ): List<Poet>
 
-    suspend fun getAuthors(
-        userId: Long,
-    ): List<Author>
+    suspend fun getAuthors(): List<Author>
 
-    suspend fun getArticles(
-        userId: Long,
-    ): List<Article>
+    suspend fun getArticles(): List<Article>
 
-    suspend fun getPoets(
-        userId: Long,
-    ): List<Poet>
+    suspend fun getPoets(): List<Poet>
 
     suspend fun getAuthorsFromLocal(): List<Author>
 

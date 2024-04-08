@@ -10,7 +10,6 @@ import ru.popkov.android.core.feature.ui.EffectsProvider
 import ru.popkov.android.core.feature.ui.StateDelegate
 import ru.popkov.android.core.feature.ui.StateProvider
 import ru.popkov.datastore.token.Token
-import ru.popkov.datastore.user.User
 import ru.popkov.russeliterature.features.auth.domain.repositories.SettingsRepository
 import timber.log.Timber
 import javax.inject.Inject
@@ -18,7 +17,6 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
-    private val userDataStore: User,
     private val tokenDatastore: Token,
 ) : ViewModel(),
     StateProvider<SettingsState> by StateDelegate(SettingsState()),
@@ -28,13 +26,12 @@ class SettingsViewModel @Inject constructor(
         when (action) {
             is SettingsViewAction.OnDeleteAccountClick -> {
                 viewModelScope.launch {
-                    deleteUserAccount(action.userId)
+                    deleteUserAccount()
                 }
             }
 
             is SettingsViewAction.OnExitAccountClick -> {
                 viewModelScope.launch {
-                    userDataStore.deleteUserId()
                     tokenDatastore.deleteToken()
                     sendEffect(SettingsViewEffect.OnExitAccountClick)
                 }
@@ -42,14 +39,14 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun deleteUserAccount(userId: Long) {
+    private suspend fun deleteUserAccount() {
         val handler = CoroutineExceptionHandler { _, throwable ->
             Timber.tag("Settings:").d(throwable, "error occurred: %s", 0)
         }
 
         viewModelScope.launch(handler) {
             updateState { copy(isLoading = true) }
-            settingsRepository.deleteUserAccount(userId = userId)
+            settingsRepository.deleteUserAccount()
             updateState { copy(isLoading = false) }
             sendEffect(SettingsViewEffect.OnDeleteAccountClick)
         }.invokeOnCompletion {
@@ -62,19 +59,18 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    suspend fun getSettings(userId: Long) {
+    suspend fun getSettings() {
         val handler = CoroutineExceptionHandler { _, throwable ->
             Timber.tag("Settings:").d(throwable, "error occurred: %s", 0)
         }
 
         viewModelScope.launch(handler) {
             updateState { copy(isLoading = true) }
-            val settings = settingsRepository.getSettings(userId = userId)
+            val settings = settingsRepository.getSettings()
             updateState {
                 copy(
                     userName = settings.name,
                     userImage = settings.image,
-                    userId = userId,
                     isLoading = false,
                 )
             }
