@@ -51,12 +51,30 @@ gRPC+Rest.
 
 ## Интерфейс авторизации
 
-<img width="800" alt="image" src="https://github.com/DenisPopkov/RusseLiteratureClient/assets/57343209/966a4fd2-88d5-4ecd-89b2-b90d371417a0">
+### Тёмная тема
+
+<img width="800" alt="image" src="https://github.com/DenisPopkov/RusseLiteratureClient/assets/57343209/2aab78ff-327d-4d79-b31e-f0abb7f7a0b3">
+
+### Светлая тема
+
+<img width="800" alt="image" src="https://github.com/DenisPopkov/RusseLiteratureClient/assets/57343209/7aabb36c-ba03-4992-8d6d-ec3951670f2f">
 
 ## Интерфейс основной части приложения
 
-<img width="800" alt="image" src="https://github.com/DenisPopkov/RusseLiteratureClient/assets/57343209/ea14e5ea-55e1-4318-8889-9a70623a49af">
+### Тёмная тема
+
+<img width="800" alt="image" src="https://github.com/DenisPopkov/RusseLiteratureClient/assets/57343209/665d192b-e0c2-431a-9900-0646668f4b43">
+
+### Светлая тема
+
+<img width="800" alt="image" src="https://github.com/DenisPopkov/RusseLiteratureClient/assets/57343209/0bb9b10d-fed4-4366-8e8c-b5a403bcb6c7">
 
 ## Интерфейс флоу вертикальных клипов
 
-<img width="800" alt="image" src="https://github.com/DenisPopkov/RusseLiteratureClient/assets/57343209/df06b4dc-21e6-4df2-a97e-830ca71c16ed">
+### Тёмная тема
+
+<img width="800" alt="image" src="https://github.com/DenisPopkov/RusseLiteratureClient/assets/57343209/0433f7c0-c667-4bc7-ad1e-e4e7c2f2db33">
+
+### Светлая тема
+
+<img width="800" alt="image" src="https://github.com/DenisPopkov/RusseLiteratureClient/assets/57343209/58002131-c195-4ab5-b4e2-bb6157d49ba3">
