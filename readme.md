@@ -55,7 +55,7 @@ gRPC+Rest.
 
 ## Интерфейс основной части приложения
 
-<img width="800" alt="image" src="https://github.com/DenisPopkov/RusseLiteratureClient/assets/57343209/2cba2176-16c0-48fe-b745-c7ad7bd39d26">
+<img width="800" alt="image" src="https://github.com/DenisPopkov/RusseLiteratureClient/assets/57343209/ea14e5ea-55e1-4318-8889-9a70623a49af">
 
 ## Интерфейс флоу вертикальных клипов
 
