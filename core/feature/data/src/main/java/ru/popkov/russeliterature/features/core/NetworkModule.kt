@@ -10,6 +10,8 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import ru.popkov.datastore.token.Token
+import ru.popkov.russeliterature.features.auth.data.AuthInterceptor
 import ru.popkov.russeliterature.features.core.data.remote.api.FeedApi
 import ru.popkov.russeliterature.features.core.data.remote.api.QuizApi
 import ru.popkov.russeliterature.features.core.data.remote.api.SettingsApi
@@ -19,10 +21,16 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
 
+    @Provides
+    fun provideAuthInterceptor(token: Token): AuthInterceptor {
+        return AuthInterceptor(token)
+    }
+
     @Singleton
     @Provides
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
+            .addInterceptor(authInterceptor)
             .addInterceptor(createLogging())
             .build()
     }
