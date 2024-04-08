@@ -8,7 +8,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import ru.popkov.android.core.feature.nav.Navigator
 import ru.popkov.android.core.feature.ui.NavProvider
-import ru.popkov.datastore.user.User
 import ru.popkov.russeliterature.features.clip.ui.ClipDestination
 import ru.popkov.russeliterature.features.clip.ui.ClipScreen
 import ru.popkov.russeliterature.features.home.nav.HomeDestination
@@ -23,7 +22,6 @@ import javax.inject.Inject
 @AutoBindIntoSet
 class HomeNavProvider @Inject constructor(
     private val navigator: Navigator,
-    private val userDatastore: User,
 ) : NavProvider {
 
     override val navBarItem = NavProvider.BottomBarItem(
@@ -45,7 +43,7 @@ class HomeNavProvider @Inject constructor(
                 ) {
                     HomeScreen(
                         snackbarHostState = snackbarHostState,
-                        userDataStore = userDatastore,
+
                         onCardClick = {
                             navigator.navigate(ClipDestination(it))
                         },
@@ -60,7 +58,7 @@ class HomeNavProvider @Inject constructor(
                 ) {
                     ClipScreen(
                         snackbarHostState = snackbarHostState,
-                        userDataStore = userDatastore,
+
                         onToQuizClick = {
                             navigator.navigate(QuizDestination(it))
                         }
@@ -83,7 +81,7 @@ class HomeNavProvider @Inject constructor(
                 ) {
                     SectionScreen(
                         snackbarHostState = snackbarHostState,
-                        userDataStore = userDatastore,
+
                         onBackClick = {
                             navigator.onBackClick()
                         }

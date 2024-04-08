@@ -9,7 +9,7 @@ import ru.popkov.russeliterature.features.auth.domain.model.Poet
 
 @Immutable
 internal data class SearchState(
-    val userId: Long = -1L,
+
     val filterList: List<SectionFilterItem> = mutableListOf(
         SectionFilterItem(sectionType = SectionType.ALL, isSectionSelected = true),
         SectionFilterItem(sectionType = SectionType.AUTHOR),

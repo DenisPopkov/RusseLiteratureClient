@@ -31,7 +31,6 @@ class SectionViewModel @Inject constructor(
             is SectionViewAction.OnAuthorFaveClick -> {
                 viewModelScope.launch {
                     val authors = feedRepository.addAuthorToFave(
-                        action.userId,
                         action.authorId,
                     )
                     updateState { copy(authors = authors) }
@@ -41,7 +40,6 @@ class SectionViewModel @Inject constructor(
             is SectionViewAction.OnArticleFaveClick -> {
                 viewModelScope.launch {
                     val articles = feedRepository.addArticleToFave(
-                        action.userId,
                         action.articleId,
                     )
                     updateState { copy(articles = articles) }
@@ -51,7 +49,6 @@ class SectionViewModel @Inject constructor(
             is SectionViewAction.OnPoetFaveClick -> {
                 viewModelScope.launch {
                     val poets = feedRepository.addPoetToFave(
-                        action.userId,
                         action.poetId,
                     )
                     updateState { copy(poets = poets) }
@@ -68,7 +65,7 @@ class SectionViewModel @Inject constructor(
         }
     }
 
-    suspend fun getAuthors(userId: Long) {
+    suspend fun getAuthors() {
         val handler = CoroutineExceptionHandler { _, throwable ->
             Timber.tag("Section:").d(throwable, "error occurred: %s", 0)
         }
@@ -78,7 +75,6 @@ class SectionViewModel @Inject constructor(
             val authors = feedRepository.getAuthorsFromLocal()
             updateState {
                 copy(
-                    userId = userId,
                     authors = authors,
                     articles = null,
                     poets = null,
@@ -95,7 +91,7 @@ class SectionViewModel @Inject constructor(
         }
     }
 
-    suspend fun getArticles(userId: Long) {
+    suspend fun getArticles() {
         val handler = CoroutineExceptionHandler { _, throwable ->
             Timber.tag("Section:").d(throwable, "error occurred: %s", 0)
         }
@@ -105,7 +101,6 @@ class SectionViewModel @Inject constructor(
             val articles = feedRepository.getArticlesFromLocal()
             updateState {
                 copy(
-                    userId = userId,
                     authors = null,
                     articles = articles,
                     poets = null,
@@ -122,7 +117,7 @@ class SectionViewModel @Inject constructor(
         }
     }
 
-    suspend fun getPoets(userId: Long) {
+    suspend fun getPoets() {
         val handler = CoroutineExceptionHandler { _, throwable ->
             Timber.tag("Section:").d(throwable, "error occurred: %s", 0)
         }
@@ -132,7 +127,6 @@ class SectionViewModel @Inject constructor(
             val poets = feedRepository.getPoetsFromLocal()
             updateState {
                 copy(
-                    userId = userId,
                     authors = null,
                     articles = null,
                     poets = poets,

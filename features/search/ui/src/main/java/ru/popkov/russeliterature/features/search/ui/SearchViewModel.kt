@@ -34,7 +34,6 @@ class SearchViewModel @Inject constructor(
             is SearchViewAction.OnAuthorFaveClick -> {
                 viewModelScope.launch {
                     val authors = feedRepository.addAuthorToFave(
-                        action.userId,
                         action.authorId,
                     )
                     updateState { copy(authors = authors) }
@@ -44,7 +43,6 @@ class SearchViewModel @Inject constructor(
             is SearchViewAction.OnArticleFaveClick -> {
                 viewModelScope.launch {
                     val articles = feedRepository.addArticleToFave(
-                        action.userId,
                         action.articleId,
                     )
                     updateState { copy(articles = articles) }
@@ -54,7 +52,6 @@ class SearchViewModel @Inject constructor(
             is SearchViewAction.OnPoetFaveClick -> {
                 viewModelScope.launch {
                     val poets = feedRepository.addPoetToFave(
-                        action.userId,
                         action.poetId,
                     )
                     updateState { copy(poets = poets) }
@@ -64,14 +61,14 @@ class SearchViewModel @Inject constructor(
             is SearchViewAction.OnSectionItemClick -> {
                 viewModelScope.launch {
                     val updatedFilter = updateFilter(action.sectionType)
-                    setFilter(sectionType = action.sectionType, userId = state.value.userId)
+                    setFilter(sectionType = action.sectionType)
                     updateState { copy(filterList = updatedFilter) }
                 }
             }
 
             is SearchViewAction.OnSearchChange -> {
                 viewModelScope.launch {
-                    getAll(userId = state.value.userId, filter = action.searchText)
+                    getAll(filter = action.searchText)
                 }
             }
 
@@ -91,16 +88,16 @@ class SearchViewModel @Inject constructor(
         return res
     }
 
-    private suspend fun setFilter(sectionType: SectionType, userId: Long) {
+    private suspend fun setFilter(sectionType: SectionType) {
         when (sectionType) {
-            SectionType.ALL -> getAll(userId)
-            SectionType.AUTHOR -> getAuthors(userId)
-            SectionType.ARTICLE -> getArticles(userId)
-            else -> getPoets(userId)
+            SectionType.ALL -> getAll()
+            SectionType.AUTHOR -> getAuthors()
+            SectionType.ARTICLE -> getArticles()
+            else -> getPoets()
         }
     }
 
-    suspend fun getAll(userId: Long, filter: String? = null) {
+    suspend fun getAll(filter: String? = null) {
         val handler = CoroutineExceptionHandler { _, throwable ->
             Timber.tag("Search:").d(throwable, "error occurred: %s", 0)
         }
@@ -112,7 +109,6 @@ class SearchViewModel @Inject constructor(
             val poets = feedRepository.getPoetsFromLocal().filter { it.name.contains((filter ?: it.name)) }
             updateState {
                 copy(
-                    userId = userId,
                     authors = authors,
                     articles = articles,
                     poets = poets,
@@ -130,7 +126,7 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getAuthors(userId: Long, filter: String? = null) {
+    private suspend fun getAuthors(filter: String? = null) {
         val handler = CoroutineExceptionHandler { _, throwable ->
             Timber.tag("Search:").d(throwable, "error occurred: %s", 0)
         }
@@ -140,7 +136,6 @@ class SearchViewModel @Inject constructor(
             val authors = feedRepository.getAuthorsFromLocal()
             updateState {
                 copy(
-                    userId = userId,
                     authors = authors.filter { it.name.contains((filter ?: it.name)) },
                     articles = null,
                     poets = null,
@@ -158,7 +153,7 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getArticles(userId: Long, filter: String? = null) {
+    private suspend fun getArticles(filter: String? = null) {
         val handler = CoroutineExceptionHandler { _, throwable ->
             Timber.tag("Search:").d(throwable, "error occurred: %s", 0)
         }
@@ -168,7 +163,6 @@ class SearchViewModel @Inject constructor(
             val articles = feedRepository.getArticlesFromLocal()
             updateState {
                 copy(
-                    userId = userId,
                     authors = null,
                     articles = articles.filter { it.name.contains((filter ?: it.name)) },
                     poets = null,
@@ -186,7 +180,7 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getPoets(userId: Long, filter: String? = null) {
+    private suspend fun getPoets(filter: String? = null) {
         val handler = CoroutineExceptionHandler { _, throwable ->
             Timber.tag("Search:").d(throwable, "error occurred: %s", 0)
         }
@@ -196,7 +190,6 @@ class SearchViewModel @Inject constructor(
             val poets = feedRepository.getPoetsFromLocal()
             updateState {
                 copy(
-                    userId = userId,
                     authors = null,
                     articles = null,
                     poets = poets.filter { it.name.contains((filter ?: it.name)) },

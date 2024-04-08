@@ -23,31 +23,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import kotlinx.coroutines.flow.collectLatest
 import ru.popkov.android.core.feature.components.core.Carousel
 import ru.popkov.android.core.feature.components.core.Section
 import ru.popkov.android.core.feature.components.core.card.Card
 import ru.popkov.android.core.feature.components.core.card.CardType
 import ru.popkov.android.core.feature.components.core.models.Carousel
 import ru.popkov.android.core.feature.ui.R
-import ru.popkov.datastore.user.User
 import ru.popkov.russeliterature.theme.Colors
 
 @Composable
 internal fun HomeScreen(
     snackbarHostState: SnackbarHostState,
-    userDataStore: User? = null,
+
     homeViewModel: HomeViewModel = hiltViewModel(),
     onCardClick: (cardId: Long) -> Unit = {},
     onSectionClick: (sectionId: Int) -> Unit = {},
 ) {
     val state by homeViewModel.state.collectAsState()
-    val userId = userDataStore?.userId
 
     LaunchedEffect(Unit) {
-        userId?.collectLatest {
-            homeViewModel.getFeed(userId = it.id)
-        }
+        homeViewModel.getFeed()
         homeViewModel.effects
             .collect { effect ->
                 when (effect) {
@@ -131,7 +126,6 @@ private fun Home(
                     onFaveActionClick = {
                         onAction.invoke(
                             HomeViewAction.OnAuthorFaveClick(
-                                userId = state.userId,
                                 authorId = author.id,
                                 isFave = !author.isFave,
                             )
@@ -170,7 +164,6 @@ private fun Home(
                     onFaveActionClick = {
                         onAction.invoke(
                             HomeViewAction.OnArticleFaveClick(
-                                userId = state.userId,
                                 articleId = article.id,
                                 isFave = !article.isFave,
                             )
@@ -209,7 +202,6 @@ private fun Home(
                     onFaveActionClick = {
                         onAction.invoke(
                             HomeViewAction.OnPoetFaveClick(
-                                userId = state.userId,
                                 poetId = poet.id,
                                 isFave = !poet.isFave,
                             )

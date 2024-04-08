@@ -31,8 +31,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import kotlinx.coroutines.flow.collectLatest
-import ru.popkov.datastore.user.User
 import ru.popkov.russeliterature.theme.Colors
 import ru.popkov.russeliterature.theme.FormularMedium14
 import ru.popkov.russeliterature.theme.FormularRegular14
@@ -43,16 +41,13 @@ import ru.popkov.russeliterature.theme.Grotesk36
 fun ClipScreen(
     snackbarHostState: SnackbarHostState,
     clipViewModel: ClipViewModel = hiltViewModel(),
-    userDataStore: User? = null,
+
     onToQuizClick: (quizId: Long) -> Unit,
 ) {
     val state by clipViewModel.state.collectAsState()
-    val userId = userDataStore?.userId
 
     LaunchedEffect(Unit) {
-        userId?.collectLatest {
-            clipViewModel.getClip(it.id)
-        }
+        clipViewModel.getClip()
         clipViewModel.effects
             .collect { effect ->
                 when (effect) {

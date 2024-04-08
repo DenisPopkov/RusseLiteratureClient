@@ -24,49 +24,46 @@ class FeedRepository @Inject constructor(
 ) : FeedRepository {
 
     override suspend fun addAuthorToFave(
-        userId: Long,
         authorId: Long,
     ): List<Author> {
-        feedApi.addAuthorToFave(userId, authorId)
+        feedApi.addAuthorToFave(authorId)
         val author = feedDao.findAuthorById(authorId)
         feedDao.addAuthorToFave(author.copy(isFave = !author.isFave))
         return feedDao.getAuthors().toListAuthorsDomain()
     }
 
     override suspend fun addArticleToFave(
-        userId: Long,
         articleId: Long,
     ): List<Article> {
-        feedApi.addArticleToFave(userId, articleId)
+        feedApi.addArticleToFave(articleId)
         val article = feedDao.findArticleById(articleId)
         feedDao.addArticleToFave(article.copy(isFave = !article.isFave))
         return feedDao.getArticles().toListArticlesDomain()
     }
 
     override suspend fun addPoetToFave(
-        userId: Long,
         poetId: Long,
     ): List<Poet> {
-        feedApi.addPoetToFave(userId, poetId)
+        feedApi.addPoetToFave(poetId)
         val poet = feedDao.findPoetById(poetId)
         feedDao.addPoetToFave(poet.copy(isFave = !poet.isFave))
         return feedDao.getPoets().toListPoetsDomain()
     }
 
-    override suspend fun getAuthors(userId: Long): List<Author> {
-        val authors = feedApi.getAuthors(userId)
+    override suspend fun getAuthors(): List<Author> {
+        val authors = feedApi.getAuthors()
         feedDao.addAuthors(*authors.toListAuthorEntity().toTypedArray())
         return feedDao.getAuthors().toListAuthorsDomain()
     }
 
-    override suspend fun getArticles(userId: Long): List<Article> {
-        val articles = feedApi.getArticles(userId)
+    override suspend fun getArticles(): List<Article> {
+        val articles = feedApi.getArticles()
         feedDao.addArticles(*articles.toListArticleEntity().toTypedArray())
         return feedDao.getArticles().toListArticlesDomain()
     }
 
-    override suspend fun getPoets(userId: Long): List<Poet> {
-        val poets = feedApi.getPoets(userId)
+    override suspend fun getPoets(): List<Poet> {
+        val poets = feedApi.getPoets()
         feedDao.addPoets(*poets.toListPoetEntity().toTypedArray())
         return feedDao.getPoets().toListPoetsDomain()
     }
