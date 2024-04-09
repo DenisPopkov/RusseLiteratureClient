@@ -77,6 +77,12 @@ class SearchViewModel @Inject constructor(
                     sendEffect(SearchViewEffect.OnSectionClick(action.sectionId))
                 }
             }
+
+            is SearchViewAction.OnCardClick -> {
+                viewModelScope.launch {
+                    sendEffect(SearchViewEffect.OnCardClick(action.cardId))
+                }
+            }
         }
     }
 
@@ -104,9 +110,12 @@ class SearchViewModel @Inject constructor(
 
         viewModelScope.launch(handler) {
             updateState { copy(isLoading = true) }
-            val authors = feedRepository.getAuthorsFromLocal().filter { it.name.contains(filter ?: it.name) }
-            val articles = feedRepository.getArticlesFromLocal().filter { it.name.contains((filter ?: it.name)) }
-            val poets = feedRepository.getPoetsFromLocal().filter { it.name.contains((filter ?: it.name)) }
+            val authors =
+                feedRepository.getAuthorsFromLocal().filter { it.name.contains(filter ?: it.name) }
+            val articles = feedRepository.getArticlesFromLocal()
+                .filter { it.name.contains((filter ?: it.name)) }
+            val poets =
+                feedRepository.getPoetsFromLocal().filter { it.name.contains((filter ?: it.name)) }
             updateState {
                 copy(
                     authors = authors,

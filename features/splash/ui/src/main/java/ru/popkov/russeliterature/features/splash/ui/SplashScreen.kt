@@ -4,13 +4,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -18,6 +18,7 @@ import kotlinx.coroutines.delay
 import ru.popkov.android.core.feature.ui.UiModePreviews
 import ru.popkov.datastore.token.Token
 import ru.popkov.russeliterature.theme.GothicBoldSplash40
+import ru.popkov.russeliterature.theme.RusseLiteratureThemeInfinite
 import ru.popkov.russeliterature.theme.Theme
 
 @Composable
@@ -46,6 +47,7 @@ internal fun SplashScreen(
                 .padding(start = Theme.size.medium),
             text = stringResource(id = R.string.splash_screen_label),
             style = GothicBoldSplash40,
+            color = Color.White,
         )
     }
 
@@ -59,9 +61,7 @@ internal fun SplashScreen(
 @UiModePreviews
 @Composable
 private fun Preview() {
-    Theme {
-        Surface {
-            SplashScreen()
-        }
+    RusseLiteratureThemeInfinite {
+        SplashScreen()
     }
 }

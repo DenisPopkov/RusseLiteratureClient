@@ -5,4 +5,5 @@ internal sealed interface FaveViewEffect {
     data class OnSectionClick(val sectionId: Int) : FaveViewEffect
     data object GoToMainScreen : FaveViewEffect
 
+    data class OnCardClick(val cardId: Long) : FaveViewEffect
 }

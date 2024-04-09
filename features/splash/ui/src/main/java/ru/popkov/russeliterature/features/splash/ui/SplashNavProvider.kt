@@ -9,6 +9,7 @@ import ru.popkov.datastore.token.Token
 import ru.popkov.russeliterature.features.auth.nav.AuthDestination
 import ru.popkov.russeliterature.features.home.nav.HomeDestination
 import ru.popkov.russeliterature.features.splash.nav.SplashDestination
+import ru.popkov.russeliterature.theme.RusseLiteratureThemeInfinite
 import se.ansman.dagger.auto.AutoBindIntoSet
 import javax.inject.Inject
 
@@ -28,22 +29,24 @@ class SplashNavProvider @Inject constructor(
             composable(
                 route = SplashDestination.route,
             ) {
-                SplashScreen(
-                    dataStore = dataStore,
-                    onDelayHandle = { isShouldAuth ->
-                        if (isShouldAuth) {
-                            navigator.navigate(AuthDestination) {
-                                launchSingleTop = true
-                                popUpTo(0)
+                RusseLiteratureThemeInfinite {
+                    SplashScreen(
+                        dataStore = dataStore,
+                        onDelayHandle = { isShouldAuth ->
+                            if (isShouldAuth) {
+                                navigator.navigate(AuthDestination) {
+                                    launchSingleTop = true
+                                    popUpTo(0)
+                                }
+                            } else {
+                                navigator.navigate(HomeDestination) {
+                                    launchSingleTop = true
+                                    popUpTo(0)
+                                }
                             }
-                        } else {
-                            navigator.navigate(HomeDestination) {
-                                launchSingleTop = true
-                                popUpTo(0)
-                            }
-                        }
-                    },
-                )
+                        },
+                    )
+                }
             }
         }
 

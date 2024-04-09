@@ -9,6 +9,7 @@ import ru.popkov.android.core.feature.ui.EffectsDelegate
 import ru.popkov.android.core.feature.ui.EffectsProvider
 import ru.popkov.android.core.feature.ui.StateDelegate
 import ru.popkov.android.core.feature.ui.StateProvider
+import ru.popkov.datastore.settings.Settings
 import ru.popkov.datastore.token.Token
 import ru.popkov.russeliterature.features.auth.domain.repositories.SettingsRepository
 import timber.log.Timber
@@ -18,6 +19,7 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val tokenDatastore: Token,
+    private val settingsDatastore: Settings,
 ) : ViewModel(),
     StateProvider<SettingsState> by StateDelegate(SettingsState()),
     EffectsProvider<SettingsViewEffect> by EffectsDelegate() {
@@ -34,6 +36,12 @@ class SettingsViewModel @Inject constructor(
                 viewModelScope.launch {
                     tokenDatastore.deleteToken()
                     sendEffect(SettingsViewEffect.OnExitAccountClick)
+                }
+            }
+
+            is SettingsViewAction.OnChangeModeClick -> {
+                viewModelScope.launch {
+                    settingsDatastore.changeMode()
                 }
             }
         }

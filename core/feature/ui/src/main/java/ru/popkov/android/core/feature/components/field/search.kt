@@ -7,16 +7,17 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
+import ru.popkov.russeliterature.theme.RusseLiteratureTheme
 
 @Composable
 fun SearchField(
@@ -51,7 +52,7 @@ fun SearchField(
                 Image(
                     imageVector = Icons.Filled.Search,
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(color = Color.White.copy(alpha = 0.6f))
+                    colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onPrimary)
                 )
             }
         }
@@ -61,5 +62,7 @@ fun SearchField(
 @Preview
 @Composable
 private fun Preview() {
-    SearchField()
+    RusseLiteratureTheme {
+        SearchField()
+    }
 }

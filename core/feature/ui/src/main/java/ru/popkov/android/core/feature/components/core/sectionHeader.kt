@@ -7,17 +7,18 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import ru.popkov.android.core.feature.ui.R
+import ru.popkov.android.core.feature.ui.UiModePreviews
 import ru.popkov.russeliterature.theme.Grotesk20
+import ru.popkov.russeliterature.theme.RusseLiteratureTheme
 
 @Composable
 fun SectionHeader(
@@ -34,22 +35,24 @@ fun SectionHeader(
         Image(
             painter = painterResource(id = R.drawable.ic_section_arrow),
             contentDescription = "To section",
-            colorFilter = ColorFilter.tint(color = Color.White.copy(alpha = 0.8f))
+            colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSurface)
         )
         Spacer(modifier = Modifier.weight(1f))
         Text(
             text = stringResource(id = sectionText),
             style = Grotesk20,
-            color = Color.White.copy(alpha = 0.8f)
+            color = MaterialTheme.colorScheme.onSurface,
         )
         Spacer(modifier = Modifier.weight(1f))
     }
 }
 
-@Preview
+@UiModePreviews
 @Composable
 private fun Preview() {
-    SectionHeader(
-        sectionText = R.string.section_title,
-    )
+    RusseLiteratureTheme {
+        SectionHeader(
+            sectionText = R.string.section_title,
+        )
+    }
 }

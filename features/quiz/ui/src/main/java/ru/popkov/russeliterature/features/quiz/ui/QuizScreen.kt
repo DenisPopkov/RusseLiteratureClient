@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,15 +38,15 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import ru.popkov.android.core.feature.ui.UiModePreviews
 import ru.popkov.russeliterature.features.auth.domain.model.Answer
-import ru.popkov.russeliterature.theme.Colors
 import ru.popkov.russeliterature.theme.FormularRegular12
 import ru.popkov.russeliterature.theme.FormularRegular14
 import ru.popkov.russeliterature.theme.FormularRegular16
+import ru.popkov.russeliterature.theme.RusseLiteratureTheme
 
 @Composable
 fun QuizScreen(
@@ -81,7 +82,7 @@ fun Header(
         modifier = modifier
             .size(30.dp)
             .clip(shape = RoundedCornerShape(size = 8.dp))
-            .background(color = Colors.ButtonCloseColor)
+            .background(color = MaterialTheme.colorScheme.onBackground)
             .clickable { onCloseClick.invoke() },
         contentAlignment = Alignment.Center,
     ) {
@@ -107,7 +108,7 @@ fun Question(
             .fillMaxWidth()
             .padding(vertical = 12.dp),
         shape = RoundedCornerShape(size = 14.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Colors.QuizButtonColor),
+        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
         onClick = { onAnswerClick(QuizViewAction.OnAnswerClick) },
     ) {
         Row(
@@ -120,7 +121,7 @@ fun Question(
                 modifier = Modifier
                     .size(size = 26.dp)
                     .clip(shape = CircleShape)
-                    .background(color = Colors.OptionColor),
+                    .background(color = MaterialTheme.colorScheme.onSecondary),
                 contentAlignment = Alignment.Center,
             ) {
                 if (icon != null) {
@@ -135,6 +136,7 @@ fun Question(
                     Text(
                         text = ('A'..'Z').toList()[index].toString(),
                         style = FormularRegular16,
+                        color = Color.White,
                     )
                 }
             }
@@ -143,6 +145,7 @@ fun Question(
                     .padding(horizontal = 14.dp, vertical = 4.dp),
                 text = quizAnswer.text,
                 style = FormularRegular16,
+                color = MaterialTheme.colorScheme.onTertiary,
             )
         }
     }
@@ -158,10 +161,10 @@ internal fun Quiz(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .background(Colors.BackgroundColor)
+            .background(color = MaterialTheme.colorScheme.background)
             .statusBarsPadding()
             .padding(top = 20.dp)
-            .padding(all = 16.dp)
+            .padding(all = 16.dp),
     ) {
         Header(
             modifier = Modifier
@@ -176,6 +179,7 @@ internal fun Quiz(
                     text = state.quiz?.question ?: "",
                     textAlign = TextAlign.Center,
                     style = FormularRegular16,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
                 state.quiz?.answers?.forEachIndexed { index, answer ->
                     Question(
@@ -189,7 +193,6 @@ internal fun Quiz(
             else -> {
                 Result(
                     state = state,
-                    onAnswerClick = { onAction.invoke(QuizViewAction.OnAnswerClick) },
                 )
             }
         }
@@ -200,12 +203,11 @@ internal fun Quiz(
 internal fun ColumnScope.Result(
     modifier: Modifier = Modifier,
     state: QuizState,
-    onAnswerClick: (QuizViewAction) -> Unit = {},
 ) {
     AsyncImage(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 50.dp)
+            .padding(top = 30.dp)
             .height(height = 240.dp)
             .clip(shape = RoundedCornerShape(size = 16.dp)),
         model = state.quiz?.image,
@@ -218,12 +220,11 @@ internal fun ColumnScope.Result(
             .align(Alignment.Start),
         text = stringResource(id = R.string.quiz_right),
         style = FormularRegular12,
-        color = Color.White.copy(alpha = 0.7f),
+        color = MaterialTheme.colorScheme.onSurface,
     )
     state.quiz?.answers?.find { it.isRight }?.let {
         Question(
             quizAnswer = it,
-            onAnswerClick = onAnswerClick,
             icon = Icons.Filled.Check,
             index = 0,
         )
@@ -234,12 +235,11 @@ internal fun ColumnScope.Result(
             .align(Alignment.Start),
         text = stringResource(id = R.string.quiz_answer),
         style = FormularRegular12,
-        color = Color.White.copy(alpha = 0.7f),
+        color = MaterialTheme.colorScheme.onSurface,
     )
     state.quiz?.answers?.find { !it.isRight }?.let {
         Question(
             quizAnswer = it,
-            onAnswerClick = onAnswerClick,
             icon = Icons.Filled.Close,
             index = 1,
         )
@@ -249,40 +249,49 @@ internal fun ColumnScope.Result(
             .padding(vertical = 16.dp),
         text = state.quiz?.description ?: "",
         style = FormularRegular14,
+        color = MaterialTheme.colorScheme.onSurface,
     )
 }
 
-@Preview(showBackground = true)
+@UiModePreviews
 @Composable
 private fun QuizScreenPreview() {
-    Quiz(
-        state = QuizState(),
-    )
+    RusseLiteratureTheme {
+        Quiz(
+            state = QuizState(),
+        )
+    }
 }
 
-@Preview(showBackground = true)
+@UiModePreviews
 @Composable
 private fun ResultScreenPreview() {
-    Quiz(
-        state = QuizState(quizState = QuizScreenState.RESULTS),
-    )
+    RusseLiteratureTheme {
+        Quiz(
+            state = QuizState(quizState = QuizScreenState.RESULTS),
+        )
+    }
 }
 
-@Preview(showBackground = true)
+@UiModePreviews
 @Composable
 private fun HeaderPreview() {
-    Header()
+    RusseLiteratureTheme {
+        Header()
+    }
 }
 
-@Preview(showBackground = true)
+@UiModePreviews
 @Composable
 private fun AnswerPreview() {
-    Question(
-        quizAnswer = Answer(
-            answerId = 0,
-            text = "Признались в краже соли",
-            isRight = false,
-        ),
-        index = 0,
-    )
+    RusseLiteratureTheme {
+        Question(
+            quizAnswer = Answer(
+                answerId = 0,
+                text = "Признались в краже соли",
+                isRight = false,
+            ),
+            index = 0,
+        )
+    }
 }

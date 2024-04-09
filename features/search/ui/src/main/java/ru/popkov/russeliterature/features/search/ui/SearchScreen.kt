@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -25,7 +26,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ru.popkov.android.core.feature.components.core.Section
@@ -33,16 +33,18 @@ import ru.popkov.android.core.feature.components.core.SectionFilter
 import ru.popkov.android.core.feature.components.core.card.Card
 import ru.popkov.android.core.feature.components.core.card.CardType
 import ru.popkov.android.core.feature.components.field.SearchField
-import ru.popkov.russeliterature.theme.Colors
+import ru.popkov.android.core.feature.ui.UiModePreviews
 import ru.popkov.russeliterature.theme.FormularMedium14
 import ru.popkov.russeliterature.theme.FormularMedium20
 import ru.popkov.russeliterature.theme.FormularRegular12
+import ru.popkov.russeliterature.theme.RusseLiteratureTheme
 
 @Composable
 internal fun SearchScreen(
     snackbarHostState: SnackbarHostState,
     searchViewModel: SearchViewModel = hiltViewModel(),
     onToMainClick: () -> Unit = {},
+    onCardClick: (cardId: Long) -> Unit = {},
     onSectionClick: (sectionId: Int) -> Unit = {},
 ) {
     val state by searchViewModel.state.collectAsState()
@@ -55,6 +57,7 @@ internal fun SearchScreen(
                     is SearchViewEffect.ShowError -> snackbarHostState.showSnackbar(effect.errorMessage)
                     is SearchViewEffect.GoToMainScreen -> onToMainClick.invoke()
                     is SearchViewEffect.OnSectionClick -> onSectionClick.invoke(effect.sectionId)
+                    is SearchViewEffect.OnCardClick -> onCardClick.invoke(effect.cardId)
                 }
             }
     }
@@ -62,7 +65,7 @@ internal fun SearchScreen(
     Search(
         modifier = Modifier
             .fillMaxSize()
-            .background(Colors.BackgroundColor),
+            .background(color = MaterialTheme.colorScheme.background),
         state = state,
         onFaveClick = searchViewModel::onAction,
         onAction = searchViewModel::onAction,
@@ -79,7 +82,7 @@ internal fun Search(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = Colors.BackgroundColor)
+            .background(color = MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
             .statusBarsPadding()
             .padding(vertical = 30.dp)
@@ -88,7 +91,7 @@ internal fun Search(
         LazyRow(
             modifier = modifier
                 .fillMaxWidth()
-                .background(color = Colors.BackgroundColor),
+                .background(color = MaterialTheme.colorScheme.background),
             horizontalArrangement = Arrangement.spacedBy(space = 18.dp),
         ) {
             items(state.filterList) {
@@ -149,6 +152,11 @@ internal fun Content(
                         cardText = author.name,
                         cardType = CardType.SMALL,
                         isFave = author.isFave,
+                        onCardActionClick = {
+                            onAction.invoke(
+                                SearchViewAction.OnCardClick(author.id)
+                            )
+                        },
                         onFaveActionClick = {
                             onAction.invoke(
                                 SearchViewAction.OnAuthorFaveClick(
@@ -182,6 +190,11 @@ internal fun Content(
                         cardText = article.name,
                         cardType = CardType.LARGE,
                         isFave = article.isFave,
+                        onCardActionClick = {
+                            onAction.invoke(
+                                SearchViewAction.OnCardClick(article.id)
+                            )
+                        },
                         onFaveActionClick = {
                             onAction.invoke(
                                 SearchViewAction.OnArticleFaveClick(
@@ -215,6 +228,11 @@ internal fun Content(
                         cardText = poet.name,
                         cardType = CardType.MEDIUM,
                         isFave = poet.isFave,
+                        onCardActionClick = {
+                            onAction.invoke(
+                                SearchViewAction.OnCardClick(poet.id)
+                            )
+                        },
                         onFaveActionClick = {
                             onAction.invoke(
                                 SearchViewAction.OnPoetFaveClick(
@@ -237,7 +255,7 @@ internal fun EmptyState(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Colors.BackgroundColor),
+            .background(color = MaterialTheme.colorScheme.background),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -246,6 +264,7 @@ internal fun EmptyState(
                 .padding(horizontal = 50.dp),
             text = stringResource(id = R.string.empty_search_title),
             style = FormularMedium20,
+            color = MaterialTheme.colorScheme.onSurface,
         )
         Text(
             modifier = Modifier
@@ -255,7 +274,7 @@ internal fun EmptyState(
             textAlign = TextAlign.Center,
             text = stringResource(id = R.string.empty_search_description),
             style = FormularRegular12,
-            color = Colors.GrayTextColor,
+            color = MaterialTheme.colorScheme.onSurface,
         )
         OutlinedButton(
             modifier = Modifier
@@ -263,7 +282,7 @@ internal fun EmptyState(
                 .padding(horizontal = 80.dp)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(size = 24.dp),
-            border = BorderStroke(width = 1.dp, color = Colors.OutlineColor),
+            border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.onPrimaryContainer),
             onClick = { onAction(SearchViewAction.OnMainScreenClick) }
         ) {
             Text(
@@ -271,15 +290,18 @@ internal fun EmptyState(
                     .padding(vertical = 10.dp),
                 text = stringResource(id = R.string.empty_search_button),
                 style = FormularMedium14,
+                color = MaterialTheme.colorScheme.onSurface,
             )
         }
     }
 }
 
-@Preview(showBackground = true)
+@UiModePreviews
 @Composable
 private fun SearchScreenPreview() {
-    Search(
-        state = SearchState(),
-    )
+    RusseLiteratureTheme {
+        Search(
+            state = SearchState(),
+        )
+    }
 }

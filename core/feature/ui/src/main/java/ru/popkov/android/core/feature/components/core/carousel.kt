@@ -21,16 +21,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import ru.popkov.android.core.feature.components.core.models.Carousel
 import ru.popkov.android.core.feature.ui.R
+import ru.popkov.android.core.feature.ui.UiModePreviews
 import ru.popkov.russeliterature.theme.Colors
-import ru.popkov.russeliterature.theme.FormularMedium20
-import ru.popkov.russeliterature.theme.FormularRegular12
 import ru.popkov.russeliterature.theme.FormularRegular16
 import ru.popkov.russeliterature.theme.GothicBold44
+import ru.popkov.russeliterature.theme.RusseLiteratureTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -63,12 +62,14 @@ fun Carousel(
                 Text(
                     modifier = Modifier.padding(top = 90.dp),
                     text = carouselItems[page].articleTitle,
-                    style = GothicBold44
+                    style = GothicBold44,
+                    color = Color.White,
                 )
                 Text(
                     modifier = Modifier.padding(top = 18.dp),
                     text = carouselItems[page].articleDescription,
-                    style = FormularRegular16
+                    style = FormularRegular16,
+                    color = Color.White,
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Row(
@@ -94,29 +95,31 @@ fun Carousel(
     }
 }
 
-@Preview(showBackground = true)
+@UiModePreviews
 @Composable
 private fun CarouselPreview() {
-    Carousel(
-        carouselItems = listOf(
-            Carousel(
-                id = 0,
-                articleTitle = "реализм в\nлитературе",
-                articleDescription = "В СТАТЬЕ РАССКАЗЫВАЕМ ПРО АВТОРОВ И\nКЛЮЧЕВЫЕ ПРОИЗВЕДЕНИЯ В ЭТОМ\nНАПРАВЛЕНИИ",
-                articleImage = "",
-            ),
-            Carousel(
-                id = 1,
-                articleTitle = "реализм в\nлитературе (2)",
-                articleDescription = "В СТАТЬЕ РАССКАЗЫВАЕМ ПРО АВТОРОВ И\nКЛЮЧЕВЫЕ ПРОИЗВЕДЕНИЯ В ЭТОМ\nНАПРАВЛЕНИИ",
-                articleImage = "",
-            ),
-            Carousel(
-                id = 2,
-                articleTitle = "реализм в\nлитературе (3)",
-                articleDescription = "В СТАТЬЕ РАССКАЗЫВАЕМ ПРО АВТОРОВ И\nКЛЮЧЕВЫЕ ПРОИЗВЕДЕНИЯ В ЭТОМ\nНАПРАВЛЕНИИ",
-                articleImage = "",
-            ),
+    RusseLiteratureTheme {
+        Carousel(
+            carouselItems = listOf(
+                Carousel(
+                    id = 0,
+                    articleTitle = "реализм в\nлитературе",
+                    articleDescription = "В СТАТЬЕ РАССКАЗЫВАЕМ ПРО АВТОРОВ И\nКЛЮЧЕВЫЕ ПРОИЗВЕДЕНИЯ В ЭТОМ\nНАПРАВЛЕНИИ",
+                    articleImage = "",
+                ),
+                Carousel(
+                    id = 1,
+                    articleTitle = "реализм в\nлитературе (2)",
+                    articleDescription = "В СТАТЬЕ РАССКАЗЫВАЕМ ПРО АВТОРОВ И\nКЛЮЧЕВЫЕ ПРОИЗВЕДЕНИЯ В ЭТОМ\nНАПРАВЛЕНИИ",
+                    articleImage = "",
+                ),
+                Carousel(
+                    id = 2,
+                    articleTitle = "реализм в\nлитературе (3)",
+                    articleDescription = "В СТАТЬЕ РАССКАЗЫВАЕМ ПРО АВТОРОВ И\nКЛЮЧЕВЫЕ ПРОИЗВЕДЕНИЯ В ЭТОМ\nНАПРАВЛЕНИИ",
+                    articleImage = "",
+                ),
+            )
         )
-    )
+    }
 }

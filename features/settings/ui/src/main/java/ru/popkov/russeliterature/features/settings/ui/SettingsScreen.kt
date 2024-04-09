@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,19 +29,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import ru.popkov.russeliterature.theme.Colors
+import ru.popkov.android.core.feature.ui.UiModePreviews
 import ru.popkov.russeliterature.theme.FormularMedium14
 import ru.popkov.russeliterature.theme.FormularMedium28
 import ru.popkov.russeliterature.theme.Grotesk36
+import ru.popkov.russeliterature.theme.RusseLiteratureTheme
 
 @Composable
 internal fun SettingsScreen(
     snackbarHostState: SnackbarHostState,
-
     settingsViewModel: SettingsViewModel = hiltViewModel(),
     onDeleteAccountClick: () -> Unit = {},
     onExitAccountClick: () -> Unit = {},
@@ -84,12 +84,16 @@ internal fun Settings(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Colors.BackgroundColor)
+            .background(color = MaterialTheme.colorScheme.background)
             .statusBarsPadding()
             .padding(vertical = 30.dp)
             .padding(horizontal = 16.dp),
     ) {
-        Text(text = stringResource(id = R.string.settings_title), style = Grotesk36)
+        Text(
+            text = stringResource(id = R.string.settings_title),
+            style = Grotesk36,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
         AsyncImage(
             modifier = Modifier
                 .padding(top = 44.dp)
@@ -108,19 +112,46 @@ internal fun Settings(
             text = state.userName.split(" ").joinToString("\n"),
             style = FormularMedium28,
             textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurface,
         )
         Text(
             modifier = Modifier
                 .padding(top = 40.dp),
             text = stringResource(id = R.string.settings_description),
             style = FormularMedium14,
-            color = Color.White.copy(alpha = 0.8f)
+            color = MaterialTheme.colorScheme.onSurface,
         )
         Button(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Colors.InputFieldColor),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+            shape = RoundedCornerShape(size = 8.dp),
+            onClick = {
+                onAction.invoke(SettingsViewAction.OnChangeModeClick)
+            }
+        ) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                text = stringResource(id = R.string.settings_change_theme),
+                style = FormularMedium14,
+                color = MaterialTheme.colorScheme.onPrimary,
+            )
+        }
+        Text(
+            modifier = Modifier
+                .padding(top = 40.dp),
+            text = stringResource(id = R.string.settings_profile_description),
+            style = FormularMedium14,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
             shape = RoundedCornerShape(size = 8.dp),
             onClick = {
                 onAction.invoke(SettingsViewAction.OnDeleteAccountClick)
@@ -132,14 +163,14 @@ internal fun Settings(
                     .padding(vertical = 8.dp),
                 text = stringResource(id = R.string.settings_delete_account),
                 style = FormularMedium14,
-                color = Colors.GrayTextColor,
+                color = MaterialTheme.colorScheme.onPrimary,
             )
         }
         Button(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Colors.InputFieldColor),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
             shape = RoundedCornerShape(size = 8.dp),
             onClick = {
                 onAction.invoke(SettingsViewAction.OnExitAccountClick)
@@ -151,16 +182,18 @@ internal fun Settings(
                     .padding(vertical = 8.dp),
                 text = stringResource(id = R.string.settings_exit_account),
                 style = FormularMedium14,
-                color = Colors.GrayTextColor,
+                color = MaterialTheme.colorScheme.onPrimary,
             )
         }
     }
 }
 
-@Preview(showBackground = true)
+@UiModePreviews
 @Composable
 private fun SettingsScreenPreview() {
-    Settings(
-        state = SettingsState(),
-    )
+    RusseLiteratureTheme {
+        Settings(
+            state = SettingsState(),
+        )
+    }
 }

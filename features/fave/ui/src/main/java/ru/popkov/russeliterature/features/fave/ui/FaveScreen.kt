@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -22,23 +23,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ru.popkov.android.core.feature.components.core.Section
 import ru.popkov.android.core.feature.components.core.card.Card
 import ru.popkov.android.core.feature.components.core.card.CardType
-import ru.popkov.russeliterature.theme.Colors
+import ru.popkov.android.core.feature.ui.UiModePreviews
 import ru.popkov.russeliterature.theme.FormularMedium14
 import ru.popkov.russeliterature.theme.FormularMedium20
 import ru.popkov.russeliterature.theme.FormularRegular12
 import ru.popkov.russeliterature.theme.Grotesk36
+import ru.popkov.russeliterature.theme.RusseLiteratureTheme
 
 @Composable
 internal fun FaveScreen(
     snackbarHostState: SnackbarHostState,
     faveViewModel: FaveViewModel = hiltViewModel(),
     onGoMainScreen: () -> Unit = {},
+    onCardClick: (cardId: Long) -> Unit = {},
     onSectionClick: (sectionId: Int) -> Unit = {},
 ) {
 
@@ -49,6 +51,7 @@ internal fun FaveScreen(
         faveViewModel.effects
             .collect { effect ->
                 when (effect) {
+                    is FaveViewEffect.OnCardClick -> onCardClick.invoke(effect.cardId)
                     is FaveViewEffect.GoToMainScreen -> onGoMainScreen.invoke()
                     is FaveViewEffect.ShowError -> snackbarHostState.showSnackbar(effect.errorMessage)
                     is FaveViewEffect.OnSectionClick -> onSectionClick.invoke(effect.sectionId)
@@ -59,7 +62,7 @@ internal fun FaveScreen(
     Fave(
         modifier = Modifier
             .fillMaxSize()
-            .background(Colors.BackgroundColor),
+            .background(color = MaterialTheme.colorScheme.background),
         state = state,
         onFaveClick = faveViewModel::onAction,
     )
@@ -96,12 +99,16 @@ internal fun Content(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Colors.BackgroundColor)
+            .background(color = MaterialTheme.colorScheme.background)
             .statusBarsPadding()
             .padding(vertical = 30.dp)
             .padding(horizontal = 16.dp),
     ) {
-        Text(text = stringResource(id = R.string.fave_title), style = Grotesk36)
+        Text(
+            text = stringResource(id = R.string.fave_title),
+            style = Grotesk36,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
 
         if (!state.authors.isNullOrEmpty()) {
             Section(
@@ -123,6 +130,11 @@ internal fun Content(
                         cardText = author.name,
                         cardType = CardType.SMALL,
                         isFave = author.isFave,
+                        onCardActionClick = {
+                            onAction.invoke(
+                                FaveViewAction.OnCardClick(author.id)
+                            )
+                        },
                         onFaveActionClick = {
                             onAction.invoke(
                                 FaveViewAction.OnAuthorFaveClick(
@@ -156,6 +168,11 @@ internal fun Content(
                         cardText = article.name,
                         cardType = CardType.LARGE,
                         isFave = article.isFave,
+                        onCardActionClick = {
+                            onAction.invoke(
+                                FaveViewAction.OnCardClick(article.id)
+                            )
+                        },
                         onFaveActionClick = {
                             onAction.invoke(
                                 FaveViewAction.OnArticleFaveClick(
@@ -189,6 +206,11 @@ internal fun Content(
                         cardText = poet.name,
                         cardType = CardType.MEDIUM,
                         isFave = poet.isFave,
+                        onCardActionClick = {
+                            onAction.invoke(
+                                FaveViewAction.OnCardClick(poet.id)
+                            )
+                        },
                         onFaveActionClick = {
                             onAction.invoke(
                                 FaveViewAction.OnPoetFaveClick(
@@ -211,7 +233,7 @@ internal fun EmptyState(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Colors.BackgroundColor),
+            .background(color = MaterialTheme.colorScheme.background),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -220,6 +242,7 @@ internal fun EmptyState(
                 .padding(horizontal = 50.dp),
             text = stringResource(id = R.string.empty_fave_title),
             style = FormularMedium20,
+            color = MaterialTheme.colorScheme.onSurface,
         )
         Text(
             modifier = Modifier
@@ -229,7 +252,7 @@ internal fun EmptyState(
             textAlign = TextAlign.Center,
             text = stringResource(id = R.string.empty_fave_description),
             style = FormularRegular12,
-            color = Colors.GrayTextColor,
+            color = MaterialTheme.colorScheme.onSurface,
         )
         OutlinedButton(
             modifier = Modifier
@@ -237,7 +260,10 @@ internal fun EmptyState(
                 .padding(horizontal = 80.dp)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(size = 24.dp),
-            border = BorderStroke(width = 1.dp, color = Colors.OutlineColor),
+            border = BorderStroke(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+            ),
             onClick = { onAction(FaveViewAction.OnMainScreenClick) }
         ) {
             Text(
@@ -245,29 +271,36 @@ internal fun EmptyState(
                     .padding(vertical = 10.dp),
                 text = stringResource(id = R.string.empty_fave_button),
                 style = FormularMedium14,
+                color = MaterialTheme.colorScheme.onSurface,
             )
         }
     }
 }
 
-@Preview(showBackground = true)
+@UiModePreviews
 @Composable
 private fun FaveScreenPreview() {
-    Fave(
-        state = FaveState(),
-    )
+    RusseLiteratureTheme {
+        Fave(
+            state = FaveState(),
+        )
+    }
 }
 
-@Preview(showBackground = true)
+@UiModePreviews
 @Composable
 private fun ContentPreview() {
-    Content(
-        state = FaveState(),
-    )
+    RusseLiteratureTheme {
+        Content(
+            state = FaveState(),
+        )
+    }
 }
 
-@Preview(showBackground = true)
+@UiModePreviews
 @Composable
 private fun EmptyStateFaveScreenPreview() {
-    EmptyState()
+    RusseLiteratureTheme {
+        EmptyState()
+    }
 }

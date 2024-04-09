@@ -60,6 +60,12 @@ class FaveViewModel @Inject constructor(
                     sendEffect(FaveViewEffect.OnSectionClick(action.sectionId))
                 }
             }
+
+            is FaveViewAction.OnCardClick -> {
+                viewModelScope.launch {
+                    sendEffect(FaveViewEffect.OnCardClick(action.cardId))
+                }
+            }
         }
     }
 

@@ -10,26 +10,27 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ru.popkov.android.core.feature.components.core.SectionHeader
 import ru.popkov.android.core.feature.components.core.card.Card
 import ru.popkov.android.core.feature.components.core.card.CardType
 import ru.popkov.android.core.feature.components.core.models.SectionType
-import ru.popkov.russeliterature.theme.Colors
+import ru.popkov.android.core.feature.ui.UiModePreviews
+import ru.popkov.russeliterature.theme.RusseLiteratureTheme
 
 @Composable
 fun SectionScreen(
     snackbarHostState: SnackbarHostState,
     sectionViewModel: SectionViewModel = hiltViewModel(),
-
+    onCardClick: (cardId: Long) -> Unit = {},
     onBackClick: () -> Unit,
 ) {
     val state by sectionViewModel.state.collectAsState()
@@ -44,6 +45,7 @@ fun SectionScreen(
         sectionViewModel.effects
             .collect { effect ->
                 when (effect) {
+                    is SectionViewEffect.OnCardClick -> onCardClick.invoke(effect.cardId)
                     is SectionViewEffect.ShowError -> snackbarHostState.showSnackbar(effect.errorMessage)
                     is SectionViewEffect.OnBackClick -> onBackClick.invoke()
                 }
@@ -53,7 +55,7 @@ fun SectionScreen(
     SectionDescription(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Colors.BackgroundColor)
+            .background(color = MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
             .statusBarsPadding()
             .padding(vertical = 30.dp)
@@ -101,6 +103,11 @@ internal fun SectionDescription(
                         cardText = author.name,
                         cardType = CardType.SECTION,
                         isFave = author.isFave,
+                        onCardActionClick = {
+                            onAction.invoke(
+                                SectionViewAction.OnCardClick(author.id)
+                            )
+                        },
                         onFaveActionClick = {
                             onAction.invoke(
                                 SectionViewAction.OnAuthorFaveClick(
@@ -128,6 +135,11 @@ internal fun SectionDescription(
                         cardText = article.name,
                         cardType = CardType.SECTION,
                         isFave = article.isFave,
+                        onCardActionClick = {
+                            onAction.invoke(
+                                SectionViewAction.OnCardClick(article.id)
+                            )
+                        },
                         onFaveActionClick = {
                             onAction.invoke(
                                 SectionViewAction.OnArticleFaveClick(
@@ -155,6 +167,11 @@ internal fun SectionDescription(
                         cardText = poet.name,
                         cardType = CardType.SECTION,
                         isFave = poet.isFave,
+                        onCardActionClick = {
+                            onAction.invoke(
+                                SectionViewAction.OnCardClick(poet.id)
+                            )
+                        },
                         onFaveActionClick = {
                             onAction.invoke(
                                 SectionViewAction.OnPoetFaveClick(
@@ -170,11 +187,13 @@ internal fun SectionDescription(
     }
 }
 
-@Preview
+@UiModePreviews
 @Composable
 private fun SectionPreview() {
-    SectionDescription(
-        state = SectionState(),
-        sectionType = SectionType.AUTHOR,
-    )
+    RusseLiteratureTheme {
+        SectionDescription(
+            state = SectionState(),
+            sectionType = SectionType.AUTHOR,
+        )
+    }
 }

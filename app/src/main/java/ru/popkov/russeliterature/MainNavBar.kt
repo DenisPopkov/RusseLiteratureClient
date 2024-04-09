@@ -2,6 +2,7 @@ package ru.popkov.russeliterature
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemColors
@@ -20,7 +21,7 @@ fun MainNavBar(
     navController: NavController,
 ) {
     NavigationBar(
-        containerColor = Colors.BottomNavBarColor,
+        containerColor = MaterialTheme.colorScheme.secondary,
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
@@ -32,7 +33,7 @@ fun MainNavBar(
                 interactionSource = MutableInteractionSource(),
                 colors = NavigationBarItemColors(
                     selectedIconColor = Colors.SelectedTabTint,
-                    unselectedIconColor = Colors.UnselectedTabTint,
+                    unselectedIconColor = MaterialTheme.colorScheme.onSecondaryContainer,
                     selectedIndicatorColor = Color.Unspecified,
                     selectedTextColor = Color.Unspecified,
                     unselectedTextColor = Color.Unspecified,

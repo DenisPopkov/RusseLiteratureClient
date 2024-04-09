@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,12 +30,12 @@ import ru.popkov.android.core.feature.components.core.card.Card
 import ru.popkov.android.core.feature.components.core.card.CardType
 import ru.popkov.android.core.feature.components.core.models.Carousel
 import ru.popkov.android.core.feature.ui.R
-import ru.popkov.russeliterature.theme.Colors
+import ru.popkov.android.core.feature.ui.UiModePreviews
+import ru.popkov.russeliterature.theme.RusseLiteratureThemeInfinite
 
 @Composable
 internal fun HomeScreen(
     snackbarHostState: SnackbarHostState,
-
     homeViewModel: HomeViewModel = hiltViewModel(),
     onCardClick: (cardId: Long) -> Unit = {},
     onSectionClick: (sectionId: Int) -> Unit = {},
@@ -50,7 +51,6 @@ internal fun HomeScreen(
                         snackbarHostState.showSnackbar(effect.errorMessage)
 
                     is HomeViewEffect.OnCardClick -> onCardClick.invoke(effect.cardId)
-
                     is HomeViewEffect.OnSectionClick -> onSectionClick.invoke(effect.sectionId)
                 }
             }
@@ -78,7 +78,7 @@ private fun Home(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Colors.BackgroundColor)
+            .background(color = MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
             .padding(bottom = 20.dp),
     ) {
@@ -210,5 +210,15 @@ private fun Home(
                 )
             }
         }
+    }
+}
+
+@UiModePreviews
+@Composable
+private fun Preview() {
+    RusseLiteratureThemeInfinite {
+        Home(
+            state = HomeState()
+        )
     }
 }

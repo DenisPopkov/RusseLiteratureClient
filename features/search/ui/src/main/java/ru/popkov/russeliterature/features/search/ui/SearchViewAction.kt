@@ -16,4 +16,5 @@ sealed interface SearchViewAction {
     data class OnSectionItemClick(val sectionType: SectionType) : SearchViewAction
     data class OnSearchChange(val searchText: String) : SearchViewAction
     data class OnSectionClick(val sectionId: Int) : SearchViewAction
+    data class OnCardClick(val cardId: Long) : SearchViewAction
 }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -15,20 +16,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ru.popkov.android.core.feature.ui.UiModePreviews
 import ru.popkov.russeliterature.features.auth.ui.R
 import ru.popkov.russeliterature.features.auth.ui.utils.PhoneVisualTransformation
-import ru.popkov.russeliterature.theme.Colors
 import ru.popkov.russeliterature.theme.FormularMedium14
+import ru.popkov.russeliterature.theme.RusseLiteratureTheme
 
 @Composable
 fun CustomTextField(
     modifier: Modifier = Modifier,
     value: String = "",
     keyboardActions: KeyboardActions = KeyboardActions(),
-    inputFieldTextColor: Color = Colors.InputFieldTextColor,
-    inputFieldColor: Color = Colors.InputFieldColor,
+    inputFieldTextColor: Color = MaterialTheme.colorScheme.onPrimary,
+    inputFieldColor: Color = MaterialTheme.colorScheme.primaryContainer,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
     @StringRes placeHolderText: Int = R.string.auth_phone,
     mask: String? = null,
@@ -87,8 +88,10 @@ fun CustomTextField(
     }
 }
 
-@Preview(showBackground = true)
+@UiModePreviews
 @Composable
 private fun Preview() {
-    CustomTextField()
+    RusseLiteratureTheme {
+        CustomTextField()
+    }
 }

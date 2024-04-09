@@ -12,4 +12,6 @@ sealed interface SectionViewAction {
 
     data class OnPoetFaveClick(val poetId: Long, val isFave: Boolean) :
         SectionViewAction
+
+    data class OnCardClick(val cardId: Long) : SectionViewAction
 }

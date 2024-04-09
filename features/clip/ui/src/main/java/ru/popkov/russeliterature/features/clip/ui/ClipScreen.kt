@@ -16,6 +16,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,15 +28,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import ru.popkov.russeliterature.theme.Colors
+import ru.popkov.android.core.feature.ui.UiModePreviews
 import ru.popkov.russeliterature.theme.FormularMedium14
 import ru.popkov.russeliterature.theme.FormularRegular14
 import ru.popkov.russeliterature.theme.GothicBold36
 import ru.popkov.russeliterature.theme.Grotesk36
+import ru.popkov.russeliterature.theme.RusseLiteratureTheme
 
 @Composable
 fun ClipScreen(
@@ -83,7 +84,7 @@ internal fun Clip(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(color = Colors.BackgroundColor)
+                    .background(color = MaterialTheme.colorScheme.background)
             ) {
                 AsyncImage(
                     modifier = Modifier
@@ -101,11 +102,13 @@ internal fun Clip(
                         modifier = Modifier.padding(top = 220.dp),
                         text = state.clip.text[page].title,
                         style = GothicBold36,
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                     Text(
                         modifier = Modifier.padding(top = 30.dp),
                         text = state.clip.text[page].text,
                         style = FormularRegular14,
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     AnimatedVisibility(visible = pagerState.currentPage == state.clip.text.size - 1) {
@@ -114,7 +117,7 @@ internal fun Clip(
                                 .fillMaxWidth()
                                 .padding(bottom = 20.dp),
                             shape = RoundedCornerShape(size = 12.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = Colors.ButtonCloseColor),
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
                             onClick = { onToQuizClick(ClipViewAction.OnToQuizClick(state.clip.clipId)) }
                         ) {
                             Text(
@@ -122,6 +125,7 @@ internal fun Clip(
                                     .padding(vertical = 10.dp),
                                 text = stringResource(id = R.string.clip_quiz),
                                 style = FormularMedium14,
+                                color = MaterialTheme.colorScheme.onSurface,
                             )
                         }
                     }
@@ -138,15 +142,18 @@ internal fun Clip(
             Text(
                 text = stringResource(id = R.string.clip_title),
                 style = Grotesk36,
+                color = MaterialTheme.colorScheme.onSurface,
             )
         }
     }
 }
 
-@Preview(showBackground = true)
+@UiModePreviews
 @Composable
 private fun ClipScreenPreview() {
-    Clip(
-        state = ClipState(),
-    )
+    RusseLiteratureTheme {
+        Clip(
+            state = ClipState(),
+        )
+    }
 }

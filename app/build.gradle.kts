@@ -43,6 +43,7 @@ dependencies {
     implementation(project(":features:splash:ui"))
     implementation(project(":features:auth:ui"))
     implementation(project(":features:auth:nav"))
+    implementation(project(":core:feature:datastore"))
     implementation(project(":theme"))
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.espresso.core)

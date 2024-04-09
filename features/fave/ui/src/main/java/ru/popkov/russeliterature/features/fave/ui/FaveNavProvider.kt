@@ -7,6 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import ru.popkov.android.core.feature.nav.Navigator
 import ru.popkov.android.core.feature.ui.NavProvider
+import ru.popkov.russeliterature.features.clip.ui.ClipDestination
 import ru.popkov.russeliterature.features.fave.nav.FaveDestination
 import ru.popkov.russeliterature.features.home.nav.HomeDestination
 import ru.popkov.russeliterature.features.section.ui.SectionDestination
@@ -33,6 +34,9 @@ class FaveNavProvider @Inject constructor(
             ) {
                 FaveScreen(
                     snackbarHostState = snackbarHostState,
+                    onCardClick = {
+                        navigator.navigate(ClipDestination(it))
+                    },
                     onGoMainScreen = {
                         navigator.navigate(HomeDestination) {
                             launchSingleTop = true

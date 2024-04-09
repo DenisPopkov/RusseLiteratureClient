@@ -61,6 +61,12 @@ class SectionViewModel @Inject constructor(
                 }
             }
 
+            is SectionViewAction.OnCardClick -> {
+                viewModelScope.launch {
+                    sendEffect(SectionViewEffect.OnCardClick(action.cardId))
+                }
+            }
+
             else -> {}
         }
     }

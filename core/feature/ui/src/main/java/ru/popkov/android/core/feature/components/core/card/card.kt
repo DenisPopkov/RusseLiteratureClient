@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,8 +26,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import ru.popkov.android.core.feature.ui.R
+import ru.popkov.android.core.feature.ui.UiModePreviews
 import ru.popkov.russeliterature.theme.FormularMedium14
 import ru.popkov.russeliterature.theme.FormularRegular14
+import ru.popkov.russeliterature.theme.RusseLiteratureTheme
 
 @Composable
 fun Card(
@@ -61,7 +64,11 @@ fun Card(
                 horizontalArrangement = Arrangement.End,
             ) {
                 AnimatedVisibility(visible = cardType == CardType.LARGE) {
-                    Text(text = cardText, style = FormularMedium14)
+                    Text(
+                        text = cardText,
+                        style = FormularMedium14,
+                        color = Color.White,
+                    )
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 Icon(
@@ -80,7 +87,8 @@ fun Card(
                     .fillMaxWidth()
                     .padding(top = 14.dp),
                 text = cardText.split("\n").joinToString(),
-                style = FormularRegular14
+                style = FormularRegular14,
+                color = MaterialTheme.colorScheme.onSurface,
             )
         }
     }
@@ -89,30 +97,36 @@ fun Card(
 @Preview
 @Composable
 private fun SmallCardPreview() {
-    Card(
-        cardImageUrl = "",
-        cardText = "Фёдор\nДостоевский",
-        cardType = CardType.SMALL,
-    )
+    RusseLiteratureTheme {
+        Card(
+            cardImageUrl = "",
+            cardText = "Фёдор\nДостоевский",
+            cardType = CardType.SMALL,
+        )
+    }
 }
 
 @Preview
 @Composable
 private fun MediumCardPreview() {
-    Card(
-        cardImageUrl = "",
-        cardText = "Фёдор\nДостоевский",
-        cardType = CardType.MEDIUM,
-    )
+    RusseLiteratureTheme {
+        Card(
+            cardImageUrl = "",
+            cardText = "Фёдор\nДостоевский",
+            cardType = CardType.MEDIUM,
+        )
+    }
 }
 
-@Preview
+@UiModePreviews
 @Composable
 private fun LargeCardPreview() {
-    Card(
-        cardImageUrl = "",
-        cardText = "Как Толстой Войну и мир писал",
-        cardType = CardType.LARGE,
-        isFave = true,
-    )
+    RusseLiteratureTheme {
+        Card(
+            cardImageUrl = "",
+            cardText = "Как Толстой Войну и мир писал",
+            cardType = CardType.LARGE,
+            isFave = true,
+        )
+    }
 }

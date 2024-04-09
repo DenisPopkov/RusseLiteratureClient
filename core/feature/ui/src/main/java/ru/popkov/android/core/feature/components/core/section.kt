@@ -8,16 +8,17 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import ru.popkov.android.core.feature.ui.R
+import ru.popkov.android.core.feature.ui.UiModePreviews
 import ru.popkov.russeliterature.theme.FormularMedium12
+import ru.popkov.russeliterature.theme.RusseLiteratureTheme
 
 @Composable
 fun Section(
@@ -35,20 +36,22 @@ fun Section(
         Text(
             text = stringResource(id = sectionText),
             style = FormularMedium12,
-            color = Color.White.copy(alpha = 0.8f)
+            color = MaterialTheme.colorScheme.onSurface,
         )
         Image(
             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
             contentDescription = "To section",
-            colorFilter = ColorFilter.tint(color = Color.White.copy(alpha = 0.8f))
+            colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSurface),
         )
     }
 }
 
-@Preview
+@UiModePreviews
 @Composable
 private fun Preview() {
-    Section(
-        sectionText = R.string.section_author,
-    )
+    RusseLiteratureTheme {
+        Section(
+            sectionText = R.string.section_author,
+        )
+    }
 }

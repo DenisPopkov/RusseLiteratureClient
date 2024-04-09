@@ -11,5 +11,6 @@ dependencies {
     implementation(project(":features:fave:nav"))
     implementation(project(":features:home:nav"))
     implementation(project(":features:section:ui"))
+    implementation(project(":features:clip:ui"))
     implementation(project(":theme"))
 }
